@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T:MonoBehaviour {
 	public static T Instance {
@@ -6,6 +6,10 @@ public class MonoSingleton<T> : MonoBehaviour where T:MonoBehaviour {
 			if ( !_instance ) {
 				_instance = (T) FindObjectOfType(typeof(T));
 			}
+            if ( !_instance ) {
+                var obj = new GameObject(typeof(T).ToString());
+                obj.AddComponent<T>();
+            }
 			return _instance;
 		}
 	}
@@ -13,7 +17,7 @@ public class MonoSingleton<T> : MonoBehaviour where T:MonoBehaviour {
 	static T _instance = null;
 
 	protected virtual void Awake() {
-		if ( _instance != null && _instance != this) {
+		if ( _instance != null && _instance != this ) {
 			Destroy(this);
 			return;
 		}
