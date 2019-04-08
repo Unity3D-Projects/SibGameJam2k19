@@ -4,21 +4,24 @@ using UnityEngine.SceneManagement;
 
 public sealed class MainMenu : MonoBehaviour {
     [Header("Buttons")]
-    public Button StartButton    = null;
-    public Button SoundButton    = null;
-    public Button ExitButton     = null;
+    public Button     StartButton    = null;
+    public Button     SoundButton    = null;
+    public Button     ExitButton     = null;
     [Header("Button Sprites")]
-    public Sprite SoundOnSprite  = null;
-    public Sprite SoundOffSprite = null;
+    public Sprite     SoundOnSprite  = null;
+    public Sprite     SoundOffSprite = null;
+	[Header("Utilities")]
+	public FadeScreen Fader          = null;
 
-    bool _soundOn = false;
+	bool _soundOn = false;
 
     void Start() {
         Cursor.visible = true;
+		Fader.FadeToWhite(1f, false);
 
         _soundOn = AudioListener.volume > 0.05f;
         SoundButton.image.sprite = _soundOn ? SoundOnSprite : SoundOffSprite;
-        StartButton.onClick.AddListener(LoadLevel);
+        StartButton.onClick.AddListener(StartNewGame);
         SoundButton.onClick.AddListener(OnClickSoundToggle);
         ExitButton.onClick.AddListener(OnClickExit);
         if ( Application.platform == RuntimePlatform.WebGLPlayer ) {
@@ -28,8 +31,13 @@ public sealed class MainMenu : MonoBehaviour {
 		SoundManager.Instance.PlayMusic("menu");
     }
 
-    void LoadLevel() {
+	void StartNewGame() {
 		SoundManager.Instance.PlaySound("menuClick");
+		Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
+		Fader.FadeToBlack(1f);
+	}
+	
+    void LoadLevel() {
         SceneManager.LoadScene("Gameplay");
     }
 
@@ -41,6 +49,11 @@ public sealed class MainMenu : MonoBehaviour {
 
     void OnClickExit() {
 		SoundManager.Instance.PlaySound("menuClick");
+		Fader.OnFadeToBlackFinished.AddListener(ExitGame);
+		Fader.FadeToBlack(0.5f);
+	}
+
+	void ExitGame() {
 		Application.Quit();
-    }
+	}
 }
