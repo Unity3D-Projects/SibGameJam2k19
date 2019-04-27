@@ -23,5 +23,9 @@ namespace EventSys {
 	public struct Event_Obstacle_Collided {
 		public Obstacle Obstacle;
 	}
+
+	public struct Event_FarmerActionTrigger {
+		public FarmerActionTrigger Trigger;
+	}
 	
 }
