@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class TimedDestroy : MonoBehaviour {
 	public void Activate(float delay) {

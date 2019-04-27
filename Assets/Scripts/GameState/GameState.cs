@@ -6,13 +6,16 @@ using UnityEngine.SceneManagement;
 
 public sealed class GameState : MonoSingleton<GameState> {
 
-	public GoatController Goat = null;
-	public CamControl CamControl = null;
+	public GoatController   Goat       = null;
+	public FarmerController Farmer     = null;
+	public CamControl       CamControl = null;
+
+	public GameObject       GoatCloneFab = null;
 
 	public List<BoostInfo> BoostInfos = new List<BoostInfo>();
 
 	[System.NonSerialized]
-	public int Score = 0;
+	public int Score = 10;
 
 
 	[Header("Utilities")]
@@ -130,19 +133,36 @@ public class BoostWatcher {
 	public void Init(GameState owner) {
 		_owner = owner;
 		EventManager.Subscribe<Event_TryActivateBoost>(this, OnBoostButtonPush);
+		EventManager.Subscribe<Event_TryActivateBoost>(this, OnBoostButtonPush);
+		EventManager.Subscribe<Event_BoostEnded>(this, OnBoostEnded);
 	}
 
 	public void DeInit() {
 		EventManager.Unsubscribe<Event_TryActivateBoost>(OnBoostButtonPush);
+		EventManager.Unsubscribe<Event_BoostEnded>(OnBoostEnded);
 	}
 
 	public void Update() {
 		if ( _activeBoost != null ) {
 			_activeBoost.Update();
 		}
+
+		if ( Input.GetKeyDown(KeyCode.Alpha1) ) {
+			EventManager.Fire(new Event_TryActivateBoost() { Type = BoostType.SpeedUp });
+		}
+		if ( Input.GetKeyDown(KeyCode.Alpha2) ) {
+			EventManager.Fire(new Event_TryActivateBoost() { Type = BoostType.Clone });
+		}
+		if ( Input.GetKeyDown(KeyCode.Alpha3) ) {
+			EventManager.Fire(new Event_TryActivateBoost() { Type = BoostType.Piano });
+		}
 	}
 
 	void OnBoostButtonPush(Event_TryActivateBoost e) {
+		if ( _activeBoost != null || !_owner.Goat.CharController.Grounded || !_owner.Farmer.Controller.Grounded ) {
+			// TODO reject effect
+			return;
+		}
 		var price = GetBoostPrice(e.Type);
 		if ( _owner.Score >= price ) {
 			_owner.SpendScore(price);
@@ -150,18 +170,35 @@ public class BoostWatcher {
 		}
 	}
 
+	void OnBoostEnded(Event_BoostEnded e) {
+		_activeBoost = null;
+	}
+
 	BoostAction GetAction(BoostType type) {
-		//TODO
+		if ( type == BoostType.Clone ) {
+			return new CloneBoostAction() { Info = GetBoostInfo(type) };
+		}
+		if ( type == BoostType.Piano ) {
+			return new PianoBoostAction() { Info = GetBoostInfo(type) };
+		}
+		if ( type == BoostType.SpeedUp ) {
+			return new SpeedUpBoostAction() { Info = GetBoostInfo(type) };
+		}
 		return new BoostAction();
 	}
 
-	public int GetBoostPrice(BoostType type) {
+	public BoostInfo GetBoostInfo(BoostType type) {
 		foreach ( var info in _owner.BoostInfos ) {
 			if ( info.Type == type ) {
-				return info.Price;
+				return info;
 			}
 		}
-		return 0;
+		return null;
+	}
+
+	public int GetBoostPrice(BoostType type) {
+		var info = GetBoostInfo(type);
+		return info != null ? info.Price : 0;
 	}
 }
 
@@ -189,7 +226,70 @@ public class BoostAction {
 		}
 	}
 
-	void DeInit() {
+	protected virtual void DeInit() {
 		EventManager.Fire(new Event_BoostEnded { Type = Type });
+	}
+}
+
+public class SpeedUpBoostAction : BoostAction {
+	public SpeedUpBoostAction() :base() {
+		Type = BoostType.SpeedUp;
+		GameState.Instance.Goat.CharController.HorizontalSpeedMultiplier = 1.5f;
+	}
+
+	protected override void DeInit() {
+		base.DeInit();
+		GameState.Instance.Goat.CharController.HorizontalSpeedMultiplier = 1f;
+	}
+}
+
+public class CloneBoostAction : BoostAction {
+
+	FarmerActionTrigger _trigger = null;
+	public CloneBoostAction() : base() {
+		Type = BoostType.Clone;
+		var gs = GameState.Instance;
+		var fakeGoat = GameObject.Instantiate(gs.GoatCloneFab, gs.Goat.transform.position, gs.Goat.transform.rotation);
+		fakeGoat.GetComponent<TimedDestroy>().Activate(4f);
+		_trigger = fakeGoat.GetComponentInChildren<FarmerActionTrigger>();
+		EventManager.Subscribe<Event_FarmerActionTrigger>(this, OnFarmerHitObstacle);
+	}
+
+	protected override void DeInit() {
+		base.DeInit();
+		GameState.Instance.Farmer.Controller.HorizontalSpeedMultiplier = 1f;
+		EventManager.Unsubscribe<Event_FarmerActionTrigger>(OnFarmerHitObstacle);
+		
+	}
+
+	void OnFarmerHitObstacle(Event_FarmerActionTrigger e) {
+		if ( e.Trigger == _trigger ) {
+			var gs = GameState.Instance;
+			gs.Farmer.Controller.HorizontalSpeedMultiplier = 0.6f;
+		}
+	}
+}
+
+public class PianoBoostAction : BoostAction {
+	public PianoBoostAction() : base() {
+		Type = BoostType.Piano;
+		var gs = GameState.Instance;
+		gs.Farmer.Controller.HorizontalSpeedMultiplier = 0.0f;
+		gs.Farmer.GetComponent<Animation>().Play("PianoFall");
+	}
+
+	protected override void DeInit() {
+		base.DeInit();
+		GameState.Instance.Farmer.Controller.HorizontalSpeedMultiplier = 1f;
+		var anim = GameState.Instance.Farmer.GetComponent<Animation>();
+		Debug.LogWarning("Piano boost end");
+		/*anim.Stop();
+		anim.Rewind("FarmerRun");
+		anim.Rewind("PianoFall");
+		*/
+		anim.Rewind();
+		anim.Stop("PianoFall");
+		
+		anim.Play("FarmerRun");
 	}
 }

@@ -83,7 +83,7 @@ public class State {
 			case GoatState.SlowDown:
 				return new SlowDownState(Controller);
 			case GoatState.Obstacle:
-				break;
+				return new ObstacleState(Controller);
 			case GoatState.Slide:
 				return new SlideState(Controller);
 			case GoatState.Jump:
@@ -268,7 +268,7 @@ public class ObstacleState : State {
 		var curTime = GameState.Instance.TimeController.CurrentTime;
 		var stateTime = curTime - EnterTime;
 		var speed = stateTime / TimeToExit;
-		Controller.SetRunSpeed(speed * Controller.RunSpeed);
+		Controller.SetRunSpeed(Mathf.Clamp(0.75f + speed * Controller.RunSpeed, 0, Controller.RunSpeed));
 	}
 
 	protected override void LeaveState() {

@@ -7,6 +7,9 @@ public class PhysicsObject : MonoBehaviour {
 	public float MinGroundNormalY = 0.65f;
 	public float GravityModifier  = 1f;
 
+	[HideInInspector]
+	public float HorizontalSpeedMultiplier = 1f;
+
 	public Collider2D NormalCollider     = null;
 	public Collider2D LowProfileCollider = null;
 
@@ -61,7 +64,7 @@ public class PhysicsObject : MonoBehaviour {
 			return;
 		}
 		velocity += GravityModifier * Physics2D.gravity * Time.deltaTime;
-		velocity.x = targetVelocity.x;
+		velocity.x = targetVelocity.x * HorizontalSpeedMultiplier;
 
 		Vector2 deltaPosition = velocity * Time.deltaTime;
 

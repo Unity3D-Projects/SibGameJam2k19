@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FarmerController : MonoBehaviour {
 	public float MoveSpeed = 3f;
-	public float JumpPower = 8f;
+	public float JumpPower = 6f;
 	public float StartDelay = 2f;
 	public PhysicsObject Controller = null;
 
@@ -47,6 +47,9 @@ public class FarmerController : MonoBehaviour {
 	void OnFarmerActionTrigger(Event_FarmerActionTrigger e) {
 		if ( e.Trigger.Type == FarmerActionType.Jump ) {
 			Jump();
+		}
+		if ( e.Trigger.Type == FarmerActionType.SlowDown ) {
+			//PlayAnim
 		}
 	}
 }

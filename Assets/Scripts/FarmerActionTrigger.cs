@@ -1,9 +1,10 @@
-using System.Collections.Generic;
 using EventSys;
 using UnityEngine;
 
 public enum FarmerActionType {
-	Jump
+	Jump,
+	SlowDown,
+	Piano
 }
 
 public class FarmerActionTrigger : MonoBehaviour {
