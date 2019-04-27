@@ -14,17 +14,17 @@ public class Dialog : MonoBehaviour
 	public float LastPhraseTime = 0;
 	public float TimeDeltaToComplete = 2;
 
-	enum Faces { 
+	enum Actors { 
 		Farmer,
 		Goat 
 	}
 
-	Tuple<Faces, string>[] Dialog1 = {
-		Tuple.Create(Faces.Farmer, "FarmerPhrase1" ),
-		Tuple.Create(Faces.Farmer, "FarmerPhrase2" ),
-		Tuple.Create(Faces.Goat, "GoatPhrase1" ),
-		Tuple.Create(Faces.Farmer, "FarmerPhrase3" ),
-		Tuple.Create(Faces.Goat, "GoatPhrase2" ),
+	Tuple<Actors, string>[] Dialog1 = {
+		Tuple.Create(Actors.Farmer, "FarmerPhrase1" ),
+		Tuple.Create(Actors.Farmer, "FarmerPhrase2" ),
+		Tuple.Create(Actors.Goat, "GoatPhrase1" ),
+		Tuple.Create(Actors.Farmer, "FarmerPhrase3" ),
+		Tuple.Create(Actors.Goat, "GoatPhrase2" ),
 	};
 
 
@@ -45,7 +45,7 @@ public class Dialog : MonoBehaviour
     }
 
 	void ShowNextPhrase() {
-		if ( Dialog1[CurrentPhrase].Item1 == Faces.Farmer ) {
+		if ( Dialog1[CurrentPhrase].Item1 == Actors.Farmer ) {
 			TextLeft.text = Dialog1[CurrentPhrase].Item2;
 			BubbleLeft.gameObject.SetActive(true);
 			BubbleRight.gameObject.SetActive(false); 
