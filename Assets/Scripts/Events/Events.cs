@@ -30,5 +30,8 @@ namespace EventSys {
 
 	public struct Event_GoatDies {
 	}
-	
+
+	public struct Event_AppleCollected {
+	}
+
 }
