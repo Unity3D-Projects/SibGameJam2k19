@@ -5,6 +5,8 @@ using UnityEngine;
 using DG.Tweening;
 
 public class GoatController : MonoBehaviour {
+	public float JumpForce = 7f;
+
 	Sequence _seq = null;
 
 	public PhysicsObject CharController = null;
@@ -19,6 +21,6 @@ public class GoatController : MonoBehaviour {
 	}
 
 	void Jump() {
-		CharController.Jump(5f);
+		CharController.Jump(JumpForce);
 	}
 }

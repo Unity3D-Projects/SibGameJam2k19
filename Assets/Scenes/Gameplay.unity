@@ -1732,6 +1732,7 @@ GameObject:
   - component: {fileID: 1201429543}
   - component: {fileID: 1201429542}
   - component: {fileID: 1201429541}
+  - component: {fileID: 1201429544}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1803,6 +1804,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1201429544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201429540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f401877fc8b15614791ec1dd66a0d1a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpCoef:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.07974458
+      value: -0.0044445572
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3.4915633
+      value: 0.24989833
+      inSlope: 0.2353004
+      outSlope: 0.2353004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.19039845
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 5.026329
+      value: 0.98905945
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  player: {fileID: 1581232456}
+  initDelta: 10
 --- !u!1 &1208980135
 GameObject:
   m_ObjectHideFlags: 0
@@ -2945,6 +2993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abf89cd11cef504db99a2e160494acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  JumpForce: 7
   CharController: {fileID: 1581232457}
 --- !u!4 &1581232456
 Transform:
@@ -2992,9 +3041,9 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &1581232459
 CapsuleCollider2D:
