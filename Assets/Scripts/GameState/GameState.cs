@@ -19,6 +19,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		SoundManager.Instance.PlayMusic("level");
 		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
 		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
+		Fader.FadeToWhite(1f);
 	}
 
 	void OnDestroy() {
@@ -91,6 +92,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void OnGoatDie(Event_GoatDies e) {
 		CamControl.ReplaceTargetByDummy();
+		LoseGame();
 		//TODO: Game Over
 	}
 }
