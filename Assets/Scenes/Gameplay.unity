@@ -779,6 +779,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66a69741f669ac458672985fed899a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 0
+  CoolDownTime: 1
 --- !u!61 &558093072
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1494,6 +1496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d9b3a35bcb214448eaed51f721f5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Goat: {fileID: 1581232455}
   Fader: {fileID: 1462180448}
 --- !u!4 &1039981463
 Transform:
@@ -1758,7 +1761,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.25013348, g: 0.4993045, b: 0.7264151, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -2974,6 +2977,7 @@ GameObject:
   - component: {fileID: 1581232458}
   - component: {fileID: 1581232457}
   - component: {fileID: 1581232459}
+  - component: {fileID: 1581232460}
   m_Layer: 0
   m_Name: Goat
   m_TagString: Untagged
@@ -2994,6 +2998,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpForce: 7
+  RunSpeed: 3
+  SlowSpeed: 2
+  ObstacleSpeed: 0.5
   CharController: {fileID: 1581232457}
 --- !u!4 &1581232456
 Transform:
@@ -3022,8 +3029,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9142c775c6a1ffd4ea206ecedb97f6d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGroundNormalY: 0.65
-  gravityModifier: 1
+  MinGroundNormalY: 0.65
+  GravityModifier: 1
+  NormalCollider: {fileID: 1581232460}
+  LowProfileCollider: {fileID: 1581232459}
 --- !u!50 &1581232458
 Rigidbody2D:
   serializedVersion: 4
@@ -3058,8 +3067,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.054187037, y: 0.003195978}
-  m_Size: {x: 0.8043638, y: 0.42361593}
+  m_Offset: {x: -0.21436766, y: -0.00824528}
+  m_Size: {x: 0.9721762, y: 0.4465036}
+  m_Direction: 1
+--- !u!70 &1581232460
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581232454}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.21436763, y: 0.16909699}
+  m_Size: {x: 0.9721763, y: 0.80119085}
   m_Direction: 1
 --- !u!1 &1682205844
 GameObject:
@@ -3092,6 +3117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66a69741f669ac458672985fed899a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 0
+  CoolDownTime: 1
 --- !u!61 &1682205846
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3174,7 +3201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682205844}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.661, y: -0.60747, z: 0}
+  m_LocalPosition: {x: -4.661, y: 0.07, z: 0}
   m_LocalScale: {x: 0.646, y: 1.054, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
