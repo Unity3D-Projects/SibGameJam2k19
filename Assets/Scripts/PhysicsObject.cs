@@ -1,14 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using EventSys;
 using UnityEngine;
 
 public class PhysicsObject : MonoBehaviour {
 
-	public float minGroundNormalY = .65f;
-	public float gravityModifier = 1f;
+	public float MinGroundNormalY = 0.65f;
+	public float GravityModifier  = 1f;
+
+	public Collider2D NormalCollider     = null;
+	public Collider2D LowProfileCollider = null;
 
 	protected Vector2 targetVelocity;
-	protected bool grounded;
+
+	public bool Grounded {
+		get => _grounded;
+
+		protected set {
+			if ( value && !_grounded ) {
+				Debug.Log("grounded change");
+				EventManager.Fire(new Event_PhysicsObjectGrounded(this));
+			}
+			_grounded = value;
+
+		}
+	}
+
+	protected bool _grounded = false;
+
 	protected Vector2 groundNormal;
 	protected Rigidbody2D rb2d;
 	protected Vector2 velocity;
@@ -25,6 +44,7 @@ public class PhysicsObject : MonoBehaviour {
 	}
 
 	void Start() {
+		SetLowProfile(false);
 		contactFilter.useTriggers = false;
 		contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
 		contactFilter.useLayerMask = true;
@@ -39,10 +59,11 @@ public class PhysicsObject : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
+		if ( GameState.Instance.TimeController.IsPause ) {
+			return;
+		}
+		velocity += GravityModifier * Physics2D.gravity * Time.deltaTime;
 		velocity.x = targetVelocity.x;
-
-		grounded = false;
 
 		Vector2 deltaPosition = velocity * Time.deltaTime;
 
@@ -50,50 +71,50 @@ public class PhysicsObject : MonoBehaviour {
 
 		Vector2 move = moveAlongGround * deltaPosition.x;
 
-		Movement(move, false);
+		Movement(move, false, false);
 
 		move = Vector2.up * deltaPosition.y;
 
-		Movement(move, true);
+		Movement(move, true, true);
 	}
 
-	void Movement(Vector2 move, bool yMovement) {
-		float distance = move.magnitude;
-
+	void Movement(Vector2 move, bool yMovement, bool updateGrounded) {
+		var distance = move.magnitude;
+		var tmpGrounded = false;
 		if ( distance > minMoveDistance ) {
-			int count = rb2d.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
+			var count = rb2d.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
 			hitBufferList.Clear();
-			for ( int i = 0; i < count; i++ ) {
+			for ( var i = 0; i < count; i++ ) {
 				hitBufferList.Add(hitBuffer[i]);
 			}
 
-			for ( int i = 0; i < hitBufferList.Count; i++ ) {
-				Vector2 currentNormal = hitBufferList[i].normal;
-				if ( currentNormal.y > minGroundNormalY ) {
-					grounded = true;
+			foreach (var hit in hitBufferList) {
+				var currentNormal = hit.normal;
+				if ( currentNormal.y > MinGroundNormalY ) {
+					tmpGrounded = true;
 					if ( yMovement ) {
 						groundNormal = currentNormal;
 						currentNormal.x = 0;
 					}
 				}
-
-				float projection = Vector2.Dot(velocity, currentNormal);
+				var projection = Vector2.Dot(velocity, currentNormal);
 				if ( projection < 0 ) {
 					velocity = velocity - projection * currentNormal;
 				}
-
-				float modifiedDistance = hitBufferList[i].distance - shellRadius;
+				var modifiedDistance = hit.distance - shellRadius;
 				distance = modifiedDistance < distance ? modifiedDistance : distance;
 			}
-
-
+			if ( updateGrounded ) {
+				Grounded = tmpGrounded;
+			}
 		}
 
+		
 		rb2d.position = rb2d.position + move.normalized * distance;
 	}
 
 	public void Jump(float startSpeed) {
-		if ( !grounded ) {
+		if ( !Grounded ) {
 			return;
 		}
 		velocity.y += startSpeed;
@@ -101,6 +122,11 @@ public class PhysicsObject : MonoBehaviour {
 
 	public void SetMoveSpeed(float speed) {
 		targetVelocity.x = speed;
+	}
+
+	public void SetLowProfile(bool yesNo) {
+		NormalCollider.enabled = !yesNo;
+		LowProfileCollider.enabled = yesNo;
 	}
 
 }

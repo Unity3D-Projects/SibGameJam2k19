@@ -1,7 +1,10 @@
+using EventSys;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public sealed class GameState : MonoSingleton<GameState> {
+
+	public GoatController Goat = null;
 
 	[Header("Utilities")]
 	public FadeScreen Fader = null;
@@ -13,6 +16,11 @@ public sealed class GameState : MonoSingleton<GameState> {
 		ScenePersistence.Instance.ClearData(); // move this if need to use data from previous tries.
 
 		SoundManager.Instance.PlayMusic("level");
+		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
+	}
+
+	void OnDestroy() {
+		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
 	}
 
 	void Update() {
@@ -59,5 +67,17 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void GoToEndScene() {
 		SceneManager.LoadScene("EndScene");
+	}
+
+
+	void OnGoatHitObstacle(Event_Obstacle_Collided e) {
+		if ( !Goat ) {
+			return;
+		}
+
+		if ( e.Obstacle.Type == ObstacleType.Bush ) {
+			Goat.CurrentState.TryChangeState(new SlowDownState(Goat));
+			return;
+		}
 	}
 }
