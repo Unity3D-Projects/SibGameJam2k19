@@ -11,6 +11,8 @@ public class Dialog : MonoBehaviour
 	public Transform BubbleLeft = null;
 	public Transform BubbleRight = null;
 	public int CurrentPhrase = 0;
+	public float LastPhraseTime = 0;
+	public float TimeDeltaToComplete = 2;
 
 	enum Faces { 
 		Farmer,
@@ -18,11 +20,11 @@ public class Dialog : MonoBehaviour
 	}
 
 	Tuple<Faces, string>[] Dialog1 = {
-		Tuple.Create(Faces.Farmer, "Phrase1" ),
-		Tuple.Create(Faces.Farmer, "Phrase2" ),
-		Tuple.Create(Faces.Goat, "Phrase1" ),
-		Tuple.Create(Faces.Farmer, "Phrase3" ),
-		Tuple.Create(Faces.Goat, "Phrase2" ),
+		Tuple.Create(Faces.Farmer, "FarmerPhrase1" ),
+		Tuple.Create(Faces.Farmer, "FarmerPhrase2" ),
+		Tuple.Create(Faces.Goat, "GoatPhrase1" ),
+		Tuple.Create(Faces.Farmer, "FarmerPhrase3" ),
+		Tuple.Create(Faces.Goat, "GoatPhrase2" ),
 	};
 
 
@@ -54,14 +56,19 @@ public class Dialog : MonoBehaviour
 		};
 		CurrentPhrase++;
 		if ( CurrentPhrase == Dialog1.Length ) {
-			CompleteDialog();
+			LastPhraseTime = Time.time;
 		}
 	}
 	void UpdateDialog() {
-		if ( Input.GetKeyDown(KeyCode.Mouse0) ) {
-			Debug.Log("MOUSE1");
-			ShowNextPhrase();
-		} ; 
+		if ( LastPhraseTime > 0 ) {
+			if ( Time.time > LastPhraseTime + TimeDeltaToComplete || Input.GetKeyDown(KeyCode.Mouse0)) {
+				CompleteDialog();
+			}
+		} else {
+			if ( Input.GetKeyDown(KeyCode.Mouse0) ) {
+				ShowNextPhrase();
+			}; 
+		}
 	}
 
 	void CompleteDialog() {
