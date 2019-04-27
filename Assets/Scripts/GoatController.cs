@@ -9,7 +9,7 @@ public class GoatController : MonoBehaviour {
 
 	public PhysicsObject CharController = null;
 	private void Start() {
-	
+		CharController.SetMoveSpeed(3f);
 	}
 
 	private void Update() {

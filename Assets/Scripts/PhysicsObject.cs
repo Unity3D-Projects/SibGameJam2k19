@@ -31,7 +31,6 @@ public class PhysicsObject : MonoBehaviour {
 	}
 
 	void Update() {
-		targetVelocity = Vector2.zero;
 		ComputeVelocity();
 	}
 
@@ -98,6 +97,10 @@ public class PhysicsObject : MonoBehaviour {
 			return;
 		}
 		velocity.y += startSpeed;
+	}
+
+	public void SetMoveSpeed(float speed) {
+		targetVelocity.x = speed;
 	}
 
 }
