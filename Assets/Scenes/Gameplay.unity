@@ -1905,6 +1905,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Goat: {fileID: 1581232455}
   CamControl: {fileID: 1201429544}
+  BoostInfos:
+  - Type: 0
+    Price: 3
+    EffectTime: 2
+  - Type: 1
+    Price: 2
+    EffectTime: 1
+  - Type: 2
+    Price: 6
+    EffectTime: 2
   Fader: {fileID: 1462180448}
 --- !u!4 &1039981463
 Transform:
