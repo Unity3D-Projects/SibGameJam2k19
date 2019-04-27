@@ -34,4 +34,16 @@ namespace EventSys {
 	public struct Event_AppleCollected {
 	}
 
+	public struct Event_TryActivateBoost {
+		public BoostType Type;
+	}
+
+	public struct Event_BoostActivated {
+		public BoostType Type;
+	}
+
+	public struct Event_BoostEnded {
+		public BoostType Type;
+	}
+
 }

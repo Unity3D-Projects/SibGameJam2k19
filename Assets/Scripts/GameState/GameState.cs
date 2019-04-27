@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using EventSys;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,10 +9,17 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public GoatController Goat = null;
 	public CamControl CamControl = null;
 
+	public List<BoostInfo> BoostInfos = new List<BoostInfo>();
+
+	[System.NonSerialized]
+	public int Score = 0;
+
+
 	[Header("Utilities")]
 	public FadeScreen Fader = null;
 
 	public readonly TimeController TimeController = new TimeController();
+	public readonly BoostWatcher   BoostWatcher   = new BoostWatcher();
 
 	protected override void Awake() {
 		base.Awake();
@@ -19,12 +28,16 @@ public sealed class GameState : MonoSingleton<GameState> {
 		SoundManager.Instance.PlayMusic("level");
 		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
 		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
+		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
+		BoostWatcher.Init(this);
 		Fader.FadeToWhite(1f);
 	}
 
 	void OnDestroy() {
 		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
 		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
+		EventManager.Unsubscribe<Event_AppleCollected>(OnAppleCollect);
+		BoostWatcher.DeInit();
 	}
 
 	void Update() {
@@ -95,4 +108,42 @@ public sealed class GameState : MonoSingleton<GameState> {
 		LoseGame();
 		//TODO: Game Over
 	}
+
+	void OnAppleCollect(Event_AppleCollected e) {
+		Score++;
+	}
+}
+
+public class BoostWatcher {
+
+	GameState _owner = null;
+
+	public void Init(GameState owner) {
+		_owner = owner;
+		EventManager.Subscribe<Event_TryActivateBoost>(this, OnBoostButtonPush);
+	}
+
+	public void DeInit() {
+		EventManager.Unsubscribe<Event_TryActivateBoost>(OnBoostButtonPush);
+	}
+
+	void OnBoostButtonPush(Event_TryActivateBoost e) {
+		
+	}
+
+	public int GetBoostPrice(BoostType type) {
+		foreach ( var info in _owner.BoostInfos ) {
+			if ( info.Type == type ) {
+				return info.Price;
+			}
+		}
+		return 0;
+	}
+}
+
+[System.Serializable]
+public class BoostInfo {
+	public BoostType Type       = BoostType.SpeedUp;
+	public int       Price      = 1;
+	public float     EffectTime = 3f;
 }
