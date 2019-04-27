@@ -42,6 +42,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void Update() {
 		TimeController.Update(Time.deltaTime);
+		BoostWatcher.Update();
 		HandleInput();
 	}
 
@@ -111,12 +112,20 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void OnAppleCollect(Event_AppleCollected e) {
 		Score++;
+		EventManager.Fire(new Event_ScoreChanged {NewScore = Score});
+	}
+
+	public void SpendScore(int count) {
+		Score -= count;
+		EventManager.Fire(new Event_ScoreChanged { NewScore = Score });
 	}
 }
 
 public class BoostWatcher {
 
 	GameState _owner = null;
+	BoostAction _activeBoost = null;
+
 
 	public void Init(GameState owner) {
 		_owner = owner;
@@ -127,8 +136,23 @@ public class BoostWatcher {
 		EventManager.Unsubscribe<Event_TryActivateBoost>(OnBoostButtonPush);
 	}
 
+	public void Update() {
+		if ( _activeBoost != null ) {
+			_activeBoost.Update();
+		}
+	}
+
 	void OnBoostButtonPush(Event_TryActivateBoost e) {
-		
+		var price = GetBoostPrice(e.Type);
+		if ( _owner.Score >= price ) {
+			_owner.SpendScore(price);
+			_activeBoost = GetAction(e.Type);
+		}
+	}
+
+	BoostAction GetAction(BoostType type) {
+		//TODO
+		return new BoostAction();
 	}
 
 	public int GetBoostPrice(BoostType type) {
@@ -146,4 +170,26 @@ public class BoostInfo {
 	public BoostType Type       = BoostType.SpeedUp;
 	public int       Price      = 1;
 	public float     EffectTime = 3f;
+}
+
+public class BoostAction {
+	public BoostType Type = BoostType.SpeedUp;
+	public BoostInfo Info = null;
+	float _timeCreated = 0f;
+
+	public BoostAction() {
+		EventManager.Fire(new Event_BoostActivated() {Type = Type}) ;
+		_timeCreated = GameState.Instance.TimeController.CurrentTime;
+	}
+
+	public void Update() {
+		var curTime = GameState.Instance.TimeController.CurrentTime;
+		if ( curTime > _timeCreated + Info.EffectTime ) {
+			DeInit();
+		}
+	}
+
+	void DeInit() {
+		EventManager.Fire(new Event_BoostEnded { Type = Type });
+	}
 }

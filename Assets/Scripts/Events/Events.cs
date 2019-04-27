@@ -46,4 +46,8 @@ namespace EventSys {
 		public BoostType Type;
 	}
 
+	public struct Event_ScoreChanged {
+		public int NewScore;
+	}
+
 }
