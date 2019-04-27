@@ -27,5 +27,8 @@ namespace EventSys {
 	public struct Event_FarmerActionTrigger {
 		public FarmerActionTrigger Trigger;
 	}
+
+	public struct Event_GoatDies {
+	}
 	
 }

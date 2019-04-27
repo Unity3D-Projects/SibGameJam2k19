@@ -18,7 +18,6 @@ public class PhysicsObject : MonoBehaviour {
 
 		protected set {
 			if ( value && !_grounded ) {
-				Debug.Log("grounded change");
 				EventManager.Fire(new Event_PhysicsObjectGrounded(this));
 			}
 			_grounded = value;
@@ -127,6 +126,13 @@ public class PhysicsObject : MonoBehaviour {
 	public void SetLowProfile(bool yesNo) {
 		NormalCollider.enabled = !yesNo;
 		LowProfileCollider.enabled = yesNo;
+	}
+
+	public void DisableAllColliders() {
+		var cols = gameObject.GetComponentsInChildren<Collider2D>();
+		foreach ( var col in cols ) {
+			col.enabled = false;
+		}
 	}
 
 }

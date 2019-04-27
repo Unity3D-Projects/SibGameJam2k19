@@ -39,4 +39,10 @@ public sealed class CamControl : MonoBehaviour {
 		}
 		return val;
 	}
+
+	public void ReplaceTargetByDummy() {
+		var dummy = new GameObject("[camDummy]");
+		dummy.transform.position = player.transform.position;
+		player = dummy.transform;
+	}
 }

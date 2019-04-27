@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public sealed class GameState : MonoSingleton<GameState> {
 
 	public GoatController Goat = null;
+	public CamControl CamControl = null;
 
 	[Header("Utilities")]
 	public FadeScreen Fader = null;
@@ -17,10 +18,12 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 		SoundManager.Instance.PlayMusic("level");
 		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
+		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
 	}
 
 	void OnDestroy() {
 		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
+		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
 	}
 
 	void Update() {
@@ -79,5 +82,15 @@ public sealed class GameState : MonoSingleton<GameState> {
 			Goat.CurrentState.TryChangeState(new SlowDownState(Goat));
 			return;
 		}
+
+		if ( e.Obstacle.Type == ObstacleType.Stump ) {
+			Goat.CurrentState.TryChangeState(new ObstacleState(Goat));
+			return;
+		}
+	}
+
+	void OnGoatDie(Event_GoatDies e) {
+		CamControl.ReplaceTargetByDummy();
+		//TODO: Game Over
 	}
 }

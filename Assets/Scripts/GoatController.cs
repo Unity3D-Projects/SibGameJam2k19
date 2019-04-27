@@ -240,8 +240,65 @@ public class SlowDownState : State {
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
 		if ( Controller.CharController.Grounded ) {
-			TryChangeState(new SlideState(Controller));
+			TryChangeState(new JumpState(Controller));
 		}
+	}
+}
+
+public class ObstacleState : State {
+	public ObstacleState(GoatController controller) : base(controller) {
+		AvailableTransitions = new List<GoatState> {
+			GoatState.Run,
+			GoatState.Die,
+			GoatState.Obstacle,
+			GoatState.Jump,
+		};
+		Type = GoatState.Obstacle;
+		TimeToExit = 2f;
+		ExitState = GoatState.Run;
+	}
+
+	protected override void Init() {
+		Controller.SetRunSpeed(0, true);
+		EventManager.Subscribe< Event_JumpButtonPushed>(this,OnJumpButtonPushed);
+	}
+
+	protected override void ProcessState() {
+		base.ProcessState();
+		var curTime = GameState.Instance.TimeController.CurrentTime;
+		var stateTime = curTime - EnterTime;
+		var speed = stateTime / TimeToExit;
+		Controller.SetRunSpeed(speed * Controller.RunSpeed);
+	}
+
+	protected override void LeaveState() {
+		base.LeaveState();
+		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
+	}
+
+	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
+		if ( Controller.CharController.Grounded ) {
+			TryChangeState(new JumpState(Controller));
+		}
+	}
+}
+
+public class DeadState : State {
+	public DeadState(GoatController controller) : base(controller) {
+		AvailableTransitions = new List<GoatState>();
+		Type = GoatState.Die;
+	}
+
+	protected override void Init() {
+		base.Init();
+		Controller.CharController.DisableAllColliders();
+		Controller.SetRunSpeed(0f, true);
+		Controller.CharController.Jump(Controller.JumpForce * 0.75f);
+	}
+
+	protected override void ProcessState() {
+		base.ProcessState();
+
 	}
 }
 
@@ -249,7 +306,6 @@ public class GoatController : MonoBehaviour {
 	public float JumpForce = 7f;
 	public float RunSpeed  = 3f;
 	public float SlowSpeed = 2f;
-	public float ObstacleSpeed = 0.5f;
 
 	public PhysicsObject CharController = null;
 

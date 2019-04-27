@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using EventSys;
 using UnityEngine;
 
@@ -29,6 +27,17 @@ public class FarmerController : MonoBehaviour {
 		}
 
 		Controller.SetMoveSpeed(MoveSpeed);
+
+		var cols = Physics2D.OverlapCircleAll(transform.position, 1.8f);
+		foreach ( var col in cols ) {
+			var goat = col.gameObject.GetComponent<GoatController>();
+			if ( goat ) {
+				Debug.LogWarning("DEAD");
+				goat.CurrentState.ChangeState(new DeadState(goat));
+				EventManager.Fire(new Event_GoatDies());
+				break;
+			}
+		}
 	}
 
 	void Jump() {
@@ -40,5 +49,4 @@ public class FarmerController : MonoBehaviour {
 			Jump();
 		}
 	}
-
 }
