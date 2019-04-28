@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 167e4d2a03cf99f40a9f61ca0052f648
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Pollywog Cyr
+  fontNames:
+  - Pollywog Cyr
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 80e1b3927ca9d16478a0b2aea5cc4c78, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

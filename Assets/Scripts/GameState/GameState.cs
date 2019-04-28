@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using EventSys;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using  TMPro;
+using TMPro;
 
 public sealed class GameState : MonoSingleton<GameState> {
 
+	public Dialog StartDialog = null;
 	public GoatController   Goat       = null;
 	public FarmerController Farmer     = null;
 	public CamControl       CamControl = null;
@@ -28,13 +29,15 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	protected override void Awake() {
 		base.Awake();
+		StartDialog.gameObject.SetActive(true);
 		ScenePersistence.Instance.ClearData(); // move this if need to use data from previous tries.
 
-		SoundManager.Instance.PlayMusic("level");
+		
 		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
 		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
 		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
 		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
+		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
 		BoostWatcher.Init(this);
 		Fader.FadeToWhite(1f);
 		ScoreCountText.text = string.Format("x{0}", Score);
@@ -45,6 +48,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
 		EventManager.Unsubscribe<Event_AppleCollected>(OnAppleCollect);
 		EventManager.Unsubscribe<Event_GameWin>(OnHitWinTrigger);
+		EventManager.Unsubscribe<Event_StartDialogComplete>(OnDialogComplete);
 		BoostWatcher.DeInit();
 	}
 
@@ -95,6 +99,12 @@ public sealed class GameState : MonoSingleton<GameState> {
 		SceneManager.LoadScene("EndScene");
 	}
 
+
+	void OnDialogComplete(Event_StartDialogComplete e) {
+		Farmer.gameObject.SetActive(true);
+		Goat.gameObject.SetActive(true);
+		SoundManager.Instance.PlayMusic("level");
+	}
 
 	void OnGoatHitObstacle(Event_Obstacle_Collided e) {
 		if ( !Goat ) {

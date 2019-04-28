@@ -2,14 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using System;
+using EventSys;
 
 public class Dialog : MonoBehaviour
 {
 
 	public Text TextLeft = null;
 	public Text TextRight = null;
-	public Transform BubbleLeft = null;
-	public Transform BubbleRight = null;
 	public int CurrentPhrase = 0;
 	public float LastPhraseTime = 0;
 	public float TimeDeltaToComplete = 2;
@@ -20,26 +19,17 @@ public class Dialog : MonoBehaviour
 	}
 
 	Tuple<Actors, string>[] Dialog1 = {
-		Tuple.Create(Actors.Farmer, "FarmerPhrase1" ),
-		Tuple.Create(Actors.Farmer, "FarmerPhrase2" ),
-		Tuple.Create(Actors.Goat, "GoatPhrase1" ),
-		Tuple.Create(Actors.Farmer, "FarmerPhrase3" ),
-		Tuple.Create(Actors.Goat, "GoatPhrase2" ),
+		Tuple.Create(Actors.Farmer, "- Эй, Машка!" ),
+		Tuple.Create(Actors.Goat, "- *Чего тебе?*" ),
+		Tuple.Create(Actors.Farmer, "- Горилку купить хочу, а денег нема." ),
+		Tuple.Create(Actors.Goat, "- А я тут причем?" ),
+		Tuple.Create(Actors.Farmer, "- Порежу тебя, и на рынке мясо продам. Вот и куплю горилки." ),
+		Tuple.Create(Actors.Goat, "- Чиго блееееееееее? *Убегает*" ),
 	};
-
-
-
-
 
 	// Start is called before the first frame update
 	void Start() {
 		GameState.Instance.TimeController.AddPause(this);
-		if ( BubbleLeft != null ) {
-			TextLeft = BubbleLeft.GetChild(0).GetComponent<Text>();
-		}
-		if ( BubbleRight != null ) {
-			TextRight = BubbleRight.GetChild(0).GetComponent<Text>();
-		}
 		ShowNextPhrase();
         
     }
@@ -47,13 +37,13 @@ public class Dialog : MonoBehaviour
 	void ShowNextPhrase() {
 		if ( Dialog1[CurrentPhrase].Item1 == Actors.Farmer ) {
 			TextLeft.text = Dialog1[CurrentPhrase].Item2;
-			BubbleLeft.gameObject.SetActive(true);
-			BubbleRight.gameObject.SetActive(false); 
+			TextLeft.gameObject.SetActive(true);
+			TextRight.gameObject.SetActive(false); 
 			SoundManager.Instance.PlaySound("Mumbling");
 		} else {
 			TextRight.text = Dialog1[CurrentPhrase].Item2;
-			BubbleRight.gameObject.SetActive(true);
-			BubbleLeft.gameObject.SetActive(false);
+			TextRight.gameObject.SetActive(true);
+			TextLeft.gameObject.SetActive(false);
 			SoundManager.Instance.PlaySound("Goat1");
 		};
 		CurrentPhrase++;
@@ -76,7 +66,8 @@ public class Dialog : MonoBehaviour
 	void CompleteDialog() {
 		Debug.Log("Dialog completed");
 		this.gameObject.SetActive(false);
-		GameState.Instance.TimeController.RemovePause(this); 
+		GameState.Instance.TimeController.RemovePause(this);
+		EventManager.Fire(new Event_StartDialogComplete());
 	}
 
     // Update is called once per frame
