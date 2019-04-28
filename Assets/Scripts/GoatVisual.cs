@@ -50,6 +50,10 @@ public class GoatVisual : MonoBehaviour {
 		TurnOffAllStates();
 		NormalGoat.SetActive(true);
 		NormalGoat.GetComponent<Animation>().Play();
+		var slideshow = NormalGoat.GetComponent<SlideShowAnim>();
+		if ( slideshow ) {
+			slideshow.Play();
+		}
 	}
 
 	void SetJumpingState() {
@@ -62,6 +66,10 @@ public class GoatVisual : MonoBehaviour {
 		TurnOffAllStates();
 		SlidingGoat.SetActive(true);
 		SlidingGoat.GetComponent<Animation>().Play();
+		var slideshow = SlidingGoat.GetComponent<SlideShowAnim>();
+		if ( slideshow ) {
+			slideshow.Play();
+		}
 	}
 
 	void SetDeadGoat() {
@@ -74,6 +82,10 @@ public class GoatVisual : MonoBehaviour {
 		TurnOffAllStates();
 		ObstacleGoat.SetActive(true);
 		ObstacleGoat.GetComponent<Animation>().Play();
+		var slideshow = ObstacleGoat.GetComponent<SlideShowAnim>();
+		if ( slideshow ) {
+			slideshow.Play();
+		}
 	}
 
 }

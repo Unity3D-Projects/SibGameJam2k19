@@ -18,7 +18,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public List<BoostInfo> BoostInfos = new List<BoostInfo>();
 
 	[System.NonSerialized]
-	public int Score = 10;
+	public int Score = 0;
 
 
 	[Header("Utilities")]
