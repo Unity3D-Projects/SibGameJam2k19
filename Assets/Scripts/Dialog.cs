@@ -49,10 +49,12 @@ public class Dialog : MonoBehaviour
 			TextLeft.text = Dialog1[CurrentPhrase].Item2;
 			BubbleLeft.gameObject.SetActive(true);
 			BubbleRight.gameObject.SetActive(false); 
+			SoundManager.Instance.PlaySound("Mumbling");
 		} else {
 			TextRight.text = Dialog1[CurrentPhrase].Item2;
 			BubbleRight.gameObject.SetActive(true);
-			BubbleLeft.gameObject.SetActive(false); 
+			BubbleLeft.gameObject.SetActive(false);
+			SoundManager.Instance.PlaySound("Goat1");
 		};
 		CurrentPhrase++;
 		if ( CurrentPhrase == Dialog1.Length ) {
