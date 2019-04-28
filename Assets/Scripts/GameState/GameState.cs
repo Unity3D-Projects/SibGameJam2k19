@@ -235,6 +235,7 @@ public class SpeedUpBoostAction : BoostAction {
 	public SpeedUpBoostAction() :base() {
 		Type = BoostType.SpeedUp;
 		GameState.Instance.Goat.CharController.HorizontalSpeedMultiplier = 1.5f;
+		SoundManager.Instance.PlaySound("Speedup");
 	}
 
 	protected override void DeInit() {
