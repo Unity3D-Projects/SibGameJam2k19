@@ -264,6 +264,7 @@ public class ObstacleState : State {
 	}
 
 	protected override void Init() {
+		base.Init();
 		Controller.SetRunSpeed(0, true);
 		EventManager.Subscribe< Event_JumpButtonPushed>(this,OnJumpButtonPushed);
 		SoundManager.Instance.PlaySound("Hit");
