@@ -15,8 +15,24 @@ MonoBehaviour:
   Sounds:
   - SoundName: menuClick
     Clip: {fileID: 8300000, guid: 4e821098d73940a4fabd7dbab783a71a, type: 3}
+  - SoundName: PianoFall
+    Clip: {fileID: 8300000, guid: 6cc8861e39ba9554b9095cc611ac1fb3, type: 3}
+  - SoundName: Clone
+    Clip: {fileID: 8300000, guid: 49be0e326dbeb4446baa9ef9559336f2, type: 3}
+  - SoundName: Jump
+    Clip: {fileID: 8300000, guid: 3f41f66971d10b24dbea368f5e62d0c0, type: 3}
+  - SoundName: Anger1
+    Clip: {fileID: 8300000, guid: 74150940f751ed7409fd99b165f3ae21, type: 3}
+  - SoundName: Anger2
+    Clip: {fileID: 8300000, guid: b5f4e1fea4436d041beb8a67e12014a4, type: 3}
+  - SoundName: Mumbling
+    Clip: {fileID: 8300000, guid: 3a41e46295c68124aa422d6e275c7dca, type: 3}
+  - SoundName: Whoosh
+    Clip: {fileID: 8300000, guid: 5a9bad731efe35a45bd84ec7c303224b, type: 3}
+  - SoundName: Goat1
+    Clip: {fileID: 8300000, guid: 838eacd6cc1e6ae4b8a20d60990c45c1, type: 3}
   Music:
   - SoundName: menu
     Clip: {fileID: 8300000, guid: bc6dbd2b3a7a7474182326bb1ee2d372, type: 3}
   - SoundName: level
-    Clip: {fileID: 8300000, guid: 1d9eb6663a051b0459e98fc4e6caabe3, type: 3}
+    Clip: {fileID: 8300000, guid: e69fece0523fedf4eaf319c3564971f7, type: 3}

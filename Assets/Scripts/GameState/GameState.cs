@@ -253,6 +253,7 @@ public class CloneBoostAction : BoostAction {
 		fakeGoat.GetComponent<TimedDestroy>().Activate(4f);
 		_trigger = fakeGoat.GetComponentInChildren<FarmerActionTrigger>();
 		EventManager.Subscribe<Event_FarmerActionTrigger>(this, OnFarmerHitObstacle);
+		SoundManager.Instance.PlaySound("Clone");
 	}
 
 	protected override void DeInit() {
@@ -266,6 +267,7 @@ public class CloneBoostAction : BoostAction {
 		if ( e.Trigger == _trigger ) {
 			var gs = GameState.Instance;
 			gs.Farmer.Controller.HorizontalSpeedMultiplier = 0.6f;
+			SoundManager.Instance.PlaySound("Anger2");
 		}
 	}
 }
@@ -276,17 +278,13 @@ public class PianoBoostAction : BoostAction {
 		var gs = GameState.Instance;
 		gs.Farmer.Controller.HorizontalSpeedMultiplier = 0.0f;
 		gs.Farmer.GetComponent<Animation>().Play("PianoFall");
+		SoundManager.Instance.PlaySound("PianoFall");
 	}
 
 	protected override void DeInit() {
 		base.DeInit();
 		GameState.Instance.Farmer.Controller.HorizontalSpeedMultiplier = 1f;
 		var anim = GameState.Instance.Farmer.GetComponent<Animation>();
-		Debug.LogWarning("Piano boost end");
-		/*anim.Stop();
-		anim.Rewind("FarmerRun");
-		anim.Rewind("PianoFall");
-		*/
 		anim.Rewind();
 		anim.Stop("PianoFall");
 		

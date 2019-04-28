@@ -118,6 +118,7 @@ public class RunState : State {
 		base.Init();
 		EventManager.Subscribe <Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonPushed>(this, OnSlideButtonPushed);
+		SoundManager.Instance.PlaySound("Goat1");
 	}
 
 	protected override void ProcessState() {
@@ -158,6 +159,7 @@ public class JumpState : State {
 	protected override void Init() {
 		base.Init();
 		EventManager.Subscribe<Event_PhysicsObjectGrounded>(this, OnGrounded);
+		SoundManager.Instance.PlaySound("Jump");
 		Controller.Jump();
 	}
 
@@ -194,6 +196,7 @@ public class SlideState : State {
 		Debug.Log("Slide on");
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
+		SoundManager.Instance.PlaySound("Whoosh");
 	}
 
 	protected override void LeaveState() {
