@@ -34,14 +34,17 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
 		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
 		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
+		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
 		BoostWatcher.Init(this);
 		Fader.FadeToWhite(1f);
+		ScoreCountText.text = string.Format("x{0}", Score);
 	}
 
 	void OnDestroy() {
 		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
 		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
 		EventManager.Unsubscribe<Event_AppleCollected>(OnAppleCollect);
+		EventManager.Unsubscribe<Event_GameWin>(OnHitWinTrigger);
 		BoostWatcher.DeInit();
 	}
 
@@ -112,17 +115,24 @@ public sealed class GameState : MonoSingleton<GameState> {
 	void OnGoatDie(Event_GoatDies e) {
 		CamControl.ReplaceTargetByDummy();
 		LoseGame();
+		SoundManager.Instance.PlaySound("Slap");
 		//TODO: Game Over
+	}
+
+	void OnHitWinTrigger(Event_GameWin e) {
+		WinGame();
 	}
 
 	void OnAppleCollect(Event_AppleCollected e) {
 		Score++;
 		EventManager.Fire(new Event_ScoreChanged {NewScore = Score});
+		ScoreCountText.text = string.Format("x{0}", Score);
 	}
 
 	public void SpendScore(int count) {
 		Score -= count;
 		EventManager.Fire(new Event_ScoreChanged { NewScore = Score });
+		ScoreCountText.text = string.Format("x{0}", Score);
 	}
 }
 

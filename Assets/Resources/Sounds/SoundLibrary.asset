@@ -35,6 +35,10 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 35f7817dae09725428ac951e8a46a020, type: 3}
   - SoundName: Speedup
     Clip: {fileID: 8300000, guid: 92eb49df612d9b94f8564517e59bf613, type: 3}
+  - SoundName: Munch
+    Clip: {fileID: 8300000, guid: 325c73d76b196414bbce1e9a60abfaeb, type: 3}
+  - SoundName: Slap
+    Clip: {fileID: 8300000, guid: cd2e7e1b2ef52634fa211ae1fb98a319, type: 3}
   Music:
   - SoundName: menu
     Clip: {fileID: 8300000, guid: bc6dbd2b3a7a7474182326bb1ee2d372, type: 3}

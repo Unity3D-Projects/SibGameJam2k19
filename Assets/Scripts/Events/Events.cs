@@ -50,4 +50,8 @@ namespace EventSys {
 		public int NewScore;
 	}
 
+	public struct Event_GameWin {
+
+	}
+
 }
