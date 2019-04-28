@@ -3,9 +3,10 @@ using EventSys;
 
 public class BoostButton : MonoBehaviour
 {
-	BoostType BoostType;
+	public BoostType BoostType;
 
-	public void BoostButtonClick() { 
-		EventManager.Fire(new Event_BoostActivated { Type = BoostType });
+	public void BoostButtonClick() {
+		Debug.Log("Boost type used: " + BoostType);
+		EventManager.Fire(new Event_TryActivateBoost { Type = BoostType });
 	}
 }
