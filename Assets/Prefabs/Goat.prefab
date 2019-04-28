@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abf89cd11cef504db99a2e160494acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpForce: 7
+  JumpForce: 8
   RunSpeed: 3
   SlowSpeed: 2
   CharController: {fileID: 3784704159680927257}

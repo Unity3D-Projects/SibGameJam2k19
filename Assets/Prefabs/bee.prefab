@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7824879660240762228}
   - component: {fileID: 7824879660240762227}
   - component: {fileID: 7824879660240762226}
+  - component: {fileID: 7706066412688567961}
   m_Layer: 0
   m_Name: bee
   m_TagString: Untagged
@@ -121,3 +122,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   CoolDownTime: 1
+--- !u!114 &7706066412688567961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7824879660240762225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6b00bdad05ff44688bb19ebac24119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sprites:
+  - {fileID: 21300000, guid: c05e1502ba3aeba41b498fcc0a5edb22, type: 3}
+  - {fileID: 21300000, guid: bf690fd66d456ea4b88e8cd3e5c0d986, type: 3}
+  - {fileID: 21300000, guid: 4ca93b3555fd499408e38588093ddf63, type: 3}
+  - {fileID: 21300000, guid: d45f7a492b969d345b71ef0311e68885, type: 3}
+  Delays:
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
+  Loop: 1
