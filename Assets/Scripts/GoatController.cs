@@ -36,7 +36,9 @@ public class State {
 		Init();
 	}
 
-	protected virtual void Init() {}
+	protected virtual void Init() {
+		Controller.VisualController.SetState(Type);
+	}
 
 	public void Update() {
 		if ( TimeToExit >= 0 && ExitState != GoatState.None && !GameState.Instance.TimeController.IsPause ) {
@@ -295,11 +297,6 @@ public class DeadState : State {
 		Controller.SetRunSpeed(0f, true);
 		Controller.CharController.Jump(Controller.JumpForce * 0.75f);
 	}
-
-	protected override void ProcessState() {
-		base.ProcessState();
-
-	}
 }
 
 public class GoatController : MonoBehaviour {
@@ -307,7 +304,8 @@ public class GoatController : MonoBehaviour {
 	public float RunSpeed  = 3f;
 	public float SlowSpeed = 2f;
 
-	public PhysicsObject CharController = null;
+	public PhysicsObject CharController   = null;
+	public GoatVisual    VisualController = null;
 
 	[NonSerialized] public State CurrentState = null;
 
@@ -348,14 +346,6 @@ public class GoatController : MonoBehaviour {
 
 	public void Jump() {
 		CharController.Jump(JumpForce);
-	}
-
-	public void Crouch() {
-		CharController.SetLowProfile(true);
-	}
-
-	public void StandUp() {
-		CharController.SetLowProfile(false);
 	}
 
 	public void SetRunSpeed(float speed, bool instant = false) {

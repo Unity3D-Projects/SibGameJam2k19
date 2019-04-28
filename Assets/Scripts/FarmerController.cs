@@ -6,6 +6,7 @@ public class FarmerController : MonoBehaviour {
 	public float JumpPower = 6f;
 	public float StartDelay = 2f;
 	public PhysicsObject Controller = null;
+	public Animation Anim = null;
 
 	bool _started = false;
 
@@ -23,8 +24,13 @@ public class FarmerController : MonoBehaviour {
 
 		if ( !_started ) {
 			_started = curTime > StartDelay;
+			if ( _started ) {
+				Anim.Play("FarmerRun");
+			}
 			return;
 		}
+
+		
 
 		Controller.SetMoveSpeed(MoveSpeed);
 
