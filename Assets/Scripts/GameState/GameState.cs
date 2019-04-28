@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using EventSys;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using  TMPro;
 
 public sealed class GameState : MonoSingleton<GameState> {
 
 	public GoatController   Goat       = null;
 	public FarmerController Farmer     = null;
 	public CamControl       CamControl = null;
+	public TMP_Text         ScoreCountText = null;
 
 	public GameObject       GoatCloneFab = null;
 
