@@ -26,7 +26,7 @@ public sealed class EndGame : MonoBehaviour {
 		}
 	}
 
-	void GoToStart() {
+	public void GoToStart() {
 		if ( _closing ) {
 			return;
 		}
