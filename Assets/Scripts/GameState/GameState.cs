@@ -279,7 +279,7 @@ public class BoostInfo {
 }
 
 public class BoostAction {
-	public BoostType Type = BoostType.SpeedUp;
+	public virtual BoostType Type { get { return BoostType.SpeedUp; } }
 	public BoostInfo Info = null;
 	float _timeCreated = 0f;
 
@@ -301,9 +301,9 @@ public class BoostAction {
 }
 
 public class SpeedUpBoostAction : BoostAction {
-	public SpeedUpBoostAction() :base() {
-		Type = BoostType.SpeedUp;
-		GameState.Instance.Goat.CharController.HorizontalSpeedMultiplier = 1.5f;
+	public override BoostType Type { get { return BoostType.SpeedUp; } }
+	public SpeedUpBoostAction() :base() {	
+	GameState.Instance.Goat.CharController.HorizontalSpeedMultiplier = 1.5f;
 		SoundManager.Instance.PlaySound("Speedup");
 	}
 
@@ -314,10 +314,10 @@ public class SpeedUpBoostAction : BoostAction {
 }
 
 public class CloneBoostAction : BoostAction {
+	public override BoostType Type { get { return BoostType.Clone; } }
 
 	FarmerActionTrigger _trigger = null;
 	public CloneBoostAction() : base() {
-		Type = BoostType.Clone;
 		var gs = GameState.Instance;
 		var fakeGoat = GameObject.Instantiate(gs.GoatCloneFab, gs.Goat.transform.position, gs.Goat.transform.rotation);
 		fakeGoat.GetComponent<TimedDestroy>().Activate(4f);
@@ -343,8 +343,9 @@ public class CloneBoostAction : BoostAction {
 }
 
 public class PianoBoostAction : BoostAction {
+	public override BoostType Type { get { return BoostType.Piano; } }
+
 	public PianoBoostAction() : base() {
-		Type = BoostType.Piano;
 		var gs = GameState.Instance;
 		gs.Farmer.Controller.HorizontalSpeedMultiplier = 0.0f;
 		gs.Farmer.GetComponent<Animation>().Play("PianoFall");

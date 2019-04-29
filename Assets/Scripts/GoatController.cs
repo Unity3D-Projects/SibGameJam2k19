@@ -321,7 +321,7 @@ public sealed class YellState : State {
 			GoatState.Jump,
 		};
 		Type = GoatState.Yell;
-		TimeToExit = 0.5f;
+		TimeToExit = 0.8f;
 		ExitState = GoatState.Run;
 	}
 

@@ -27,6 +27,7 @@ public class GoatVisual : MonoBehaviour {
 	}
 
 	void OnBoostApply(Event_BoostActivated e) {
+		Debug.Log("Activate " + e.Type);
 		if ( e.Type == BoostType.SpeedUp ) {
 			var emis = SpeedParticles.emission;
 			emis.enabled = true;
