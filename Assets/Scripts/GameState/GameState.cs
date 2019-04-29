@@ -16,7 +16,8 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public List<BoostInfo>  BoostInfos     = new List<BoostInfo>();
 
 	[Header("Utilities")]
-	public FadeScreen Fader = null;
+	public FadeScreen  Fader  = null;
+	public CameraShake Shaker = null;
 
 	[System.NonSerialized]
 	public int Score = 0;
@@ -27,11 +28,12 @@ public sealed class GameState : MonoSingleton<GameState> {
 	protected override void Awake() {
 		base.Awake();
 
-		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
-		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
-		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
-		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
+		EventManager.Subscribe<Event_Obstacle_Collided>  (this, OnGoatHitObstacle);
+		EventManager.Subscribe<Event_GoatDies>           (this, OnGoatDie);
+		EventManager.Subscribe<Event_AppleCollected>     (this, OnAppleCollect);
+		EventManager.Subscribe<Event_GameWin>            (this, OnHitWinTrigger);
 		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
+		EventManager.Subscribe<Event_GoatYell>           (this, OnGoatYell);
 		BoostWatcher.Init(this);
 
 		if ( ScenePersistence.Instance.Data.FastRestart ) {
@@ -52,6 +54,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Unsubscribe<Event_AppleCollected>     (OnAppleCollect);
 		EventManager.Unsubscribe<Event_GameWin>            (OnHitWinTrigger);
 		EventManager.Unsubscribe<Event_StartDialogComplete>(OnDialogComplete);
+		EventManager.Unsubscribe<Event_GoatYell>           (OnGoatYell);
 		BoostWatcher.DeInit();
 	}
 
@@ -107,6 +110,13 @@ public sealed class GameState : MonoSingleton<GameState> {
 		Farmer.gameObject.SetActive(true);
 		Goat.gameObject.SetActive(true);
 		SoundManager.Instance.PlayMusic("level");
+	}
+
+	void OnGoatYell(Event_GoatYell e) {
+		if ( Shaker != null ) {
+			Shaker.ShakeCamera(1, 1);
+			Shaker.Decay();
+		}
 	}
 
 	void OnGoatHitObstacle(Event_Obstacle_Collided e) {

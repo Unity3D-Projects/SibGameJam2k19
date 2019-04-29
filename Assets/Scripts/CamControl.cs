@@ -9,8 +9,6 @@ public sealed class CamControl : MonoBehaviour {
 
 	public float initDelta = 10f;
 
-	Camera _camera;
-
 	float _initZ = 0;
 	float _moveError;
 
@@ -20,7 +18,6 @@ public sealed class CamControl : MonoBehaviour {
 
 	void Start() {
 		_initZ = transform.position.z;
-		_camera = GetComponent<Camera>();
 	}
 
 
