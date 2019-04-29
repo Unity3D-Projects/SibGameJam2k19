@@ -1,8 +1,7 @@
 using UnityEngine;
 using EventSys;
 
-public class ControlButton : MonoBehaviour
-{
+public sealed class ControlButton : MonoBehaviour {
 	public enum ControlButtonType {
 		Jump,
 		Slide,

@@ -79,7 +79,7 @@ public class State {
 	public State CreateStateFromEnum(GoatState state) {
 		switch ( state ) {
 			case GoatState.Run:
-				return  new RunState(Controller);
+				return new RunState(Controller);
 			case GoatState.None:
 				return new State(Controller);
 			case GoatState.SlowDown:
@@ -91,13 +91,12 @@ public class State {
 			case GoatState.Jump:
 				return new JumpState(Controller);
 			case GoatState.Yell:
-				break;
+				return new YellState(Controller);
 			case GoatState.Die:
-				break;
+				return new DeadState(Controller);
 			default:
 				throw new ArgumentOutOfRangeException(nameof(state), state, null);
 		}
-		return null;
 	}
 }
 
@@ -116,9 +115,9 @@ public sealed class RunState : State {
 	}
 	protected override void Init() {
 		base.Init();
-		EventManager.Subscribe <Event_JumpButtonPushed>(this, OnJumpButtonPushed);
+		EventManager.Subscribe<Event_JumpButtonPushed> (this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonPushed>(this, OnSlideButtonPushed);
-		SoundManager.Instance.PlaySound("Goat1");
+		EventManager.Subscribe<Event_YellButtonPushed> (this, OnYellButtonPushed);
 	}
 
 	protected override void ProcessState() {
@@ -130,6 +129,7 @@ public sealed class RunState : State {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_JumpButtonPushed> (OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonPushed>(OnSlideButtonPushed);
+		EventManager.Unsubscribe<Event_YellButtonPushed> (OnYellButtonPushed);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
@@ -142,6 +142,10 @@ public sealed class RunState : State {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new SlideState(Controller));
 		}
+	}
+
+	void OnYellButtonPushed(Event_YellButtonPushed e) {
+		TryChangeState(new YellState(Controller));
 	}
 }
 
@@ -240,18 +244,24 @@ public sealed class SlowDownState : State {
 		base.Init();
 		Controller.SetRunSpeed(Controller.SlowSpeed);
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
+		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
 	}
 
 	protected override void LeaveState() {
 		base.LeaveState();
 		Debug.Log("SlowDown off");
 		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
+		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new JumpState(Controller));
 		}
+	}
+
+	void OnYellButtonPushed(Event_YellButtonPushed e) {
+		TryChangeState(new YellState(Controller));
 	}
 }
 
@@ -292,6 +302,29 @@ public sealed class ObstacleState : State {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new JumpState(Controller));
 		}
+	}
+}
+
+public sealed class YellState : State {
+	public YellState(GoatController controller) : base(controller) {
+		AvailableTransitions = new List<GoatState> {
+			GoatState.Run,
+			GoatState.Die,
+			GoatState.Obstacle,
+		};
+		Type = GoatState.Yell;
+		TimeToExit = 0.5f;
+		ExitState = GoatState.Run;
+	}
+
+	protected override void Init() {
+		base.Init();
+		SoundManager.Instance.PlaySound("Goat1");
+		EventManager.Fire(new Event_GoatYell());
+	}
+
+	protected override void LeaveState() {
+		base.LeaveState();
 	}
 }
 
@@ -345,6 +378,10 @@ public sealed class GoatController : MonoBehaviour {
 
 		if ( Input.GetKeyUp(KeyCode.S) ) {
 			EventManager.Fire(new Event_SlideButtonReleased());
+		}
+
+		if ( Input.GetKeyDown(KeyCode.W) ) {
+			EventManager.Fire(new Event_YellButtonPushed());
 		}
 
 	}

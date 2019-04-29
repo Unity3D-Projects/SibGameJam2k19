@@ -12,6 +12,9 @@ namespace EventSys {
 	public struct Event_YellButtonPushed {
 	}
 
+	public struct Event_GoatYell {
+	}
+
 	public struct Event_PhysicsObjectGrounded {
 		public PhysicsObject Object;
 
