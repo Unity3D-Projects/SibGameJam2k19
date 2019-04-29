@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5efc44f5ec9b3ae4991d24f7436153ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 3.15
+  MoveSpeed: 3.175
   JumpPower: 8
   StartDelay: 2
   Controller: {fileID: 3877597450996859208}

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using EventSys;
+
 public class GoatVisual : MonoBehaviour {
 	public GameObject NormalGoat   = null;
 	public GameObject DeadGoat     = null;
@@ -9,6 +11,34 @@ public class GoatVisual : MonoBehaviour {
 	public GameObject JumpingGoat  = null;
 	public GameObject ObstacleGoat = null;
 	public GameObject SlowGoat     = null;
+	public ParticleSystem SpeedParticles = null;
+
+	private void OnEnable() {
+		var emis = SpeedParticles.emission;
+		emis.enabled = false;
+
+		EventManager.Subscribe<Event_BoostActivated>(this, OnBoostApply);
+		EventManager.Subscribe<Event_BoostEnded>(this, OnBoostEnd);
+	}
+
+	private void OnDisable() {
+		EventManager.Unsubscribe<Event_BoostActivated>(OnBoostApply);
+		EventManager.Unsubscribe<Event_BoostEnded>(OnBoostEnd);
+	}
+
+	void OnBoostApply(Event_BoostActivated e) {
+		if ( e.Type == BoostType.SpeedUp ) {
+			var emis = SpeedParticles.emission;
+			emis.enabled = true;
+		}
+	}
+
+	void OnBoostEnd(Event_BoostEnded e) {
+		if ( e.Type == BoostType.SpeedUp ) {
+			var emis = SpeedParticles.emission;
+			emis.enabled = false;
+		}
+	}
 
 	public void SetState(GoatState state) {
 		switch ( state ) {
