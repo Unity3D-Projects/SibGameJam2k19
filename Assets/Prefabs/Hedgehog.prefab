@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   CoolDownTime: 1
-  TurnOffDistance: 5
+  TurnOffDistance: 6
   NormalVisual: {fileID: 9205051761264637434}
   ScaredVisual: {fileID: 3457247945868175801}
 --- !u!61 &8663590251652259069
