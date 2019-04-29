@@ -1,7 +1,7 @@
 using EventSys;
 using UnityEngine;
 
-public class FarmerController : MonoBehaviour {
+public sealed class FarmerController : MonoBehaviour {
 	public float MoveSpeed = 3f;
 	public float JumpPower = 6f;
 	public float StartDelay = 2f;

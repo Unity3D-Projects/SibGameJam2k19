@@ -8,9 +8,9 @@ public enum ObstacleType {
 	Hedgehog
 }
 
-public class Obstacle : MonoBehaviour {
-	public ObstacleType Type = ObstacleType.Bush;
-	public float CoolDownTime = 1f;
+public sealed class Obstacle : MonoBehaviour {
+	public ObstacleType Type         = ObstacleType.Bush;
+	public float        CoolDownTime = 1f;
 
 	float _lastHitTime = 0f;
 

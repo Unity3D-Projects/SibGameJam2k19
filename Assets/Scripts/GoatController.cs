@@ -101,7 +101,7 @@ public class State {
 	}
 }
 
-public class RunState : State {
+public sealed class RunState : State {
 	public RunState(GoatController controller) : base(controller) {
 		AvailableTransitions = new List<GoatState> {
 			GoatState.Run,
@@ -145,7 +145,7 @@ public class RunState : State {
 	}
 }
 
-public class JumpState : State {
+public sealed class JumpState : State {
 	public JumpState(GoatController controller) : base(controller) {
 		AvailableTransitions = new List<GoatState> {
 			GoatState.Run,
@@ -176,7 +176,7 @@ public class JumpState : State {
 	} 
 }
 
-public class SlideState : State {
+public sealed class SlideState : State {
 	public SlideState(GoatController controller) : base(controller) {
 		AvailableTransitions = new List<GoatState> {
 			GoatState.Run,
@@ -218,7 +218,7 @@ public class SlideState : State {
 	}
 }
 
-public class SlowDownState : State {
+public sealed class SlowDownState : State {
 	public SlowDownState(GoatController controller, float slowdownTime) : this(controller) {
 		TimeToExit = slowdownTime;
 	}
@@ -255,7 +255,7 @@ public class SlowDownState : State {
 	}
 }
 
-public class ObstacleState : State {
+public sealed class ObstacleState : State {
 	public ObstacleState(GoatController controller) : base(controller) {
 		AvailableTransitions = new List<GoatState> {
 			GoatState.Run,
@@ -295,7 +295,7 @@ public class ObstacleState : State {
 	}
 }
 
-public class DeadState : State {
+public sealed class DeadState : State {
 	public DeadState(GoatController controller) : base(controller) {
 		AvailableTransitions = new List<GoatState>();
 		Type = GoatState.Die;
@@ -309,7 +309,7 @@ public class DeadState : State {
 	}
 }
 
-public class GoatController : MonoBehaviour {
+public sealed class GoatController : MonoBehaviour {
 	public float JumpForce = 7f;
 	public float RunSpeed  = 3f;
 	public float SlowSpeed = 2f;
@@ -319,7 +319,7 @@ public class GoatController : MonoBehaviour {
 
 	[NonSerialized] public State CurrentState = null;
 
-	float _targetSpeed = 0f;
+	float _targetSpeed  = 0f;
 	float _currentSpeed = 0f;
 
 	private void Start() {
@@ -335,7 +335,6 @@ public class GoatController : MonoBehaviour {
 		_currentSpeed = Mathf.Lerp(_currentSpeed, _targetSpeed, Time.deltaTime * 20f);
 		CharController.SetMoveSpeed(_currentSpeed);
 
-		//TODO: TEMP
 		if ( Input.GetKey(KeyCode.Space) ) {
 			EventManager.Fire(new Event_JumpButtonPushed());
 		}
@@ -351,7 +350,9 @@ public class GoatController : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUI.Label(new Rect(new Vector2(10,10), new Vector2(100,20)), string.Format("State: {0}", CurrentState.StateType ) );
+		if ( GameState.Instance.IsDebug ) {
+			GUI.Label(new Rect(new Vector2(10, 10), new Vector2(100, 20)), string.Format("State: {0}", CurrentState.StateType));
+		}
 	}
 
 	public void Jump() {
