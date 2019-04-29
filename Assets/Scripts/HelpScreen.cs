@@ -7,6 +7,7 @@ public sealed class HelpScreen : MonoBehaviour {
 	float _startTime = 0f;
 
 	void Awake() {
+		GameState.Instance.TimeController.AddPause(this);
 		_startTime = Time.time;
 	}
 
@@ -14,6 +15,7 @@ public sealed class HelpScreen : MonoBehaviour {
 		if ( Time.time < _startTime + MinDelay ) {
 			return;
 		}
+		GameState.Instance.TimeController.RemovePause(this);
 		EventManager.Fire(new Event_HelpScreenClosed());
 		gameObject.SetActive(false);
 	}

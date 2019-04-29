@@ -2,11 +2,11 @@ using EventSys;
 using UnityEngine;
 
 public sealed class FarmerController : MonoBehaviour {
-	public float MoveSpeed = 3f;
-	public float JumpPower = 6f;
-	public float StartDelay = 2f;
+	public float         MoveSpeed  = 3f;
+	public float         JumpPower  = 6f;
+	public float         StartDelay = 2f;
 	public PhysicsObject Controller = null;
-	public Animation Anim = null;
+	public Animation     Anim       = null;
 
 	bool _started = false;
 
@@ -30,10 +30,14 @@ public sealed class FarmerController : MonoBehaviour {
 			return;
 		}
 
+
+		var dist = GameState.Instance.Goat.transform.position.x - transform.position.x;
+		if ( !Controller.Grounded && dist < 0 ) {
+			Controller.SetMoveSpeed(0);
+		} else {
+			Controller.SetMoveSpeed(MoveSpeed);
+		}
 		
-
-		Controller.SetMoveSpeed(MoveSpeed);
-
 		var cols = Physics2D.OverlapCircleAll(transform.position, 1.8f);
 		foreach ( var col in cols ) {
 			var goat = col.gameObject.GetComponent<GoatController>();

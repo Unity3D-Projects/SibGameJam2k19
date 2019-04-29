@@ -55,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3112369883228649020}
   - component: {fileID: 5558359452068394749}
+  - component: {fileID: 4985361691143992102}
   m_Layer: 0
   m_Name: Graphic
   m_TagString: Untagged
@@ -112,9 +113,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2815c6fe458105e4b95868046ef5f503, type: 3}
-  m_Color: {r: 0.06140977, g: 0.5565453, b: 0.5660378, a: 0.69411767}
+  m_Color: {r: 0.06140977, g: 0.5565453, b: 0.5660378, a: 0.7058824}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,6 +125,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!111 &4985361691143992102
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471912858609338664}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: a8221d1df21e1474d92911a8b130d24e, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: a8221d1df21e1474d92911a8b130d24e, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &4879447174460460870
 GameObject:
   m_ObjectHideFlags: 0
