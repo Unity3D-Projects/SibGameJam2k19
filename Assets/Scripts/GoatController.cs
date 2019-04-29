@@ -156,6 +156,7 @@ public sealed class JumpState : State {
 			GoatState.Die,
 			GoatState.Obstacle,
 			GoatState.SlowDown,
+			GoatState.Yell,
 		};
 		Type = GoatState.Jump;
 	}
@@ -163,6 +164,7 @@ public sealed class JumpState : State {
 	protected override void Init() {
 		base.Init();
 		EventManager.Subscribe<Event_PhysicsObjectGrounded>(this, OnGrounded);
+		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
 		SoundManager.Instance.PlaySound("Jump");
 		Controller.Jump();
 	}
@@ -170,6 +172,7 @@ public sealed class JumpState : State {
 	protected override void LeaveState() {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_PhysicsObjectGrounded>(OnGrounded);
+		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
 	}
 
 	void OnGrounded(Event_PhysicsObjectGrounded e) {
@@ -177,7 +180,11 @@ public sealed class JumpState : State {
 			return;
 		}
 		TryChangeState(new RunState(Controller));
-	} 
+	}
+
+	void OnYellButtonPushed(Event_YellButtonPushed e) {
+		TryChangeState(new YellState(Controller));
+	}
 }
 
 public sealed class SlideState : State {
@@ -311,6 +318,7 @@ public sealed class YellState : State {
 			GoatState.Run,
 			GoatState.Die,
 			GoatState.Obstacle,
+			GoatState.Jump,
 		};
 		Type = GoatState.Yell;
 		TimeToExit = 0.5f;
