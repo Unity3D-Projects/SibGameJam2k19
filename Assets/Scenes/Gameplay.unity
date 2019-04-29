@@ -5388,7 +5388,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0414\u0435\u0434"
+  m_Text: Farmer
 --- !u!222 &1080138775
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6162,7 +6162,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041A\u043E\u0437\u0430"
+  m_Text: Goat
 --- !u!222 &1208076748
 CanvasRenderer:
   m_ObjectHideFlags: 0
