@@ -136,7 +136,6 @@ public sealed class GameState : MonoSingleton<GameState> {
 		CamControl.ReplaceTargetByDummy();
 		LoseGame();
 		SoundManager.Instance.PlaySound("Slap");
-		//TODO: Game Over
 	}
 
 	void OnHitWinTrigger(Event_GameWin e) {
@@ -190,9 +189,27 @@ public class BoostWatcher {
 		}
 	}
 
+	public bool CanActivateBoost(BoostType type) {
+		if ( _activeBoost != null ) {
+			return false;
+		}
+
+		switch ( type ) {
+			case BoostType.SpeedUp:
+				return true;
+			case BoostType.Clone:
+				return true;
+			case BoostType.Piano:
+				return !_owner.Farmer.Controller.Grounded;
+			default:
+				break;
+		}
+
+		return false;
+	}
+
 	void OnBoostButtonPush(Event_TryActivateBoost e) {
-		if ( _activeBoost != null || !_owner.Goat.CharController.Grounded || !_owner.Farmer.Controller.Grounded ) {
-			// TODO reject effect
+		if (!CanActivateBoost(e.Type) ) {
 			return;
 		}
 		var price = GetBoostPrice(e.Type);
