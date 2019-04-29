@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sounds:
   - SoundName: menuClick
-    Clip: {fileID: 8300000, guid: 4e821098d73940a4fabd7dbab783a71a, type: 3}
+    Clip: {fileID: 8300000, guid: e7255a419a41d68439cea340f62ec12c, type: 3}
   - SoundName: PianoFall
     Clip: {fileID: 8300000, guid: 6cc8861e39ba9554b9095cc611ac1fb3, type: 3}
   - SoundName: Clone
@@ -39,6 +39,12 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 325c73d76b196414bbce1e9a60abfaeb, type: 3}
   - SoundName: Slap
     Clip: {fileID: 8300000, guid: cd2e7e1b2ef52634fa211ae1fb98a319, type: 3}
+  - SoundName: Yell
+    Clip: {fileID: 8300000, guid: 4c078509d661d6042a4d69596954247f, type: 3}
+  - SoundName: Bush
+    Clip: {fileID: 8300000, guid: 8bfa82ddeb684ae40b610526686953b0, type: 3}
+  - SoundName: Buzz
+    Clip: {fileID: 8300000, guid: 747502147fe6adf4799c7a4671548db3, type: 3}
   Music:
   - SoundName: menu
     Clip: {fileID: 8300000, guid: bc6dbd2b3a7a7474182326bb1ee2d372, type: 3}

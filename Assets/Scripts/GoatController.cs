@@ -170,6 +170,7 @@ public sealed class JumpState : State {
 	protected override void LeaveState() {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_PhysicsObjectGrounded>(OnGrounded);
+		SoundManager.Instance.PlaySound("Goat1");
 	}
 
 	void OnGrounded(Event_PhysicsObjectGrounded e) {
@@ -319,7 +320,7 @@ public sealed class YellState : State {
 
 	protected override void Init() {
 		base.Init();
-		SoundManager.Instance.PlaySound("Goat1");
+		SoundManager.Instance.PlaySound("Yell");
 		EventManager.Fire(new Event_GoatYell());
 	}
 

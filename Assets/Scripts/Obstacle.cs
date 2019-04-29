@@ -26,6 +26,14 @@ public class Obstacle : MonoBehaviour {
 			return;
 		}
 
+		if ( Type == ObstacleType.Bush ) {
+			SoundManager.Instance.PlaySound("Bush");
+		}
+
+		if ( Type == ObstacleType.Bee ) {
+			SoundManager.Instance.PlaySound("Buzz");
+		}
+
 		_lastHitTime = curTime;
 		EventManager.Fire(new Event_Obstacle_Collided { Obstacle = this });
 	}
