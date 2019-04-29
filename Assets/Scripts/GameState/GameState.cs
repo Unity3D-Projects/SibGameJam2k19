@@ -112,11 +112,21 @@ public sealed class GameState : MonoSingleton<GameState> {
 		}
 
 		if ( e.Obstacle.Type == ObstacleType.Bush ) {
-			Goat.CurrentState.TryChangeState(new SlowDownState(Goat));
+			Goat.CurrentState.TryChangeState(new SlowDownState(Goat, 1f));
+			return;
+		}
+
+		if ( e.Obstacle.Type == ObstacleType.Bee ) {
+			Goat.CurrentState.TryChangeState(new SlowDownState(Goat, 2f));
 			return;
 		}
 
 		if ( e.Obstacle.Type == ObstacleType.Stump ) {
+			Goat.CurrentState.TryChangeState(new ObstacleState(Goat));
+			return;
+		}
+
+		if ( e.Obstacle.Type == ObstacleType.Hedgehog ) {
 			Goat.CurrentState.TryChangeState(new ObstacleState(Goat));
 			return;
 		}
