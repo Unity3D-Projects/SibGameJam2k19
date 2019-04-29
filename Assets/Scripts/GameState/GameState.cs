@@ -7,37 +7,41 @@ using TMPro;
 
 public sealed class GameState : MonoSingleton<GameState> {
 
-	public Dialog StartDialog = null;
-	public GoatController   Goat       = null;
-	public FarmerController Farmer     = null;
-	public CamControl       CamControl = null;
+	public Dialog           StartDialog    = null;
+	public GoatController   Goat           = null;
+	public FarmerController Farmer         = null;
+	public CamControl       CamControl     = null;
 	public TMP_Text         ScoreCountText = null;
-
-	public GameObject       GoatCloneFab = null;
-
-	public List<BoostInfo> BoostInfos = new List<BoostInfo>();
-
-	[System.NonSerialized]
-	public int Score = 0;
+	public GameObject       GoatCloneFab   = null;
+	public List<BoostInfo>  BoostInfos     = new List<BoostInfo>();
 
 	[Header("Utilities")]
 	public FadeScreen Fader = null;
+
+	[System.NonSerialized]
+	public int Score = 0;
 
 	public readonly TimeController TimeController = new TimeController();
 	public readonly BoostWatcher   BoostWatcher   = new BoostWatcher();
 
 	protected override void Awake() {
 		base.Awake();
-		StartDialog.gameObject.SetActive(true);
-		ScenePersistence.Instance.ClearData(); // move this if need to use data from previous tries.
 
-		
-		EventManager.Subscribe<Event_Obstacle_Collided>  (this, OnGoatHitObstacle);
-		EventManager.Subscribe<Event_GoatDies>           (this, OnGoatDie);
-		EventManager.Subscribe<Event_AppleCollected>     (this, OnAppleCollect);
-		EventManager.Subscribe<Event_GameWin>            (this, OnHitWinTrigger);
+		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
+		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
+		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
+		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
 		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
 		BoostWatcher.Init(this);
+
+		if ( ScenePersistence.Instance.Data.FastRestart ) {
+			StartDialog.gameObject.SetActive(false);
+			EventManager.Fire(new Event_StartDialogComplete());
+		} else {
+			StartDialog.gameObject.SetActive(true);
+		}
+		ScenePersistence.Instance.ClearData();
+		
 		Fader.FadeToWhite(1f);
 		ScoreCountText.text = string.Format("x{0}", Score);
 	}

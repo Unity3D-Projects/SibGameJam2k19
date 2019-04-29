@@ -505,8 +505,8 @@ MonoBehaviour:
   StartButton: {fileID: 316474257}
   SoundButton: {fileID: 1041075910}
   ExitButton: {fileID: 1458669737}
-  SoundOnSprite: {fileID: 21300000, guid: 343015607cba12b4d8541cc70b27b1d9, type: 3}
-  SoundOffSprite: {fileID: 21300000, guid: 599290d430ab63746b53ac37cd121df3, type: 3}
+  SoundOnSprite: {fileID: 21300000, guid: dd7bb8cf4c4b1f14398a3a82ebe23ac3, type: 3}
+  SoundOffSprite: {fileID: 21300000, guid: dd7bb8cf4c4b1f14398a3a82ebe23ac3, type: 3}
   Fader: {fileID: 971987568}
 --- !u!1 &971987563
 GameObject:
@@ -658,10 +658,10 @@ RectTransform:
   m_Father: {fileID: 513917786}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -245, y: -91}
-  m_SizeDelta: {x: 478, y: 132}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 276, y: 141}
+  m_SizeDelta: {x: 248.8, y: 215.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1041075908
 MonoBehaviour:
@@ -683,9 +683,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 343015607cba12b4d8541cc70b27b1d9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dd7bb8cf4c4b1f14398a3a82ebe23ac3, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

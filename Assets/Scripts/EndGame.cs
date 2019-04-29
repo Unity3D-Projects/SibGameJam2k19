@@ -35,7 +35,21 @@ public sealed class EndGame : MonoBehaviour {
 		Fader.OnFadeToBlackFinished.AddListener(LoadStartScene);
 	}
 
+	public void FastRestart() {
+		if ( _closing ) {
+			return;
+		}
+		_closing = true;
+		Fader.FadeToBlack(1f);
+		ScenePersistence.Instance.Data.FastRestart = true;
+		Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
+	}
+
 	void LoadStartScene() {
 		SceneManager.LoadScene("MainMenu");
+	}
+
+	void LoadLevel() {
+		SceneManager.LoadScene("Gameplay");
 	}
 }
