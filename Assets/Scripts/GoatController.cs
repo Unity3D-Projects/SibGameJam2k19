@@ -237,6 +237,7 @@ public class SlowDownState : State {
 	}
 
 	protected override void Init() {
+		base.Init();
 		Controller.SetRunSpeed(Controller.SlowSpeed);
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 	}

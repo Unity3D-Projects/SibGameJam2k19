@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GoatVisual : MonoBehaviour {
-	public GameObject NormalGoat  = null;
-	public GameObject DeadGoat    = null;
-	public GameObject SlidingGoat = null;
-	public GameObject JumpingGoat = null;
+	public GameObject NormalGoat   = null;
+	public GameObject DeadGoat     = null;
+	public GameObject SlidingGoat  = null;
+	public GameObject JumpingGoat  = null;
 	public GameObject ObstacleGoat = null;
+	public GameObject SlowGoat     = null;
 
 	public void SetState(GoatState state) {
 		switch ( state ) {
@@ -21,7 +22,7 @@ public class GoatVisual : MonoBehaviour {
 				SetObstacleGoat();
 				break;
 			case GoatState.SlowDown:
-				SetNormalState();
+				SetSlowState();
 				break;
 			case GoatState.Yell:
 				SetNormalState();
@@ -44,6 +45,7 @@ public class GoatVisual : MonoBehaviour {
 		SlidingGoat.SetActive(false);
 		JumpingGoat.SetActive(false);
 		ObstacleGoat.SetActive(false);
+		SlowGoat.SetActive(false);
 	}
 
 	void SetNormalState() {
@@ -51,6 +53,16 @@ public class GoatVisual : MonoBehaviour {
 		NormalGoat.SetActive(true);
 		NormalGoat.GetComponent<Animation>().Play();
 		var slideshow = NormalGoat.GetComponent<SlideShowAnim>();
+		if ( slideshow ) {
+			slideshow.Play();
+		}
+	}
+
+	void SetSlowState() {
+		TurnOffAllStates();
+		SlowGoat.SetActive(true);
+		SlowGoat.GetComponent<Animation>().Play();
+		var slideshow = SlowGoat.GetComponent<SlideShowAnim>();
 		if ( slideshow ) {
 			slideshow.Play();
 		}
