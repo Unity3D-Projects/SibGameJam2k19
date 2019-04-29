@@ -329,10 +329,18 @@ public sealed class YellState : State {
 		base.Init();
 		SoundManager.Instance.PlaySound("Yell");
 		EventManager.Fire(new Event_GoatYell());
+		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 	}
 
 	protected override void LeaveState() {
 		base.LeaveState();
+		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
+	}
+
+	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
+		if ( Controller.CharController.Grounded ) {
+			TryChangeState(new JumpState(Controller));
+		}
 	}
 }
 
