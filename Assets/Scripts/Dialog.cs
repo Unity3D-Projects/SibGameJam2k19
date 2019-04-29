@@ -17,14 +17,22 @@ public class Dialog : MonoBehaviour
 		Farmer,
 		Goat 
 	}
-
-	Tuple<Actors, string>[] Dialog1 = {
+    /*Base dialog:
 		Tuple.Create(Actors.Farmer, "- Эй, Машка!" ),
 		Tuple.Create(Actors.Goat, "- *Чего тебе?*" ),
 		Tuple.Create(Actors.Farmer, "- Горилку купить хочу, а денег нема." ),
 		Tuple.Create(Actors.Goat, "- А я тут причем?" ),
 		Tuple.Create(Actors.Farmer, "- Порежу тебя, и на рынке мясо продам. Вот и куплю горилки." ),
 		Tuple.Create(Actors.Goat, "- Чиго блееееееееее? *Убегает*" ),
+     */
+
+	Tuple<Actors, string>[] Dialog1 = {
+		Tuple.Create(Actors.Farmer, "Hey ya little miss priss!" ),
+		Tuple.Create(Actors.Goat, "*Make it quick*" ),
+		Tuple.Create(Actors.Farmer, "Ima all out of booze so I need a few bucks." ),
+		Tuple.Create(Actors.Goat, "What does it have to do with me?" ),
+		Tuple.Create(Actors.Farmer, "I'm gonna sell ya sweety, on the market!" ),
+		Tuple.Create(Actors.Goat, "Wha-a-a-t?!" ),
 	};
 
 	// Start is called before the first frame update
