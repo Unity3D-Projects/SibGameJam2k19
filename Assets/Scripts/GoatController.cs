@@ -219,6 +219,10 @@ public class SlideState : State {
 }
 
 public class SlowDownState : State {
+	public SlowDownState(GoatController controller, float slowdownTime) : this(controller) {
+		TimeToExit = slowdownTime;
+	}
+
 	public SlowDownState(GoatController controller) : base(controller) {
 		AvailableTransitions = new List<GoatState> {
 			GoatState.Run,
@@ -259,7 +263,7 @@ public class ObstacleState : State {
 			GoatState.Jump,
 		};
 		Type = GoatState.Obstacle;
-		TimeToExit = 2f;
+		TimeToExit = 1.7f;
 		ExitState = GoatState.Run;
 	}
 
