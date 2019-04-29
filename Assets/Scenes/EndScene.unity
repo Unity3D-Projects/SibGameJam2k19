@@ -568,8 +568,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Congratulations! You've managed to save your life and left the farmer no
-    other choice but to sober up.
+  m_Text: "Congratulations! \nYou've managed to save your life and left the farmer
+    no other choice but to sober up."
 --- !u!222 &1036224718
 CanvasRenderer:
   m_ObjectHideFlags: 0
