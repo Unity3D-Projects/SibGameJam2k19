@@ -57,8 +57,7 @@ namespace EventSys {
 
 	}
 
-	public struct Event_StartDialogComplete {
+	public struct Event_StartDialogComplete {}
 
-	}
-
+	public struct Event_HelpScreenClosed { }
 }

@@ -12,6 +12,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public FarmerController Farmer         = null;
 	public CamControl       CamControl     = null;
 	public TMP_Text         ScoreCountText = null;
+	public GameObject       HelpScreen     = null;
 	public GameObject       GoatCloneFab   = null;
 	public List<BoostInfo>  BoostInfos     = new List<BoostInfo>();
 
@@ -33,12 +34,15 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Subscribe<Event_AppleCollected>     (this, OnAppleCollect);
 		EventManager.Subscribe<Event_GameWin>            (this, OnHitWinTrigger);
 		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
+		EventManager.Subscribe<Event_HelpScreenClosed>   (this, OnHelpClosed);
 		EventManager.Subscribe<Event_GoatYell>           (this, OnGoatYell);
 		BoostWatcher.Init(this);
 
+		HelpScreen.gameObject.SetActive(false);
+
 		if ( ScenePersistence.Instance.Data.FastRestart ) {
-			StartDialog.gameObject.SetActive(false);
-			EventManager.Fire(new Event_StartDialogComplete());
+			StartDialog.gameObject.SetActive(false);		
+			EventManager.Fire(new Event_HelpScreenClosed());
 		} else {
 			StartDialog.gameObject.SetActive(true);
 		}
@@ -54,6 +58,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Unsubscribe<Event_AppleCollected>     (OnAppleCollect);
 		EventManager.Unsubscribe<Event_GameWin>            (OnHitWinTrigger);
 		EventManager.Unsubscribe<Event_StartDialogComplete>(OnDialogComplete);
+		EventManager.Unsubscribe<Event_HelpScreenClosed>   (OnHelpClosed);
 		EventManager.Unsubscribe<Event_GoatYell>           (OnGoatYell);
 		BoostWatcher.DeInit();
 	}
@@ -107,6 +112,10 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 
 	void OnDialogComplete(Event_StartDialogComplete e) {
+		HelpScreen.SetActive(true);
+	}
+
+	void OnHelpClosed(Event_HelpScreenClosed e) {
 		Farmer.gameObject.SetActive(true);
 		Goat.gameObject.SetActive(true);
 		SoundManager.Instance.PlayMusic("level");
