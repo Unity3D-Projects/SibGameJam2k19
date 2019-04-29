@@ -20,7 +20,6 @@ public sealed class GameState : MonoSingleton<GameState> {
 	[System.NonSerialized]
 	public int Score = 0;
 
-
 	[Header("Utilities")]
 	public FadeScreen Fader = null;
 
@@ -33,10 +32,10 @@ public sealed class GameState : MonoSingleton<GameState> {
 		ScenePersistence.Instance.ClearData(); // move this if need to use data from previous tries.
 
 		
-		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
-		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
-		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
-		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
+		EventManager.Subscribe<Event_Obstacle_Collided>  (this, OnGoatHitObstacle);
+		EventManager.Subscribe<Event_GoatDies>           (this, OnGoatDie);
+		EventManager.Subscribe<Event_AppleCollected>     (this, OnAppleCollect);
+		EventManager.Subscribe<Event_GameWin>            (this, OnHitWinTrigger);
 		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
 		BoostWatcher.Init(this);
 		Fader.FadeToWhite(1f);
@@ -44,10 +43,10 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void OnDestroy() {
-		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
-		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
-		EventManager.Unsubscribe<Event_AppleCollected>(OnAppleCollect);
-		EventManager.Unsubscribe<Event_GameWin>(OnHitWinTrigger);
+		EventManager.Unsubscribe<Event_Obstacle_Collided>  (OnGoatHitObstacle);
+		EventManager.Unsubscribe<Event_GoatDies>           (OnGoatDie);
+		EventManager.Unsubscribe<Event_AppleCollected>     (OnAppleCollect);
+		EventManager.Unsubscribe<Event_GameWin>            (OnHitWinTrigger);
 		EventManager.Unsubscribe<Event_StartDialogComplete>(OnDialogComplete);
 		BoostWatcher.DeInit();
 	}
@@ -60,7 +59,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	public bool IsDebug {
 		get {
-			return true; //Should be set to 'false' for release build.
+			return false; //Should be set to 'false' for release build.
 		}
 	}
 
@@ -193,18 +192,16 @@ public class BoostWatcher {
 		if ( _activeBoost != null ) {
 			return false;
 		}
-
 		switch ( type ) {
 			case BoostType.SpeedUp:
 				return true;
 			case BoostType.Clone:
 				return true;
 			case BoostType.Piano:
-				return !_owner.Farmer.Controller.Grounded;
+				return _owner.Farmer.Controller.Grounded;
 			default:
 				break;
 		}
-
 		return false;
 	}
 
