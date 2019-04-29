@@ -625,7 +625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8355378084152360037
 Transform:
   m_ObjectHideFlags: 0
@@ -724,7 +724,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0868ae1a62e5740449979d1c9ddfb6e5, type: 3}
   - {fileID: 21300000, guid: 59fa68cbe40fe8d4b92f93ab0120c670, type: 3}
   - {fileID: 21300000, guid: 44b3142a4e9ff2c43a5cbe56e47a50a6, type: 3}
+  - {fileID: 21300000, guid: 8d1046bb8b151134380ddab6ba7798c0, type: 3}
+  - {fileID: 21300000, guid: 34b0d31537b89ac4fbf211b46aacb722, type: 3}
+  - {fileID: 21300000, guid: e016de1e7bb485348a9fcca80687024f, type: 3}
+  - {fileID: 21300000, guid: ccf845384b0d9dd48b1b31e7b83d63c6, type: 3}
+  - {fileID: 21300000, guid: aadf32878ef5d3d4f8ff7115dcea77f0, type: 3}
+  - {fileID: 21300000, guid: 8d1046bb8b151134380ddab6ba7798c0, type: 3}
+  - {fileID: 21300000, guid: 34b0d31537b89ac4fbf211b46aacb722, type: 3}
+  - {fileID: 21300000, guid: e016de1e7bb485348a9fcca80687024f, type: 3}
+  - {fileID: 21300000, guid: ccf845384b0d9dd48b1b31e7b83d63c6, type: 3}
   Delays:
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
+  - 0.08
   - 0.08
   - 0.08
   - 0.08

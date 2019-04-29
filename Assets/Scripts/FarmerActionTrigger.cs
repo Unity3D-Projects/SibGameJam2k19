@@ -16,7 +16,6 @@ public class FarmerActionTrigger : MonoBehaviour {
 		if ( !farmer ) {
 			return;
 		}
-		Debug.Log("Farmer trigger enter");
 		EventManager.Fire(new Event_FarmerActionTrigger { Trigger = this });
 
 	}

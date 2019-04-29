@@ -20,7 +20,6 @@ public sealed class Hedgehog : Obstacle {
 	void OnGoatYell(Event_GoatYell e ) {
 		var goat = GameState.Instance.Goat;
 		var distance = transform.position.x - goat.transform.position.x;
-		Debug.Log(distance);
 		if ( _active && distance < TurnOffDistance ) {
 			_active = false;
 			PlayScareAnimation();
