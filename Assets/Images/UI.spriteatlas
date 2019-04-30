@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 76e87ea64476afb489d786672b777267, type: 3}
+    - {fileID: 2800000, guid: 8d3b5c679e25475488506c7bcc66eee3, type: 3}
+    totalSpriteSurfaceArea: 2732108
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: da13cfa0afccb7f4f841c0e4abe6917d, type: 3}
+  - {fileID: 21300000, guid: 797239e013a820548b4da2af002cffc0, type: 3}
+  - {fileID: 21300000, guid: 7b896e057dcc87b4594e8dde80b8a60d, type: 3}
+  - {fileID: 21300000, guid: c708a636188ea3847a06e71c020041a3, type: 3}
+  - {fileID: 21300000, guid: 0a5a0196af328ee468e96789769e08e9, type: 3}
+  - {fileID: 21300000, guid: 8d3b5c679e25475488506c7bcc66eee3, type: 3}
+  - {fileID: 21300000, guid: 5ae33ed8cda0e8a42bc7cf01e105f193, type: 3}
+  - {fileID: 21300000, guid: a5e9214d5b2c2304ca33457fa27a6803, type: 3}
+  - {fileID: 21300000, guid: 9b7f719d3ee63bc40bcb9cc766cf22bb, type: 3}
+  - {fileID: 21300000, guid: ea48441e01e6d4b4fac61aba9427426e, type: 3}
+  - {fileID: 21300000, guid: 84944cbea15e2dd4c9f7f1a29e214a72, type: 3}
+  - {fileID: 21300000, guid: 6fb47f2fdbcf5e546a0500c3acaae657, type: 3}
+  - {fileID: 21300000, guid: aa62dd6f54efe8a49bd7fc49e0e6db71, type: 3}
+  - {fileID: 21300000, guid: dd7bb8cf4c4b1f14398a3a82ebe23ac3, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - life_full
+  - boost2
+  - boost1
+  - boost3
+  - brvl
+  - star
+  - down
+  - pause
+  - life_non
+  - up
+  - boost_cena
+  - life_hf
+  - hint
+  - or
+  m_Tag: UI
+  m_IsVariant: 0
