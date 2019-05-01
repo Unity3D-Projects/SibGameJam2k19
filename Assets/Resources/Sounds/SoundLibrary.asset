@@ -20,7 +20,7 @@ MonoBehaviour:
   - SoundName: Clone
     Clip: {fileID: 8300000, guid: 49be0e326dbeb4446baa9ef9559336f2, type: 3}
   - SoundName: Jump
-    Clip: {fileID: 8300000, guid: 3f41f66971d10b24dbea368f5e62d0c0, type: 3}
+    Clip: {fileID: 8300000, guid: b094c4587cc10c0429056bda2d2318fc, type: 3}
   - SoundName: Anger1
     Clip: {fileID: 8300000, guid: 74150940f751ed7409fd99b165f3ae21, type: 3}
   - SoundName: Anger2
