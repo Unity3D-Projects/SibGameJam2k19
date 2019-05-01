@@ -22,24 +22,6 @@ public sealed class Dialog : MonoBehaviour {
 		Farmer,
 		Goat 
 	}
-    /*Base dialog:
-		Tuple.Create(Actors.Farmer, "- Эй, Машка!" ),
-		Tuple.Create(Actors.Goat, "- *Чего тебе?*" ),
-		Tuple.Create(Actors.Farmer, "- Горилку купить хочу, а денег нема." ),
-		Tuple.Create(Actors.Goat, "- А я тут причем?" ),
-		Tuple.Create(Actors.Farmer, "- Порежу тебя, и на рынке мясо продам. Вот и куплю горилки." ),
-		Tuple.Create(Actors.Goat, "- Чиго блееееееееее? *Убегает*" ),
-    
-
-	Tuple<DialogActor, string>[] Dialog1 = {
-		Tuple.Create(DialogActor.Farmer, "Hey ya little miss priss!" ),
-		Tuple.Create(DialogActor.Goat, "*Make it quick*" ),
-		Tuple.Create(DialogActor.Farmer, "Ima all out of booze so I need a few bucks." ),
-		Tuple.Create(DialogActor.Goat, "What does it have to do with me?" ),
-		Tuple.Create(DialogActor.Farmer, "I'm gonna sell ya sweety, on the market!" ),
-		Tuple.Create(DialogActor.Goat, "Wha-a-a-t?!" ),
-	};
-	*/
 
 	[System.Serializable]
 	public class DialogPhrase {
