@@ -1874,6 +1874,11 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2642646992367531129, guid: 847099a3589d3c54291e3ab1dbef019f,
+        type: 3}
+      propertyPath: m_Transition
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 847099a3589d3c54291e3ab1dbef019f, type: 3}
 --- !u!224 &163814345 stripped
@@ -1882,6 +1887,31 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 163814344}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &163814346 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5722595778758815875, guid: 847099a3589d3c54291e3ab1dbef019f,
+    type: 3}
+  m_PrefabInstance: {fileID: 163814344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &163814347
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163814346}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 312f347bef34eae41ad6ba423ed28ccd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &166622541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4637045590714237255, guid: 51d993e2f0673f0448d8fdc1f40e254f,
@@ -9944,7 +9974,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 163814344}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 163814346}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2339a32362563e7498113c3180a4615b, type: 3}
@@ -14771,6 +14801,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClickPause
       objectReference: {fileID: 0}
+    - target: {fileID: 2566060539961588697, guid: 5e9a99878e06d5f43a90173a5b22f2ef,
+        type: 3}
+      propertyPath: m_Transition
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8474251844715071152, guid: 5e9a99878e06d5f43a90173a5b22f2ef,
         type: 3}
       propertyPath: m_Delegates.Array.size
@@ -14845,6 +14880,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21496bd1dd7f9de43936ae1a833e3806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1391769916
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391769914}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 312f347bef34eae41ad6ba423ed28ccd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &1395011458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4637045590714237255, guid: 51d993e2f0673f0448d8fdc1f40e254f,

@@ -24,6 +24,7 @@ public sealed class LangButton : MonoBehaviour {
 	}
 
 	void SwitchLanguage() {
+		SoundManager.Instance.PlaySound("menuClick");
 		var lc = LocalizationController.Instance;
 		var newLanguage = lc.CurrentLanguage == SystemLanguage.English ? SystemLanguage.Russian : SystemLanguage.English;
 		lc.ChangeLanguage(newLanguage);
