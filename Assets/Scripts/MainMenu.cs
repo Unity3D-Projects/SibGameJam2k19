@@ -48,6 +48,10 @@ public sealed class MainMenu : MonoBehaviour {
         AudioListener.volume = _soundOn ? 1f : 0f;
     }
 
+	public void PlaySound(string soundName) {
+		SoundManager.Instance.PlaySound(soundName);
+	}
+
     void OnClickExit() {
 		SoundManager.Instance.PlaySound("menuClick");
 		Fader.OnFadeToBlackFinished.AddListener(ExitGame);
