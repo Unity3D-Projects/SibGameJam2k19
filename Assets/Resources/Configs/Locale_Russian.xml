@@ -3,4 +3,12 @@
 		<PlayButton text="Играть!"/>
 		<Credits    text="2019, SMG для LD44"/>
 	</MainMenu>
+	<Level_1>
+		<Dialog_FarmerPhrase_1 text="- Эй, Машка!" />
+		<Dialog_GoatPhrase_1   text="- Чего тебе?" />
+		<Dialog_FarmerPhrase_2 text="- Горилки хочу, а денег нема." />
+		<Dialog_GoatPhrase_2   text="- А я тут причем?" />
+		<Dialog_FarmerPhrase_3 text="- Продам тебя на базаре, дорогуша, и куплю себе горилки." />
+		<Dialog_GoatPhrase_3   text="- Чиго блееееееееее? *Убегает*" />
+	</Level_1>
 </root>

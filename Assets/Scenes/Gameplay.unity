@@ -63580,7 +63580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2785554425882167782
 RectTransform:
   m_ObjectHideFlags: 0
@@ -63617,10 +63617,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17223f1e0f4f72a4aa13ca06ad67ff05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LeftActorImage: {fileID: 784178660578742520}
+  RightActorImage: {fileID: 5290689900109358364}
   TextLeft: {fileID: 2785554424381615481}
   TextRight: {fileID: 2785554424128279850}
-  CurrentPhrase: 0
-  LastPhraseTime: 0
+  DialogDescription:
+  - Actor: 0
+    PhraseId: Level_1.Dialog_FarmerPhrase_1
+  - Actor: 1
+    PhraseId: Level_1.Dialog_GoatPhrase_1
+  - Actor: 0
+    PhraseId: Level_1.Dialog_FarmerPhrase_2
+  - Actor: 1
+    PhraseId: Level_1.Dialog_GoatPhrase_2
+  - Actor: 0
+    PhraseId: Level_1.Dialog_FarmerPhrase_3
+  - Actor: 1
+    PhraseId: Level_1.Dialog_GoatPhrase_3
   TimeDeltaToComplete: 3
 --- !u!114 &2785554425882167784
 MonoBehaviour:
