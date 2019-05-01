@@ -1,8 +1,15 @@
 <root>
 	<MainMenu>
 		<PlayButton text="Play!"/>
-		<Credits    text="2019, SMG for LD44"/>
+		<Credits    text="2019, SMG for Ludum Dare 44"/>
 	</MainMenu>
+	<HelpScreen>
+		<Yell   text="Scare Hedgehogs"/>
+		<Jump   text="Jump/Belly slide"/>
+		<Pause  text="Pause game"/>
+		<Apple  text="Collect apples to use boosts"/>
+		<Boosts text="Use boosts"/>
+	</HelpScreen>
 	<Level_1>
 		<Dialog_FarmerPhrase_1 text="- Hey ya little miss priss!" />
 		<Dialog_GoatPhrase_1   text=" *Make it quick*" />
@@ -11,4 +18,11 @@
 		<Dialog_FarmerPhrase_3 text="- I'm gonna sell ya sweety, on the market!" />
 		<Dialog_GoatPhrase_3   text="- Wha-a-a-t?! *Runs away*" />
 	</Level_1>
+	<FinalScreen>
+		<WinText  text="Congratulations!&#xD;You've managed to save your life and left the farmer no other choice but to sober up." />
+		<LoseText text="Your life was exchanged for three crates of very cheap and extremely strong alcohol. What a miserable fate." />
+		<Restart  text="Try again" />
+		<MainMenu text="Main menu" />
+		<Credits  text="2019, SMG for Ludum Dare 44"/>
+	</FinalScreen>
 </root>
