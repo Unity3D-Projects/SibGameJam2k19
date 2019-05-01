@@ -57,8 +57,4 @@ public sealed class MainMenu : MonoBehaviour {
 	void ExitGame() {
 		Application.Quit();
 	}
-
-	void SetupLangButton() {
-
-	}
 }

@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using EventSys;
 
-public class GoatVisual : MonoBehaviour {
+public sealed class GoatVisual : MonoBehaviour {
 	public GameObject NormalGoat   = null;
 	public GameObject DeadGoat     = null;
 	public GameObject SlidingGoat  = null;
@@ -18,16 +16,15 @@ public class GoatVisual : MonoBehaviour {
 		emis.enabled = false;
 
 		EventManager.Subscribe<Event_BoostActivated>(this, OnBoostApply);
-		EventManager.Subscribe<Event_BoostEnded>(this, OnBoostEnd);
+		EventManager.Subscribe<Event_BoostEnded>    (this, OnBoostEnd);
 	}
 
 	private void OnDisable() {
 		EventManager.Unsubscribe<Event_BoostActivated>(OnBoostApply);
-		EventManager.Unsubscribe<Event_BoostEnded>(OnBoostEnd);
+		EventManager.Unsubscribe<Event_BoostEnded>    (OnBoostEnd);
 	}
 
 	void OnBoostApply(Event_BoostActivated e) {
-		Debug.Log("Activate " + e.Type);
 		if ( e.Type == BoostType.SpeedUp ) {
 			var emis = SpeedParticles.emission;
 			emis.enabled = true;
@@ -130,5 +127,4 @@ public class GoatVisual : MonoBehaviour {
 			slideshow.Play();
 		}
 	}
-
 }

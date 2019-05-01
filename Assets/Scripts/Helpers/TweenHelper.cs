@@ -1,10 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using DG.Tweening;
 
-public static class TweenHelper
-{
-	public static Sequence ResetSequence(Sequence seq, bool complete = true)
-	{
+public static class TweenHelper {
+	public static Sequence ResetSequence(Sequence seq, bool complete = true) {
 		if (seq != null) {
 			seq.SetAutoKill(false);
 			if (complete) {
@@ -16,14 +14,12 @@ public static class TweenHelper
 		return seq;
 	}
 
-	public static Sequence ReplaceSequence(Sequence seq, bool complete = true)
-	{
+	public static Sequence ReplaceSequence(Sequence seq, bool complete = true) {
 		ResetSequence(seq, complete);
 		return DOTween.Sequence();
 	}
 
-	public static void SendItemTo(Sequence seq, Transform moveItem, Transform endTrans, Transform midTrans, float speedScale = 1.0f)
-	{
+	public static void SendItemTo(Sequence seq, Transform moveItem, Transform endTrans, Transform midTrans, float speedScale = 1.0f) {
 		var t = seq.Duration();
 		if (midTrans) {
 			var path = new Vector3[] { moveItem.position, midTrans.position, endTrans.position };
@@ -34,8 +30,7 @@ public static class TweenHelper
 		seq.Insert(t, moveItem.DOScale(endTrans.localScale, 0.5f * speedScale).SetEase(Ease.OutElastic));
 	}
 
-	public static void SendItemToInsert(Sequence seq, Transform moveItem, Transform endTrans, Transform midTrans, float delay)
-	{
+	public static void SendItemToInsert(Sequence seq, Transform moveItem, Transform endTrans, Transform midTrans, float delay) {
 		if (midTrans) {
 			var path = new Vector3[] { moveItem.position, midTrans.position, endTrans.position };
 			seq.Insert(delay, moveItem.DOPath(path, 0.5f, PathType.CatmullRom));
@@ -44,8 +39,7 @@ public static class TweenHelper
 		}
 	}
 
-	public static void DoRewardEffect(GameObject effect, int reward, float height = 200f)
-	{
+	public static void DoRewardEffect(GameObject effect, int reward, float height = 200f) {
 		var ef_trans = effect.transform;
 		var ef_group = effect.GetComponent<CanvasGroup>();
 
@@ -68,8 +62,7 @@ public static class TweenHelper
 		});
 	}
 
-	public static void PlayClickAnimation(Transform t)
-	{
+	public static void PlayClickAnimation(Transform t) {
 		var seq = DOTween.Sequence();
 		seq.Append(t.DOScale(1.1f, 0.2f));
 		seq.Append(t.DOScale(0.9f, 0.2f));

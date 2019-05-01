@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace CookingCapital.WorldMap {
-	public class ParallaxElement : MonoBehaviour {
+	public sealed class ParallaxElement : MonoBehaviour {
 
 		public Transform cam     = null;
 
@@ -14,6 +14,7 @@ namespace CookingCapital.WorldMap {
 
 		void Start() {
 			_parallaxInitPoss = new Vector3[backgrounds.Length];
+			_cameraInitPos    = cam.position;
 
 			for ( int i = 0; i < backgrounds.Length; i++ ) {
 				_parallaxInitPoss[i] = backgrounds[i].position;
@@ -35,4 +36,3 @@ namespace CookingCapital.WorldMap {
 
 	}
 }
-

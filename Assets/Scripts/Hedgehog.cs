@@ -2,10 +2,9 @@ using EventSys;
 using UnityEngine;
 
 public sealed class Hedgehog : Obstacle {
-	public float TurnOffDistance = 5f;
-
-	public GameObject NormalVisual = null;
-	public GameObject ScaredVisual = null;
+	public float      TurnOffDistance = 5f;
+	public GameObject NormalVisual    = null;
+	public GameObject ScaredVisual    = null;
 
 	bool _active = true;
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using EventSys;
 
-public class Apple : MonoBehaviour {
+public sealed class Apple : MonoBehaviour {
 	private void OnTriggerEnter2D(Collider2D other) {
 		var goat = other.GetComponent<GoatController>();
 
@@ -9,7 +9,7 @@ public class Apple : MonoBehaviour {
 			return;
 		}
 		EventManager.Fire(new Event_AppleCollected { });
-		this.gameObject.SetActive(false);
+		gameObject.SetActive(false);
 		SoundManager.Instance.PlaySound("Munch");
 	} 
 }
