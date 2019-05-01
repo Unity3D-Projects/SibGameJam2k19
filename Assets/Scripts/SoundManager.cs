@@ -38,7 +38,7 @@ public sealed class SoundManager : MonoSingleton<SoundManager> {
 		_musicSource.Play();
 	}
 
-	public void PlaySound(string soundName) {
+	public void PlaySound(string soundName, float volume = 1f, float pitch = 1f) {
 		TryInit();
 		var soundClip = GetSoundClip(soundName);
 		if ( soundClip == null ) {
@@ -46,7 +46,9 @@ public sealed class SoundManager : MonoSingleton<SoundManager> {
 		}
 		var source = GetFreeSoundSource();
 		source.Stop();
-		source.clip = soundClip;
+		source.volume = volume;
+		source.pitch  = pitch;
+		source.clip   = soundClip;
 		source.Play();
 	}
 

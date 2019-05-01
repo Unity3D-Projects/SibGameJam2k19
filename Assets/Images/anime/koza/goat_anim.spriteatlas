@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: goat_anim
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 5ef5a221970f79642845ca77c332c9f7, type: 3}
+    - {fileID: 102900000, guid: ebc0da8f2f5df464b9c90c4e35b17301, type: 3}
+    - {fileID: 102900000, guid: 6b111d0965a25104b8b675841aeceee1, type: 3}
+    totalSpriteSurfaceArea: 6193680
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ec9bb0a08bb45444ab4a743f3b99f462, type: 3}
+  - {fileID: 21300000, guid: eb7d72b1feda6a649b69db51b04bc95e, type: 3}
+  - {fileID: 21300000, guid: ac3432c23c9dbe141b656cf0f973c54c, type: 3}
+  - {fileID: 21300000, guid: fc9f88544ed483f48a0b3e5a15ec1fcd, type: 3}
+  - {fileID: 21300000, guid: 34b0d31537b89ac4fbf211b46aacb722, type: 3}
+  - {fileID: 21300000, guid: aadf32878ef5d3d4f8ff7115dcea77f0, type: 3}
+  - {fileID: 21300000, guid: ccf845384b0d9dd48b1b31e7b83d63c6, type: 3}
+  - {fileID: 21300000, guid: 1501e088afd832244806d2e36e16ef09, type: 3}
+  - {fileID: 21300000, guid: 0868ae1a62e5740449979d1c9ddfb6e5, type: 3}
+  - {fileID: 21300000, guid: 44b3142a4e9ff2c43a5cbe56e47a50a6, type: 3}
+  - {fileID: 21300000, guid: 8d1046bb8b151134380ddab6ba7798c0, type: 3}
+  - {fileID: 21300000, guid: 59fa68cbe40fe8d4b92f93ab0120c670, type: 3}
+  - {fileID: 21300000, guid: 09dabc0e36d79734c8f951df48377bb5, type: 3}
+  - {fileID: 21300000, guid: e016de1e7bb485348a9fcca80687024f, type: 3}
+  - {fileID: 21300000, guid: ed59e49f617b99a458155d0b18ab46a8, type: 3}
+  - {fileID: 21300000, guid: e00272ff967c0f54d8f1766cf3941251, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - 4
+  - 1
+  - 2
+  - 3
+  - 2
+  - 5
+  - 4
+  - 2
+  - 5
+  - 7
+  - 1
+  - 6
+  - 1
+  - 3
+  - 4
+  - 3
+  m_Tag: goat_anim
+  m_IsVariant: 0

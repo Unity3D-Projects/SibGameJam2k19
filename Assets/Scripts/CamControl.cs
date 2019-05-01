@@ -4,13 +4,12 @@ public sealed class CamControl : MonoBehaviour {
 
 	public static CamControl Instance;
 
-	public AnimationCurve lerpCoef;
-	public Transform player;
+	public AnimationCurve lerpCoef  = null;
+	public Transform      player    = null;
+	public float          initDelta = 10f;
 
-	public float initDelta = 10f;
-
-	float _initZ = 0;
-	float _moveError;
+	float _initZ     = 0f;
+	float _moveError = 0f;
 
 	void Awake() {
 		Instance = this;
@@ -24,7 +23,7 @@ public sealed class CamControl : MonoBehaviour {
 	void LateUpdate() {
 		_moveError = Vector3.Distance(transform.position, player.position) - initDelta;
 		float cLerp = lerpCoef.Evaluate(_moveError);
-		Vector3 newPos = Vector3.Lerp(transform.position, player.position, cLerp);
+		var newPos = Vector3.Lerp(transform.position, player.position, cLerp);
 		newPos.z = _initZ;
 		transform.position = newPos;
 	}

@@ -1,18 +1,19 @@
 
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
 public sealed class SlideShowAnim : MonoBehaviour {
 	public List<Sprite> Sprites = new List<Sprite>();
-	public List<float>  Delays = new List<float>();
-	public bool Loop = true;
+	public List<float>  Delays  = new List<float>();
+	public bool         Loop    = true;
 
-	float _time = 0f;
-	float _nextFrameTime = 0f;
-	int _frameIndex = 0;
-	SpriteRenderer _renderer = null;
-	Image _image = null;
+	float          _time          = 0f;
+	float          _nextFrameTime = 0f;
+	int            _frameIndex    = 0;
+	SpriteRenderer _renderer      = null;
+	Image          _image         = null;
 
 	void Start() {
 		_renderer = GetComponent<SpriteRenderer>();

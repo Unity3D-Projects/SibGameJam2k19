@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TimedDestroy : MonoBehaviour {
+public sealed class TimedDestroy : MonoBehaviour {
 	public void Activate(float delay) {
 		Invoke("Kill", delay);
 	}

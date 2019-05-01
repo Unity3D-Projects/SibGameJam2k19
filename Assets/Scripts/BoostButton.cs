@@ -3,9 +3,9 @@ using EventSys;
 
 using TMPro;
 
-public class BoostButton : MonoBehaviour {
-	public BoostType BoostType;
-	public TMP_Text PriceText = null;
+public sealed class BoostButton : MonoBehaviour {
+	public BoostType BoostType = BoostType.SpeedUp;
+	public TMP_Text  PriceText = null;
 
 	void Start() {
 		PriceText.text = GameState.Instance.BoostWatcher.GetBoostInfo(BoostType).Price.ToString();

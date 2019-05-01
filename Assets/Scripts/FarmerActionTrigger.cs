@@ -7,7 +7,7 @@ public enum FarmerActionType {
 	Piano
 }
 
-public class FarmerActionTrigger : MonoBehaviour {
+public sealed class FarmerActionTrigger : MonoBehaviour {
 	public FarmerActionType Type = FarmerActionType.Jump;
 
 	private void OnTriggerEnter2D(Collider2D other) {

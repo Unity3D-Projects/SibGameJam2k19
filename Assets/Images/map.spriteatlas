@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: map
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3728cd02a846ff440a667e21825fd868, type: 3}
+    totalSpriteSurfaceArea: 13038706
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: eb56de40f2bce7d43bb99b015bbe199d, type: 3}
+  - {fileID: 21300000, guid: 6369247027db5204c90ff5c04dbd8e35, type: 3}
+  - {fileID: 21300000, guid: 05fc76c0ee1d7a749b315a0a0ae03d1d, type: 3}
+  - {fileID: 21300000, guid: 7edc1d61767a4b7408b44c537bd0bd95, type: 3}
+  - {fileID: 21300000, guid: ed832eb11beb25341a2f664436d0f922, type: 3}
+  - {fileID: 21300000, guid: 11135892781927d43b7d87a63618db53, type: 3}
+  - {fileID: 21300000, guid: 5abbdba59fb7cea42ac340c4a1425741, type: 3}
+  - {fileID: 21300000, guid: bbbebcd55929c914c9ce01d14ec44a84, type: 3}
+  - {fileID: 21300000, guid: a923d4565d1b1484ea614ff446da4f1e, type: 3}
+  - {fileID: 21300000, guid: 152f8886a21f6b54c8fbfb896a928c8e, type: 3}
+  - {fileID: 21300000, guid: 171fede843c58374db76fed6f3b2eed7, type: 3}
+  - {fileID: 21300000, guid: 510d6ef9104f46248a7f4726041fdeec, type: 3}
+  - {fileID: 21300000, guid: 4ee9483cb988fbe469beff6906cbc131, type: 3}
+  - {fileID: 21300000, guid: b6fb1ecd4fa0db641a46a87fa16fbd3b, type: 3}
+  - {fileID: 21300000, guid: be79f3dd8c7327f41820c0d1a5f03d2b, type: 3}
+  - {fileID: 21300000, guid: 47bdc35ebe78360498489a3286e21857, type: 3}
+  - {fileID: 21300000, guid: 19a1a06ebca1c294987f95ddd81438e1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - zemlya_s_kraem
+  - stoun
+  - kust
+  - skul
+  - zemlya1
+  - royal
+  - ostrov
+  - kust_back
+  - neHb
+  - parallax
+  - sky
+  - parallax2
+  - stoun_back
+  - cloud1
+  - zemlya2
+  - zemlya3
+  - cloud2
+  m_Tag: map
+  m_IsVariant: 0

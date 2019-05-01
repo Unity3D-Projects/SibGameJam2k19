@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class CameraShake : MonoBehaviour {
+public sealed class CameraShake : MonoBehaviour {
 
     public bool debugMode = false;//Test-run/Call ShakeCamera() on start
 
@@ -47,7 +47,6 @@ public class CameraShake : MonoBehaviour {
 		decay = true;
 	}
 
-
     IEnumerator Shake() {
         isRunning = true;
 
@@ -74,5 +73,4 @@ public class CameraShake : MonoBehaviour {
         transform.localRotation = Quaternion.identity;//Set the local rotation to 0 when done, just to get rid of any fudging stuff.
         isRunning = false;
     }
-
 }

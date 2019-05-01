@@ -7,6 +7,7 @@ public sealed class MainMenu : MonoBehaviour {
     public Button     StartButton    = null;
     public Button     SoundButton    = null;
     public Button     ExitButton     = null;
+
     [Header("Button Sprites")]
     public Sprite     SoundOnSprite  = null;
     public Sprite     SoundOffSprite = null;

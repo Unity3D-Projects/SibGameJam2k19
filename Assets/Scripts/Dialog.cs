@@ -1,67 +1,67 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
-using System;
 using EventSys;
 
-public class Dialog : MonoBehaviour
-{
+using DG.Tweening;
 
-	public Text TextLeft = null;
-	public Text TextRight = null;
-	public int CurrentPhrase = 0;
-	public float LastPhraseTime = 0;
-	public float TimeDeltaToComplete = 2;
+public sealed class Dialog : MonoBehaviour {
+	public Image              LeftActorImage      = null;
+	public Image              RightActorImage     = null;
+	public Text               TextLeft            = null;
+	public Text               TextRight           = null;
+	public List<DialogPhrase> DialogDescription   = new List<DialogPhrase>();
+	public float              TimeDeltaToComplete = 2;
 
-	enum Actors { 
+	int   _currentPhrase  = 0;
+	float _lastPhraseTime = 0;
+
+	public enum DialogActor { 
 		Farmer,
 		Goat 
 	}
-    /*Base dialog:
-		Tuple.Create(Actors.Farmer, "- Эй, Машка!" ),
-		Tuple.Create(Actors.Goat, "- *Чего тебе?*" ),
-		Tuple.Create(Actors.Farmer, "- Горилку купить хочу, а денег нема." ),
-		Tuple.Create(Actors.Goat, "- А я тут причем?" ),
-		Tuple.Create(Actors.Farmer, "- Порежу тебя, и на рынке мясо продам. Вот и куплю горилки." ),
-		Tuple.Create(Actors.Goat, "- Чиго блееееееееее? *Убегает*" ),
-     */
 
-	Tuple<Actors, string>[] Dialog1 = {
-		Tuple.Create(Actors.Farmer, "Hey ya little miss priss!" ),
-		Tuple.Create(Actors.Goat, "*Make it quick*" ),
-		Tuple.Create(Actors.Farmer, "Ima all out of booze so I need a few bucks." ),
-		Tuple.Create(Actors.Goat, "What does it have to do with me?" ),
-		Tuple.Create(Actors.Farmer, "I'm gonna sell ya sweety, on the market!" ),
-		Tuple.Create(Actors.Goat, "Wha-a-a-t?!" ),
-	};
+	[System.Serializable]
+	public class DialogPhrase {
+		public DialogActor Actor    = DialogActor.Farmer;
+		public string      PhraseId = null;
+	}
 
-	// Start is called before the first frame update
 	void Start() {
 		GameState.Instance.TimeController.AddPause(this);
 		ShowNextPhrase();
-        
     }
 
+	void Update() {
+		UpdateDialog();
+	}
+
 	void ShowNextPhrase() {
-		if ( Dialog1[CurrentPhrase].Item1 == Actors.Farmer ) {
-			TextLeft.text = Dialog1[CurrentPhrase].Item2;
+		var lc = LocalizationController.Instance;
+		if ( DialogDescription[_currentPhrase].Actor == DialogActor.Farmer ) {
+			TextLeft.text = lc.Translate(DialogDescription[_currentPhrase].PhraseId);
 			TextLeft.gameObject.SetActive(true);
 			TextRight.gameObject.SetActive(false); 
-			SoundManager.Instance.PlaySound("Mumbling");
+			SoundManager.Instance.PlaySound("Mumbling", Random.Range(0.85f, 1f), Random.Range(0.9f, 1.1f));
+			LeftActorImage.rectTransform.DOShakeAnchorPos(1f, 10f, 10);
 		} else {
-			TextRight.text = Dialog1[CurrentPhrase].Item2;
+			TextRight.text = lc.Translate(DialogDescription[_currentPhrase].PhraseId);
 			TextRight.gameObject.SetActive(true);
-			TextLeft.gameObject.SetActive(false);
-			SoundManager.Instance.PlaySound("Goat1");
+			TextLeft. gameObject.SetActive(false);
+			SoundManager.Instance.PlaySound("Goat1", Random.Range(0.85f, 1f), Random.Range(0.9f, 1.1f));
+			RightActorImage.rectTransform.DOShakeAnchorPos(1f, 10f, 10);
 		};
-		CurrentPhrase++;
-		if ( CurrentPhrase == Dialog1.Length ) {
-			LastPhraseTime = Time.time;
+		_currentPhrase++;
+		if ( _currentPhrase == DialogDescription.Count ) {
+			_lastPhraseTime = Time.time;
 		}
 	}
+
 	void UpdateDialog() {
-		if ( LastPhraseTime > 0 ) {
-			if ( Time.time > LastPhraseTime + TimeDeltaToComplete || Input.GetKeyDown(KeyCode.Mouse0)) {
+		if ( _lastPhraseTime > 0 ) {
+			if ( Time.time > _lastPhraseTime + TimeDeltaToComplete || Input.GetKeyDown(KeyCode.Mouse0)) {
 				CompleteDialog();
 			}
 		} else {
@@ -72,15 +72,8 @@ public class Dialog : MonoBehaviour
 	}
 
 	void CompleteDialog() {
-		Debug.Log("Dialog completed");
-		this.gameObject.SetActive(false);
+		gameObject.SetActive(false);
 		GameState.Instance.TimeController.RemovePause(this);
 		EventManager.Fire(new Event_StartDialogComplete());
 	}
-
-    // Update is called once per frame
-    void Update()
-    {
-		UpdateDialog(); 
-    }
 }

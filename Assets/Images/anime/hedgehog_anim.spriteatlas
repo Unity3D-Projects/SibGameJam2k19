@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: hedgehog_anim
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 5b39f06a41440fe4f9683cacfff50909, type: 3}
+    totalSpriteSurfaceArea: 7487040
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b15880c00acdbd14fb23985a52741029, type: 3}
+  - {fileID: 21300000, guid: 53ea3dc0b8867b040b3d6229c9241403, type: 3}
+  - {fileID: 21300000, guid: 2d2d10b158d4c264a81bc62df74bc074, type: 3}
+  - {fileID: 21300000, guid: ff02d133d2a7d3347a9469868ba6f08b, type: 3}
+  - {fileID: 21300000, guid: 34b47fb300c72fd43bdf70391899322d, type: 3}
+  - {fileID: 21300000, guid: 2857d6c8da97ee34990f20977e3b07f4, type: 3}
+  - {fileID: 21300000, guid: 0a1092291dd095042b09d776b190db3a, type: 3}
+  - {fileID: 21300000, guid: 516a5c29edf6a4a4088bc56e2a55c137, type: 3}
+  - {fileID: 21300000, guid: a31a55a9e8e916d408cc078389f677d8, type: 3}
+  - {fileID: 21300000, guid: c300b77e40d8c9843baaaed9d807744b, type: 3}
+  - {fileID: 21300000, guid: 6c9ff81ff3b356e4eafd13f61c4132a5, type: 3}
+  - {fileID: 21300000, guid: afbbcc7f165df424c9483dfa513e10a5, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - 6
+  - 2
+  - 3
+  - 1
+  - 7
+  - 5
+  - 8
+  - 3
+  - 4
+  - 1
+  - 2
+  - 4
+  m_Tag: hedgehog_anim
+  m_IsVariant: 0

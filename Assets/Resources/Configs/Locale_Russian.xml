@@ -1,0 +1,28 @@
+<root>
+	<MainMenu>
+		<PlayButton text="Играть!"/>
+		<Credits    text="2019, SMG для Ludum Dare 44"/>
+	</MainMenu>
+	<HelpScreen>
+		<Yell   text="Пугать ежей"/>
+		<Jump   text="Прыгать/Катиться"/>
+		<Pause  text="Пауза"/>
+		<Apple  text="Собирай яблоки чтобы использовать бонусы"/>
+		<Boosts text="Используй бонусы"/>
+	</HelpScreen>
+	<Level_1>
+		<Dialog_FarmerPhrase_1 text="- Эй, Машка!" />
+		<Dialog_GoatPhrase_1   text="- Чего тебе?" />
+		<Dialog_FarmerPhrase_2 text="- Горилки хочу, а денег нема." />
+		<Dialog_GoatPhrase_2   text="- А я тут причем?" />
+		<Dialog_FarmerPhrase_3 text="- Продам тебя на базаре, дорогуша, и куплю себе горилки." />
+		<Dialog_GoatPhrase_3   text="- Чиго блееееееееее? *Убегает*" />
+	</Level_1>
+	<FinalScreen>
+		<WinText  text="Поздравляем!&#xD;Вам удалось сбежать, и теперь у фермера нет другого выхода кроме как протрезветь. " />
+		<LoseText text="Ваша жизнь была обменяна на три ящика дешевого алкоголя. Какая незавидная участь." />
+		<Restart  text="Сыграть заново" />
+		<MainMenu text="В начало" />
+		<Credits  text="2019, SMG для Ludum Dare 44"/>
+	</FinalScreen>
+</root>
