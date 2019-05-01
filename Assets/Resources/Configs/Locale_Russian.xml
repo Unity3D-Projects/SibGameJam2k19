@@ -1,0 +1,6 @@
+<root>
+	<MainMenu>
+		<PlayButton text="Играть!"/>
+		<Credits    text="2019, SMG для LD44"/>
+	</MainMenu>
+</root>
