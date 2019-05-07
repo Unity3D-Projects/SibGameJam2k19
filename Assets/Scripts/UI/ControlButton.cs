@@ -16,9 +16,12 @@ public sealed class ControlButton : MonoBehaviour {
 	}
 	public void ControlButtonRelease() {
 		_pushed = false;
-		if ( ButtonType == ControlButtonType.Slide ) {
-			EventManager.Fire(new Event_SlideButtonReleased { });
-		};
+        if (ButtonType == ControlButtonType.Slide) {
+            EventManager.Fire(new Event_SlideButtonReleased { });
+        }
+        else if (ButtonType == ControlButtonType.Jump) {
+            EventManager.Fire(new Event_JumpMaxHeightReached { });
+        };
 	}
 
 	void Update() {

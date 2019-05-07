@@ -120,6 +120,9 @@ public class PhysicsObject : MonoBehaviour {
 		}
 		velocity.y += startSpeed;
 	}
+    public void JumpFall(float fallStartSpeed) {
+        velocity.y -= fallStartSpeed;
+    }
 
 	public void SetMoveSpeed(float speed) {
 		targetVelocity.x = speed;

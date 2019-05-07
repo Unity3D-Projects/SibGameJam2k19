@@ -138,6 +138,7 @@ public sealed class RunState : State {
 		}
 	}
 
+
 	void OnSlideButtonPushed(Event_SlideButtonPushed e) {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new SlideState(Controller));
@@ -165,6 +166,7 @@ public sealed class JumpState : State {
 		base.Init();
 		EventManager.Subscribe<Event_PhysicsObjectGrounded>(this, OnGrounded);
 		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
+		EventManager.Subscribe<Event_JumpMaxHeightReached> (this, OnJumpFall);
 		SoundManager.Instance.PlaySound("Jump");
 		Controller.Jump();
 	}
@@ -173,7 +175,12 @@ public sealed class JumpState : State {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_PhysicsObjectGrounded>(OnGrounded);
 		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached> (OnJumpFall);
 	}
+
+    void OnJumpFall(Event_JumpMaxHeightReached e) {
+        Controller.JumpFall();
+    }
 
 	void OnGrounded(Event_PhysicsObjectGrounded e) {
 		if ( e.Object != Controller.CharController ) {
@@ -360,6 +367,7 @@ public sealed class DeadState : State {
 
 public sealed class GoatController : MonoBehaviour {
 	public float JumpForce = 7f;
+	public float JumpFallForce = 2f;
 	public float RunSpeed  = 3f;
 	public float SlowSpeed = 2f;
 
@@ -387,6 +395,9 @@ public sealed class GoatController : MonoBehaviour {
 		if ( Input.GetKey(KeyCode.Space) ) {
 			EventManager.Fire(new Event_JumpButtonPushed());
 		}
+		if ( Input.GetKeyUp(KeyCode.Space) ) {
+            EventManager.Fire(new Event_JumpMaxHeightReached());
+		}
 
 		if ( Input.GetKey(KeyCode.S) ) {
 			EventManager.Fire(new Event_SlideButtonPushed());
@@ -411,6 +422,10 @@ public sealed class GoatController : MonoBehaviour {
 	public void Jump() {
 		CharController.Jump(JumpForce);
 	}
+    public void JumpFall() {
+        CharController.JumpFall(JumpFallForce);
+        Debug.Log("falling flat");
+    }
 
 	public void SetRunSpeed(float speed, bool instant = false) {
 		_targetSpeed = speed;
