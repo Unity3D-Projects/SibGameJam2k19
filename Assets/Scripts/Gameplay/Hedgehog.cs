@@ -1,5 +1,7 @@
-using EventSys;
 using UnityEngine;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public sealed class Hedgehog : Obstacle {
 	public float      TurnOffDistance = 5f;

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using SMGCore;
+
 public sealed class EndGame : MonoBehaviour {
 	[Header("Game Result Effects Holder")]
 	public GameObject WinGameHolder  = null;
@@ -14,8 +16,9 @@ public sealed class EndGame : MonoBehaviour {
 
 	void Start() {
 		var pData = ScenePersistence.Instance.Data;
-		WinGameHolder.SetActive ( pData.IsWin);
-		LoseGameHolder.SetActive(!pData.IsWin);
+		var isWin = (pData as KOZAPersistence).IsWin;
+		WinGameHolder.SetActive (isWin );
+		LoseGameHolder.SetActive(!isWin);
 
 		Fader.FadeToWhite(1f);
 	}
@@ -41,7 +44,8 @@ public sealed class EndGame : MonoBehaviour {
 		}
 		_closing = true;
 		Fader.FadeToBlack(1f);
-		ScenePersistence.Instance.Data.FastRestart = true;
+		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
+		persistence.FastRestart = true;
 		Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
 	}
 

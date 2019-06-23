@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using EventSys;
+using SMGCore;
+using SMGCore.EventSys;
 
 public sealed class LangButton : MonoBehaviour {
 	public Button Button = null;

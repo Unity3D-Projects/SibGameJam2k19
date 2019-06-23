@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 2962122867853646751}
   - component: {fileID: 6485205831545374131}
   - component: {fileID: 719347597925983959}
-  - component: {fileID: 360176155}
+  - component: {fileID: 7538373473531852465}
   m_Layer: 5
   m_Name: Apple
   m_TagString: Untagged
@@ -155,7 +155,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Collect apples to use boosts
---- !u!114 &360176155
+--- !u!114 &7538373473531852465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 659368546343930309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f4ae8062d613104ca3944a57182e886, type: 3}
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: HelpScreen.Apple
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 2042777119759968092}
   - component: {fileID: 2861762564536435158}
   - component: {fileID: 3858790662320607235}
-  - component: {fileID: 360176157}
+  - component: {fileID: 1979696960737871584}
   m_Layer: 5
   m_Name: Jump
   m_TagString: Untagged
@@ -250,7 +250,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Jump/Belly slide
---- !u!114 &360176157
+--- !u!114 &1979696960737871584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1942154246718910085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f4ae8062d613104ca3944a57182e886, type: 3}
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: HelpScreen.Jump
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 3181966768818237569}
   - component: {fileID: 7543480217263018406}
   - component: {fileID: 615048687453743149}
-  - component: {fileID: 360176158}
+  - component: {fileID: 299373464071279494}
   m_Layer: 5
   m_Name: Yell
   m_TagString: Untagged
@@ -344,7 +344,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Scare Hedgehogs
---- !u!114 &360176158
+--- !u!114 &299373464071279494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -353,7 +353,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3711145831684175543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f4ae8062d613104ca3944a57182e886, type: 3}
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: HelpScreen.Yell
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 604640443187103384}
   - component: {fileID: 7246959097839702896}
   - component: {fileID: 6927645646837157848}
-  - component: {fileID: 360176154}
+  - component: {fileID: 6604101467940536972}
   m_Layer: 5
   m_Name: Boosts
   m_TagString: Untagged
@@ -438,7 +438,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Use boosts
---- !u!114 &360176154
+--- !u!114 &6604101467940536972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,7 +447,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3785343598445904447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f4ae8062d613104ca3944a57182e886, type: 3}
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: HelpScreen.Boosts
@@ -778,7 +778,6 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &7268072630219344594
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,7 +992,7 @@ GameObject:
   - component: {fileID: 2709459809533450320}
   - component: {fileID: 5141360721283822224}
   - component: {fileID: 1498882118855778633}
-  - component: {fileID: 360176156}
+  - component: {fileID: 7491599103451497879}
   m_Layer: 5
   m_Name: Pause
   m_TagString: Untagged
@@ -1063,7 +1062,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Pause game
---- !u!114 &360176156
+--- !u!114 &7491599103451497879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1072,7 +1071,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9212706293583910648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f4ae8062d613104ca3944a57182e886, type: 3}
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: HelpScreen.Pause

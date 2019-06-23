@@ -1,5 +1,7 @@
-using EventSys;
 using UnityEngine;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public sealed class FarmerController : MonoBehaviour {
 	public float         MoveSpeed  = 3f;
@@ -30,14 +32,12 @@ public sealed class FarmerController : MonoBehaviour {
 			return;
 		}
 
-
 		var dist = GameState.Instance.Goat.transform.position.x - transform.position.x;
 		if ( !Controller.Grounded && dist < 0 ) {
 			Controller.SetMoveSpeed(0);
 		} else {
 			Controller.SetMoveSpeed(MoveSpeed);
 		}
-	
 	}
 
 	void FixedUpdate() {
@@ -61,7 +61,7 @@ public sealed class FarmerController : MonoBehaviour {
 			Jump();
 		}
 		if ( e.Trigger.Type == FarmerActionType.SlowDown ) {
-			//PlayAnim
+			//TODO:PlayAnim
 		}
 	}
 }

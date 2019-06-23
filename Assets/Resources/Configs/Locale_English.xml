@@ -10,6 +10,10 @@
 		<Apple  text="Collect apples to use boosts"/>
 		<Boosts text="Use boosts"/>
 	</HelpScreen>
+	<Common>
+		<FarmerName text="Farmer"/>
+		<GoatName   text="Goat"/>
+	</Common>
 	<Level_1>
 		<Dialog_FarmerPhrase_1 text="- Hey ya little miss priss!" />
 		<Dialog_GoatPhrase_1   text=" *Make it quick*" />

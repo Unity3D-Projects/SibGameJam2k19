@@ -1,5 +1,8 @@
 using UnityEngine;
-using EventSys;
+
+using SMGCore;
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public sealed class Apple : MonoBehaviour {
 	private void OnTriggerEnter2D(Collider2D other) {

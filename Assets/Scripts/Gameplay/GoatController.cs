@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-using EventSys;
+using SMGCore;
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public enum GoatState {
 	None,
@@ -16,12 +19,12 @@ public enum GoatState {
 }
 
 public class State {
-	protected GoatState Type = GoatState.None;
-	protected float TimeToExit = -1;
+	protected GoatState      Type                  = GoatState.None;
+	protected float          TimeToExit            = -1;
 	protected List<GoatState> AvailableTransitions = new List<GoatState>();
-	protected GoatState ExitState = GoatState.None;
-	protected GoatController Controller = null;
-	protected float EnterTime = 0f;
+	protected GoatState       ExitState            = GoatState.None;
+	protected GoatController  Controller           = null;
+	protected float           EnterTime            = 0f;
 
 	public GoatState StateType {
 		get { return Type; }

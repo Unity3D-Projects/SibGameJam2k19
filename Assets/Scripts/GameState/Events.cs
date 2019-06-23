@@ -1,5 +1,4 @@
-
-namespace EventSys {
+namespace KOZA.Events {
 	public struct Event_JumpButtonPushed {
 	}
 

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
-using EventSys;
+
 using UnityEngine;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public class PhysicsObject : MonoBehaviour {
 

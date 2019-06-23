@@ -1,5 +1,8 @@
 using UnityEngine;
-using EventSys;
+
+using SMGCore;
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public enum ObstacleType {
 	Bush,
@@ -13,7 +16,6 @@ public class Obstacle : MonoBehaviour {
 	public float        CoolDownTime = 1f;
 
 	float _lastHitTime = 0f;
-
 
 	protected virtual void OnTriggerEnter2D(Collider2D other) {
 		var curTime = GameState.Instance.TimeController.CurrentTime;

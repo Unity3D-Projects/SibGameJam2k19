@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using EventSys;
+using SMGCore;
+using SMGCore.EventSys;
+using KOZA.Events;
 
 using DG.Tweening;
 

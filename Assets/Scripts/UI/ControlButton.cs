@@ -1,5 +1,7 @@
 using UnityEngine;
-using EventSys;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public sealed class ControlButton : MonoBehaviour {
 	public enum ControlButtonType {

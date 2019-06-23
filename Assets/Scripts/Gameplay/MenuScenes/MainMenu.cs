@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using SMGCore;
+
 public sealed class MainMenu : MonoBehaviour {
     [Header("Buttons")]
     public Button     StartButton    = null;

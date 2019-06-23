@@ -1,5 +1,7 @@
 using UnityEngine;
-using EventSys;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public sealed class HelpScreen : MonoBehaviour {
 	public float MinDelay = 0.5f;

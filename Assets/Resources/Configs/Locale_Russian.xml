@@ -10,6 +10,10 @@
 		<Apple  text="Собирай яблоки чтобы использовать бонусы"/>
 		<Boosts text="Используй бонусы"/>
 	</HelpScreen>
+   <Common>
+	  	<FarmerName text="Дед"/>
+		<GoatName   text="Коза"/>
+   </Common>
 	<Level_1>
 		<Dialog_FarmerPhrase_1 text="- Эй, Машка!" />
 		<Dialog_GoatPhrase_1   text="- Чего тебе?" />

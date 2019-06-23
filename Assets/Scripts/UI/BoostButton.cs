@@ -1,5 +1,7 @@
 using UnityEngine;
-using EventSys;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 using TMPro;
 

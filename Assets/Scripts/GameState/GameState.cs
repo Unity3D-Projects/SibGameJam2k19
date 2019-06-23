@@ -1,8 +1,12 @@
 using System.Collections.Generic;
 
-using EventSys;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+using SMGCore;
+using SMGCore.EventSys;
+using KOZA.Events;
+
 using TMPro;
 
 public sealed class GameState : MonoSingleton<GameState> {
@@ -10,7 +14,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public Dialog           StartDialog    = null;
 	public GoatController   Goat           = null;
 	public FarmerController Farmer         = null;
-	public CamControl       CamControl     = null;
+	public CamFollow2D      CamControl     = null;
 	public TMP_Text         ScoreCountText = null;
 	public GameObject       HelpScreen     = null;
 	public GameObject       GoatCloneFab   = null;
@@ -39,14 +43,17 @@ public sealed class GameState : MonoSingleton<GameState> {
 		BoostWatcher.Init(this);
 
 		HelpScreen.gameObject.SetActive(false);
-
-		if ( ScenePersistence.Instance.Data.FastRestart ) {
+		if ( ScenePersistence.Instance.Data == null ) {
+			ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
+		}
+		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
+		if ( persistence.FastRestart ) {
 			StartDialog.gameObject.SetActive(false);		
 			EventManager.Fire(new Event_HelpScreenClosed());
 		} else {
 			StartDialog.gameObject.SetActive(true);
 		}
-		ScenePersistence.Instance.ClearData();
+		ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
 		
 		Fader.FadeToWhite(1f);
 		ScoreCountText.text = string.Format("x{0}", Score);
@@ -95,13 +102,15 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void LoseGame() {
-		ScenePersistence.Instance.Data.IsWin = false;
+		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
+		persistence.IsWin = false;
 		Fader.FadeToBlack(1f);
 		Fader.OnFadeToBlackFinished.AddListener(GoToEndScene);
 	}
 
 	void WinGame() {
-		ScenePersistence.Instance.Data.IsWin = true;
+		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
+		persistence.IsWin = true;
 		Fader.FadeToBlack(1f);
 		Fader.OnFadeToBlackFinished.AddListener(GoToEndScene);
 	}

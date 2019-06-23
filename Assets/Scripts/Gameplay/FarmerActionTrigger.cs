@@ -1,5 +1,7 @@
-using EventSys;
 using UnityEngine;
+
+using SMGCore.EventSys;
+using KOZA.Events;
 
 public enum FarmerActionType {
 	Jump,
@@ -17,6 +19,5 @@ public sealed class FarmerActionTrigger : MonoBehaviour {
 			return;
 		}
 		EventManager.Fire(new Event_FarmerActionTrigger { Trigger = this });
-
 	}
 }
