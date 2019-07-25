@@ -168,6 +168,7 @@ public sealed class JumpState : State {
 		base.Init();
 		EventManager.Subscribe<Event_PhysicsObjectGrounded>(this, OnGrounded);
 		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
+		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 		SoundManager.Instance.PlaySound("Jump");
 		Controller.Jump();
 	}
@@ -176,17 +177,23 @@ public sealed class JumpState : State {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_PhysicsObjectGrounded>(OnGrounded);
 		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
 	}
 
 	void OnGrounded(Event_PhysicsObjectGrounded e) {
 		if ( e.Object != Controller.CharController ) {
 			return;
 		}
+		Controller.CharController.GravityModifier = Controller.CharController.GravityModifierBaseValue;
 		TryChangeState(new RunState(Controller));
 	}
 
 	void OnYellButtonPushed(Event_YellButtonPushed e) {
 		TryChangeState(new YellState(Controller));
+	}
+	void OnJumpFall(Event_JumpMaxHeightReached e) {
+		Debug.Log("FALLING");
+		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
 	}
 }
 
@@ -230,6 +237,7 @@ public sealed class SlideState : State {
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		TryChangeState(new RunState(Controller));
 	}
+
 }
 
 public sealed class SlowDownState : State {
@@ -363,6 +371,7 @@ public sealed class DeadState : State {
 
 public sealed class GoatController : MonoBehaviour {
 	public float JumpForce = 7f;
+	public float GravityFallModifier = 2.2f; 
 	public float RunSpeed  = 3f;
 	public float SlowSpeed = 2f;
 
@@ -397,6 +406,10 @@ public sealed class GoatController : MonoBehaviour {
 
 		if ( Input.GetKeyUp(KeyCode.S) ) {
 			EventManager.Fire(new Event_SlideButtonReleased());
+		}
+
+		if ( Input.GetKeyUp(KeyCode.Space) ) {
+			EventManager.Fire(new Event_JumpMaxHeightReached()); 
 		}
 
 		if ( Input.GetKeyDown(KeyCode.W) ) {
