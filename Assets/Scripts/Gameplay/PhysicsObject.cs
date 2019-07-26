@@ -7,8 +7,8 @@ using KOZA.Events;
 
 public class PhysicsObject : MonoBehaviour {
 
-	public float MinGroundNormalY = 0.65f;
-	public float GravityModifier  = 1f;
+	public float MinGroundNormalY         = 0.65f;
+	public float GravityModifier          = 1f;
 	public float GravityModifierBaseValue = 1f;
 
 	[HideInInspector]

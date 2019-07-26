@@ -41,7 +41,8 @@ public sealed class MainMenu : MonoBehaviour {
 	}
 	
     void LoadLevel() {
-        SceneManager.LoadScene("Gameplay");
+        //SceneManager.LoadScene("Gameplay");
+        SceneManager.LoadScene("BaseLevelWithGrid");
     }
 
     public void OnClickSoundToggle() {

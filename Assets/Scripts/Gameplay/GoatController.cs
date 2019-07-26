@@ -192,7 +192,6 @@ public sealed class JumpState : State {
 		TryChangeState(new YellState(Controller));
 	}
 	void OnJumpFall(Event_JumpMaxHeightReached e) {
-		Debug.Log("FALLING");
 		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
 	}
 }
@@ -370,10 +369,10 @@ public sealed class DeadState : State {
 }
 
 public sealed class GoatController : MonoBehaviour {
-	public float JumpForce = 7f;
+	public float JumpForce           = 7f;
 	public float GravityFallModifier = 2.2f; 
-	public float RunSpeed  = 3f;
-	public float SlowSpeed = 2f;
+	public float RunSpeed            = 3f;
+	public float SlowSpeed           = 2f;
 
 	public PhysicsObject CharController   = null;
 	public GoatVisual    VisualController = null;
