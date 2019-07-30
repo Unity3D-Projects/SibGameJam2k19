@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using System.Collections.Generic;
+using System;
+
 using SMGCore;
 
 public sealed class MainMenu : MonoBehaviour {
@@ -18,7 +21,13 @@ public sealed class MainMenu : MonoBehaviour {
 
 	bool _soundOn = false;
 
-    void Start() {
+	public GameObject LevelChoiceCanvas = null;
+
+
+	public List<Button> LevelButtons = null;
+	string _levelName = null;
+
+	void Start() {
         Cursor.visible = true;
 		Fader.FadeToWhite(1f, false);
 
@@ -31,18 +40,30 @@ public sealed class MainMenu : MonoBehaviour {
             ExitButton.gameObject.SetActive(false);
         }
 
+		foreach ( var button in LevelButtons ) {
+			button.onClick.AddListener(delegate { StartLevel(button.GetComponent<LevelButton>().LevelName); });
+		}
+
 		SoundManager.Instance.PlayMusic("menu");
     }
 
 	void StartNewGame() {
+		//SoundManager.Instance.PlaySound("menuClick");
+		//Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
+		//Fader.FadeToBlack(1f);
+		LevelChoiceCanvas.SetActive(true);
+	}
+
+	void StartLevel(string name) {
+		_levelName = name;
 		SoundManager.Instance.PlaySound("menuClick");
 		Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
-		Fader.FadeToBlack(1f);
+		Fader.FadeToBlack(1f); 
 	}
 	
     void LoadLevel() {
         //SceneManager.LoadScene("Gameplay");
-        SceneManager.LoadScene("BaseLevelWithGrid");
+        SceneManager.LoadScene(_levelName);
     }
 
     public void OnClickSoundToggle() {
