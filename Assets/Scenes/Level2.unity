@@ -2303,6 +2303,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &700498878 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1094674296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &725274388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2833,6 +2839,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &964225114 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1800035262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &993208216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,6 +2989,10 @@ MonoBehaviour:
   - Type: 2
     Price: 6
     EffectTime: 2.5
+  BoostButtons:
+  - {fileID: 964225114}
+  - {fileID: 1758550100}
+  - {fileID: 700498878}
   Fader: {fileID: 1462180448}
   Shaker: {fileID: 1341676020}
 --- !u!4 &1039981463
@@ -7797,6 +7813,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1758550100 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 247765501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1765414656
 PrefabInstance:
   m_ObjectHideFlags: 0

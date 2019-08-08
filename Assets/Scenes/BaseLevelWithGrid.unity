@@ -1350,6 +1350,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f06877fcb0b146a34568cc0c284fe, type: 3}
+--- !u!1 &247765502 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 247765501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &275940337
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,6 +3337,10 @@ MonoBehaviour:
   - Type: 2
     Price: 6
     EffectTime: 2.5
+  BoostButtons:
+  - {fileID: 1800035263}
+  - {fileID: 247765502}
+  - {fileID: 1094674297}
   Fader: {fileID: 1462180448}
   Shaker: {fileID: 1341676020}
 --- !u!4 &1039981463
@@ -3716,6 +3726,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f06877fcb0b146a34568cc0c284fe, type: 3}
+--- !u!1 &1094674297 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1094674296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1191251444
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13189,6 +13205,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f06877fcb0b146a34568cc0c284fe, type: 3}
+--- !u!1 &1800035263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1800035262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1822524902
 GameObject:
   m_ObjectHideFlags: 0

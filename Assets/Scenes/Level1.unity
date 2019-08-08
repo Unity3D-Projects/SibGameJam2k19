@@ -933,6 +933,21 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.78431374
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f06877fcb0b146a34568cc0c284fe, type: 3}
 --- !u!1 &275940337
@@ -2606,6 +2621,10 @@ MonoBehaviour:
   - Type: 2
     Price: 6
     EffectTime: 2.5
+  BoostButtons:
+  - {fileID: 1368789547}
+  - {fileID: 1612302767}
+  - {fileID: 1500771889}
   Fader: {fileID: 1462180448}
   Shaker: {fileID: 1341676020}
 --- !u!4 &1039981463
@@ -2917,6 +2936,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.78431374
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f06877fcb0b146a34568cc0c284fe, type: 3}
@@ -3603,6 +3637,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1368789547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1800035262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1391769912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4346,6 +4386,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1487031830}
   m_CullTransparentMesh: 0
+--- !u!1 &1500771889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1094674296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1514452393
 GameObject:
   m_ObjectHideFlags: 0
@@ -6779,6 +6825,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abf89cd11cef504db99a2e160494acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1612302767 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4449770471440096700, guid: a42f06877fcb0b146a34568cc0c284fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 247765501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1692899346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7152,6 +7204,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198902866568419654, guid: a42f06877fcb0b146a34568cc0c284fe,
+        type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.78431374
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f06877fcb0b146a34568cc0c284fe, type: 3}
