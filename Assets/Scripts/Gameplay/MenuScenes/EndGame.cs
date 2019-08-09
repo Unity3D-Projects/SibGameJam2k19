@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 using SMGCore;
 
@@ -35,7 +34,7 @@ public sealed class EndGame : MonoBehaviour {
 		}
 		_closing = true;
 		Fader.FadeToBlack(1f);
-		Fader.OnFadeToBlackFinished.AddListener(LoadStartScene);
+		Fader.OnFadeToBlackFinished.AddListener(LevelManager.Instance.LoadMainMenu);
 	}
 
 	public void FastRestart() {
@@ -46,14 +45,6 @@ public sealed class EndGame : MonoBehaviour {
 		Fader.FadeToBlack(1f);
 		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
 		persistence.FastRestart = true;
-		Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
-	}
-
-	void LoadStartScene() {
-		SceneManager.LoadScene("MainMenu");
-	}
-
-	void LoadLevel() {
-		SceneManager.LoadScene("Gameplay");
+		Fader.OnFadeToBlackFinished.AddListener(() => LevelManager.Instance.LoadLevel(persistence.LastLevelName));
 	}
 }

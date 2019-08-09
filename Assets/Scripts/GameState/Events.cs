@@ -60,4 +60,9 @@ namespace KOZA.Events {
 
 	public struct Event_HelpScreenClosed { }
 	public struct Event_JumpMaxHeightReached { }
+
+	public struct Event_SceneLoaded {
+		public string    SceneName;
+		public SceneType SceneType;
+	}
 }

@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 using System.Collections.Generic;
-using System;
 
 using SMGCore;
 
@@ -47,27 +45,20 @@ public sealed class MainMenu : MonoBehaviour {
 		LevelChoiceCloseButton.onClick.AddListener(OnClickClose);
 
 		SoundManager.Instance.PlayMusic("menu");
+		LevelChoiceCanvas.gameObject.SetActive(false);
     }
 
 	void StartNewGame() {
-		//SoundManager.Instance.PlaySound("menuClick");
-		//Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
-		//Fader.FadeToBlack(1f);
 		LevelChoiceCanvas.SetActive(true);
 	}
 
 	void StartLevel(string name) {
 		_levelName = name;
 		SoundManager.Instance.PlaySound("menuClick");
-		Fader.OnFadeToBlackFinished.AddListener(LoadLevel);
+		Fader.OnFadeToBlackFinished.AddListener(() => LevelManager.Instance.LoadLevel(name));
 		Fader.FadeToBlack(1f); 
 	}
 	
-    void LoadLevel() {
-        //SceneManager.LoadScene("Gameplay");
-        SceneManager.LoadScene(_levelName);
-    }
-
     public void OnClickSoundToggle() {
         _soundOn = !_soundOn;
         SoundButton.image.sprite = _soundOn ? SoundOnSprite : SoundOffSprite;

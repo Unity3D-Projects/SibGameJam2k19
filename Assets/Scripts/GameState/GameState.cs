@@ -13,10 +13,9 @@ using TMPro;
 public sealed class GameState : MonoSingleton<GameState> {
 
 	public Dialog           StartDialog    = null;
-	public GoatController   Goat           = null;
-	public FarmerController Farmer         = null;
 	public CamFollow2D      CamControl     = null;
 	public TMP_Text         ScoreCountText = null;
+	public GameObject       UICanvas       = null;
 	public GameObject       HelpScreen     = null;
 	public GameObject       GoatCloneFab   = null;
 	public List<BoostInfo>  BoostInfos     = new List<BoostInfo>();
@@ -32,44 +31,32 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public readonly TimeController TimeController = new TimeController();
 	public readonly BoostWatcher   BoostWatcher   = new BoostWatcher();
 
+	public GoatController   Goat   { get; private set; }
+	public FarmerController Farmer { get; private set; }
+
 	protected override void Awake() {
 		base.Awake();
 
-		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
-		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
-		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
-		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
+		EventManager.Subscribe<Event_Obstacle_Collided>  (this, OnGoatHitObstacle);
+		EventManager.Subscribe<Event_GoatDies>           (this, OnGoatDie);
+		EventManager.Subscribe<Event_AppleCollected>     (this, OnAppleCollect);
+		EventManager.Subscribe<Event_GameWin>            (this, OnHitWinTrigger);
 		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
-		EventManager.Subscribe<Event_HelpScreenClosed>(this, OnHelpClosed);
-		EventManager.Subscribe<Event_GoatYell>(this, OnGoatYell);
-		BoostWatcher.Init(this);
+		EventManager.Subscribe<Event_HelpScreenClosed>   (this, OnHelpClosed);
+		EventManager.Subscribe<Event_GoatYell>           (this, OnGoatYell);
+		EventManager.Subscribe<Event_SceneLoaded>        (this, OnSceneLoaded);
 
-		HelpScreen.gameObject.SetActive(false);
-		if ( ScenePersistence.Instance.Data == null ) {
-			ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
-		}
-		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
-		if ( persistence.FastRestart ) {
-			StartDialog.gameObject.SetActive(false);
-			EventManager.Fire(new Event_HelpScreenClosed());
-		} else {
-			StartDialog.gameObject.SetActive(true);
-		}
-		ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
-
-		Fader.FadeToWhite(1f);
-		ScoreCountText.text = string.Format("x{0}", Score);
-		UpdateBoostButtonsAvailability();
 	}
 
 	void OnDestroy() {
-		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
-		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
-		EventManager.Unsubscribe<Event_AppleCollected>(OnAppleCollect);
-		EventManager.Unsubscribe<Event_GameWin>(OnHitWinTrigger);
+		EventManager.Unsubscribe<Event_Obstacle_Collided>  (OnGoatHitObstacle);
+		EventManager.Unsubscribe<Event_GoatDies>           (OnGoatDie);
+		EventManager.Unsubscribe<Event_AppleCollected>     (OnAppleCollect);
+		EventManager.Unsubscribe<Event_GameWin>            (OnHitWinTrigger);
 		EventManager.Unsubscribe<Event_StartDialogComplete>(OnDialogComplete);
-		EventManager.Unsubscribe<Event_HelpScreenClosed>(OnHelpClosed);
-		EventManager.Unsubscribe<Event_GoatYell>(OnGoatYell);
+		EventManager.Unsubscribe<Event_HelpScreenClosed>   (OnHelpClosed);
+		EventManager.Unsubscribe<Event_GoatYell>           (OnGoatYell);
+		EventManager.Unsubscribe<Event_SceneLoaded>        (OnSceneLoaded);
 		BoostWatcher.DeInit();
 	}
 
@@ -82,6 +69,58 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public bool IsDebug {
 		get {
 			return false; //Should be set to 'false' for release build.
+		}
+	}
+
+	void SetupLevel() {
+		UICanvas.gameObject.SetActive(true);
+		Goat   = FindObjectOfType<GoatController>();
+		Farmer = FindObjectOfType<FarmerController>();
+
+		var camFollow = FindObjectOfType<CamFollow2D>();
+		if ( !Goat || !Farmer || !camFollow ) {
+			Debug.LogError("Wrong level setup");
+			return;
+		}
+		//TODO: better player init
+		camFollow.player = Goat.transform;
+		Farmer.gameObject.SetActive(false);
+		Goat.gameObject.SetActive(false);
+
+		var ls = LevelSettings.Instance;
+
+		BoostWatcher.Init(this);
+
+		HelpScreen.gameObject.SetActive(false);
+		if ( ScenePersistence.Instance.Data == null ) {
+			ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
+		}
+		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
+		if ( persistence.FastRestart ) {
+			StartDialog.gameObject.SetActive(false);
+			EventManager.Fire(new Event_HelpScreenClosed());
+		} else {
+			var hasDialog = !string.IsNullOrEmpty(ls.DialogName);
+			StartDialog.gameObject.SetActive(hasDialog);
+			if ( !hasDialog ) {
+				EventManager.Fire(new Event_StartDialogComplete());
+			}
+			if ( !ls.ShowTutorial ) {
+				HelpScreen.gameObject.SetActive(false);
+				EventManager.Fire(new Event_HelpScreenClosed());
+			}
+		}
+		ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
+
+		Fader.FadeToWhite(1f);
+		ScoreCountText.text = string.Format("x{0}", Score);
+		UpdateBoostButtonsAvailability();
+	}
+
+	void OnSceneLoaded(Event_SceneLoaded e) {
+		
+		if ( e.SceneType == SceneType.LevelScene ) {
+			SetupLevel();
 		}
 	}
 
@@ -105,23 +144,31 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void LoseGame() {
-		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
-		persistence.IsWin = false;
-		Fader.FadeToBlack(1f);
-		Fader.OnFadeToBlackFinished.AddListener(GoToEndScene);
+		OnLevelEnd(false);
+		var sm = LevelManager.Instance;
+		Fader.OnFadeToBlackFinished.AddListener(sm.LoadEndScene);
 	}
 
 	void WinGame() {
-		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
-		persistence.IsWin = true;
+		OnLevelEnd(true);
+		var ls = LevelSettings.Instance;
+		var sm = LevelManager.Instance;
+		if ( ls.CompleteAction == LevelCompleteAction.FinalScene ) {
+			Fader.OnFadeToBlackFinished.AddListener(sm.LoadEndScene);
+		} else if ( ls.CompleteAction == LevelCompleteAction.NextLevel ) {
+			var nextLevel = ls.NextSceneName;
+			Fader.OnFadeToBlackFinished.AddListener(() => sm.LoadLevel(nextLevel));
+		} else if ( ls.CompleteAction == LevelCompleteAction.MainMenu ) {
+			Fader.OnFadeToBlackFinished.AddListener(sm.LoadMainMenu);
+		}
+	}
+
+	void OnLevelEnd(bool win) {
+		var persistence           = ScenePersistence.Instance.Data as KOZAPersistence;
+		persistence.IsWin         = win;
+		persistence.LastLevelName = LevelManager.Instance.CurrentScene;
 		Fader.FadeToBlack(1f);
-		Fader.OnFadeToBlackFinished.AddListener(GoToEndScene);
 	}
-
-	void GoToEndScene() {
-		SceneManager.LoadScene("EndScene");
-	}
-
 
 	void OnDialogComplete(Event_StartDialogComplete e) {
 		HelpScreen.SetActive(true);
