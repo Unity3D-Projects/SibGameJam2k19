@@ -21,10 +21,11 @@ public sealed class MainMenu : MonoBehaviour {
 
 	bool _soundOn = false;
 
-	public GameObject LevelChoiceCanvas = null;
+	[Header("Level Selection")]
+	public GameObject   LevelChoiceCanvas      = null;
+	public Button       LevelChoiceCloseButton = null;
+	public List<Button> LevelButtons           = null;
 
-
-	public List<Button> LevelButtons = null;
 	string _levelName = null;
 
 	void Start() {
@@ -43,6 +44,7 @@ public sealed class MainMenu : MonoBehaviour {
 		foreach ( var button in LevelButtons ) {
 			button.onClick.AddListener(delegate { StartLevel(button.GetComponent<LevelButton>().LevelName); });
 		}
+		LevelChoiceCloseButton.onClick.AddListener(OnClickClose);
 
 		SoundManager.Instance.PlayMusic("menu");
     }
@@ -80,6 +82,10 @@ public sealed class MainMenu : MonoBehaviour {
 		SoundManager.Instance.PlaySound("menuClick");
 		Fader.OnFadeToBlackFinished.AddListener(ExitGame);
 		Fader.FadeToBlack(0.5f);
+	}
+
+	void OnClickClose() {
+		LevelChoiceCanvas.SetActive(false);
 	}
 
 	void ExitGame() {
