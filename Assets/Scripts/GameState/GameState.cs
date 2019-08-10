@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 using SMGCore;
@@ -102,7 +101,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		} else {
 			var hasDialog = !string.IsNullOrEmpty(ls.DialogName);
 			StartDialog.gameObject.SetActive(hasDialog);
-			if ( !hasDialog ) {
+			if ( !hasDialog && ls.ShowTutorial ) {
 				EventManager.Fire(new Event_StartDialogComplete());
 			}
 			if ( !ls.ShowTutorial ) {
