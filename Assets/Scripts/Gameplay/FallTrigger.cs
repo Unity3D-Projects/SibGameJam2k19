@@ -11,6 +11,7 @@ public sealed class FallTrigger : MonoBehaviour {
 			return;
 		}
 		Debug.Log("Fall trigger enter");
+		goat.CurrentState.ChangeState(new DeadState(goat));
 		EventManager.Fire(new Event_GoatDies());
 	}
 }

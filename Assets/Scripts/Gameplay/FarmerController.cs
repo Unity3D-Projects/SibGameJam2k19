@@ -41,7 +41,7 @@ public sealed class FarmerController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		var cols = Physics2D.OverlapCircleAll(transform.position, 1.75f);
+		var cols = Physics2D.OverlapCircleAll(transform.position, 1.3f);
 		foreach ( var col in cols ) {
 			var goat = col.gameObject.GetComponent<GoatController>();
 			if ( goat ) {
