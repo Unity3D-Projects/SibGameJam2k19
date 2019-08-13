@@ -58,7 +58,14 @@ public sealed class FarmerController : MonoBehaviour {
 
 	void OnFarmerActionTrigger(Event_FarmerActionTrigger e) {
 		if ( e.Trigger.Type == FarmerActionType.Jump ) {
-			Jump();
+			if ( e.Trigger.OverrideJumpPower ) {
+				float _jumpPower = JumpPower;
+				JumpPower = e.Trigger.NewJumpPower;
+				Jump();
+				JumpPower = _jumpPower;
+			} else {
+				Jump();
+			}
 		}
 		if ( e.Trigger.Type == FarmerActionType.SlowDown ) {
 			//TODO:PlayAnim
