@@ -5554,8 +5554,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f66881e3a1ce744a702dd22b0630ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CompleteAction: 1
-  NextSceneName: 
+  CompleteAction: 0
+  NextSceneName: BaseLevelWithGrid
   DialogName: 
   ShowTutorial: 0
 --- !u!4 &1735088335

@@ -13,10 +13,13 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	public Dialog           StartDialog    = null;
 	public CamFollow2D      CamControl     = null;
+	public GameObject       GoatCloneFab   = null;
+
+	[Header("UI")]
 	public TMP_Text         ScoreCountText = null;
 	public GameObject       UICanvas       = null;
+	public GameObject       FinishWindow   = null;
 	public GameObject       HelpScreen     = null;
-	public GameObject       GoatCloneFab   = null;
 	public List<BoostInfo>  BoostInfos     = new List<BoostInfo>();
 	public List<GameObject> BoostButtons   = new List<GameObject>();
 
@@ -91,6 +94,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		BoostWatcher.Init(this);
 
 		HelpScreen.gameObject.SetActive(false);
+		FinishWindow.gameObject.SetActive(false);
 		if ( ScenePersistence.Instance.Data == null ) {
 			ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
 		}
@@ -157,6 +161,8 @@ public sealed class GameState : MonoSingleton<GameState> {
 		} else if ( ls.CompleteAction == LevelCompleteAction.NextLevel ) {
 			var nextLevel = ls.NextSceneName;
 			Fader.OnFadeToBlackFinished.AddListener(() => sm.LoadLevel(nextLevel));
+		} else if ( ls.CompleteAction == LevelCompleteAction.ContinueWindow ) {
+			Fader.OnFadeToBlackFinished.AddListener(OnContinueWindowShow);
 		} else if ( ls.CompleteAction == LevelCompleteAction.MainMenu ) {
 			Fader.OnFadeToBlackFinished.AddListener(sm.LoadMainMenu);
 		}
@@ -167,6 +173,10 @@ public sealed class GameState : MonoSingleton<GameState> {
 		persistence.IsWin         = win;
 		persistence.LastLevelName = LevelManager.Instance.CurrentScene;
 		Fader.FadeToBlack(1f);
+	}
+
+	void OnContinueWindowShow() {
+		FinishWindow.SetActive(true); 
 	}
 
 	void OnDialogComplete(Event_StartDialogComplete e) {

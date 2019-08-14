@@ -10,6 +10,7 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 }
 
 public enum LevelCompleteAction {
+	ContinueWindow,
 	NextLevel,
 	FinalScene,
 	MainMenu
