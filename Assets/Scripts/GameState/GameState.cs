@@ -223,6 +223,14 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void OnGoatDie(Event_GoatDies e) {
+
+		//костыль пока, может где-то еще это проверяется но я не нашел 
+		var persistence           = ScenePersistence.Instance.Data as KOZAPersistence;
+		if ( persistence.IsWin ) {
+			return; 
+		} 
+		//
+
 		CamControl.ReplaceTargetByDummy();
 		LoseGame();
 		SoundManager.Instance.PlaySound("Slap");
