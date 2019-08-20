@@ -5679,7 +5679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
-  OverrideJumpPower: 1
+  OverrideJumpPower: 0
   NewJumpPower: 20
 --- !u!1001 &3784704160986179408
 PrefabInstance:

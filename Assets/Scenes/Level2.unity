@@ -5555,7 +5555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CompleteAction: 0
-  NextSceneName: BaseLevelWithGrid
+  NextSceneName: Level3
   DialogName: 
   ShowTutorial: 0
 --- !u!4 &1735088335
