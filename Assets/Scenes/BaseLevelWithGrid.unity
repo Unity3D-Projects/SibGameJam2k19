@@ -2208,6 +2208,7 @@ MonoBehaviour:
   NextSceneName: 
   DialogName: 
   ShowTutorial: 0
+  ApplesNumber: 7
 --- !u!4 &1037669102 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7824879660240762229, guid: f8a50cbe7b15c6347ab085bc0848c2a5,

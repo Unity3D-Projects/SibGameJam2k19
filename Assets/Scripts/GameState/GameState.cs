@@ -29,36 +29,37 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	[System.NonSerialized]
 	public int Score = 0;
+	public int ApplesCounter = 0;
 
 	public readonly TimeController TimeController = new TimeController();
 	public readonly BoostWatcher   BoostWatcher   = new BoostWatcher();
 
-	public GoatController   Goat   { get; private set; }
+	public GoatController Goat { get; private set; }
 	public FarmerController Farmer { get; private set; }
 
 	protected override void Awake() {
 		base.Awake();
 
-		EventManager.Subscribe<Event_Obstacle_Collided>  (this, OnGoatHitObstacle);
-		EventManager.Subscribe<Event_GoatDies>           (this, OnGoatDie);
-		EventManager.Subscribe<Event_AppleCollected>     (this, OnAppleCollect);
-		EventManager.Subscribe<Event_GameWin>            (this, OnHitWinTrigger);
+		EventManager.Subscribe<Event_Obstacle_Collided>(this, OnGoatHitObstacle);
+		EventManager.Subscribe<Event_GoatDies>(this, OnGoatDie);
+		EventManager.Subscribe<Event_AppleCollected>(this, OnAppleCollect);
+		EventManager.Subscribe<Event_GameWin>(this, OnHitWinTrigger);
 		EventManager.Subscribe<Event_StartDialogComplete>(this, OnDialogComplete);
-		EventManager.Subscribe<Event_HelpScreenClosed>   (this, OnHelpClosed);
-		EventManager.Subscribe<Event_GoatYell>           (this, OnGoatYell);
-		EventManager.Subscribe<Event_SceneLoaded>        (this, OnSceneLoaded);
+		EventManager.Subscribe<Event_HelpScreenClosed>(this, OnHelpClosed);
+		EventManager.Subscribe<Event_GoatYell>(this, OnGoatYell);
+		EventManager.Subscribe<Event_SceneLoaded>(this, OnSceneLoaded);
 
 	}
 
 	void OnDestroy() {
-		EventManager.Unsubscribe<Event_Obstacle_Collided>  (OnGoatHitObstacle);
-		EventManager.Unsubscribe<Event_GoatDies>           (OnGoatDie);
-		EventManager.Unsubscribe<Event_AppleCollected>     (OnAppleCollect);
-		EventManager.Unsubscribe<Event_GameWin>            (OnHitWinTrigger);
+		EventManager.Unsubscribe<Event_Obstacle_Collided>(OnGoatHitObstacle);
+		EventManager.Unsubscribe<Event_GoatDies>(OnGoatDie);
+		EventManager.Unsubscribe<Event_AppleCollected>(OnAppleCollect);
+		EventManager.Unsubscribe<Event_GameWin>(OnHitWinTrigger);
 		EventManager.Unsubscribe<Event_StartDialogComplete>(OnDialogComplete);
-		EventManager.Unsubscribe<Event_HelpScreenClosed>   (OnHelpClosed);
-		EventManager.Unsubscribe<Event_GoatYell>           (OnGoatYell);
-		EventManager.Unsubscribe<Event_SceneLoaded>        (OnSceneLoaded);
+		EventManager.Unsubscribe<Event_HelpScreenClosed>(OnHelpClosed);
+		EventManager.Unsubscribe<Event_GoatYell>(OnGoatYell);
+		EventManager.Unsubscribe<Event_SceneLoaded>(OnSceneLoaded);
 		BoostWatcher.DeInit();
 	}
 
@@ -76,7 +77,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void SetupLevel() {
 		UICanvas.gameObject.SetActive(true);
-		Goat   = FindObjectOfType<GoatController>();
+		Goat = FindObjectOfType<GoatController>();
 		Farmer = FindObjectOfType<FarmerController>();
 
 		var camFollow = FindObjectOfType<CamFollow2D>();
@@ -121,7 +122,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void OnSceneLoaded(Event_SceneLoaded e) {
-		
+
 		if ( e.SceneType == SceneType.LevelScene ) {
 			SetupLevel();
 		}
@@ -153,9 +154,16 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void WinGame() {
-		OnLevelEnd(true);
+		OnLevelEnd(true); 
+
 		var ls = LevelSettings.Instance;
-		var sm = LevelManager.Instance;
+		var sm = LevelManager.Instance; 
+
+		if ( !PlayerPrefs.HasKey(sm.CurrentScene) || (PlayerPrefs.GetInt(sm.CurrentScene) < ApplesCounter) ) {
+			PlayerPrefs.SetInt(sm.CurrentScene, ApplesCounter);
+			PlayerPrefs.Save();
+		} 
+
 		if ( ls.CompleteAction == LevelCompleteAction.FinalScene ) {
 			Fader.OnFadeToBlackFinished.AddListener(sm.LoadEndScene);
 		} else if ( ls.CompleteAction == LevelCompleteAction.NextLevel ) {
@@ -176,7 +184,8 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void OnContinueWindowShow() {
-		FinishWindow.SetActive(true); 
+		FinishWindow.SetActive(true);
+		FinishWindow.GetComponent<FinishWindow>().UpdateApplesCounter();
 	}
 
 	void OnDialogComplete(Event_StartDialogComplete e) {
@@ -242,6 +251,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void OnAppleCollect(Event_AppleCollected e) {
 		Score++;
+		ApplesCounter++;
 		EventManager.Fire(new Event_ScoreChanged { NewScore = Score });
 		ScoreCountText.text = string.Format("x{0}", Score);
 		UpdateBoostButtonsAvailability();

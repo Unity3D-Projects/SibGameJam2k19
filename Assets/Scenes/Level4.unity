@@ -7470,6 +7470,7 @@ MonoBehaviour:
   NextSceneName: BaseLevelWithGrid
   DialogName: 
   ShowTutorial: 0
+  ApplesNumber: 7
 --- !u!4 &1735088335
 Transform:
   m_ObjectHideFlags: 0

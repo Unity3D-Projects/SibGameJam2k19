@@ -1008,6 +1008,7 @@ MonoBehaviour:
   NextSceneName: Level2
   DialogName: FirstDialog
   ShowTutorial: 1
+  ApplesNumber: 3
 --- !u!4 &681992120
 Transform:
   m_ObjectHideFlags: 0
