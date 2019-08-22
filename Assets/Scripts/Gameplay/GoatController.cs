@@ -206,7 +206,7 @@ public sealed class SlideState : State {
 			GoatState.Jump,
 		};
 		Type = GoatState.Slide;
-		TimeToExit = 1.5f;
+		//TimeToExit = 1.5f;   если вернуть, появляется баг: пока катишься спамишь прыжок и в момент выхода козу глючит
 		ExitState = GoatState.Run;
 	}
 
