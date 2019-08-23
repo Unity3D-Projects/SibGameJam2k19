@@ -7471,6 +7471,9 @@ MonoBehaviour:
   DialogName: 
   ShowTutorial: 0
   ApplesNumber: 7
+  ExcludeYell: 1
+  ExcludePiano: 1
+  ExcludeMushroom: 0
 --- !u!4 &1735088335
 Transform:
   m_ObjectHideFlags: 0

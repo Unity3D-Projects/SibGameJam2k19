@@ -1009,6 +1009,9 @@ MonoBehaviour:
   DialogName: FirstDialog
   ShowTutorial: 1
   ApplesNumber: 3
+  ExcludeYell: 1
+  ExcludePiano: 1
+  ExcludeMushroom: 1
 --- !u!4 &681992120
 Transform:
   m_ObjectHideFlags: 0

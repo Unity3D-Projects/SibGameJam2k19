@@ -76,7 +76,8 @@ public sealed class GameState : MonoSingleton<GameState> {
 	}
 
 	void SetupLevel() {
-		UICanvas.gameObject.SetActive(true);
+		UICanvas.gameObject.SetActive(true); 
+
 		Goat = FindObjectOfType<GoatController>();
 		Farmer = FindObjectOfType<FarmerController>();
 
@@ -91,6 +92,17 @@ public sealed class GameState : MonoSingleton<GameState> {
 		Goat.gameObject.SetActive(false);
 
 		var ls = LevelSettings.Instance;
+
+		//Kostyly
+		if ( ls.ExcludeYell ) {
+			UICanvas.transform.Find("ButtonYell").gameObject.SetActive(false);
+		}
+		if ( ls.ExcludeMushroom ) {
+			UICanvas.transform.Find("ButtonSpeedUp").gameObject.SetActive(false); 
+		}
+		if ( ls.ExcludePiano ) {
+			UICanvas.transform.Find("ButtonPiano").gameObject.SetActive(false); 
+		}
 
 		BoostWatcher.Init(this);
 
