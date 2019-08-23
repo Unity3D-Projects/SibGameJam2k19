@@ -202,6 +202,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void OnDialogComplete(Event_StartDialogComplete e) {
 		HelpScreen.SetActive(true);
+		HelpScreen.transform.Find(LevelSettings.Instance.TutorialName).gameObject.SetActive(true);
 	}
 
 	void OnHelpClosed(Event_HelpScreenClosed e) {

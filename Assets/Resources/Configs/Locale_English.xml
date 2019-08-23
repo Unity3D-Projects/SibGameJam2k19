@@ -4,11 +4,13 @@
 		<Credits    text="2019, SMG for Ludum Dare 44"/>
 	</MainMenu>
 	<HelpScreen>
-		<Yell   text="Scare Hedgehogs"/>
-		<Jump   text="Jump/Belly slide"/>
-		<Pause  text="Pause game"/>
+		<Jump   text="Jump (hold to jump higher)"/>
+		<Decoy  text="Creates a decoy"/>
+		<Pause  text="Pause"/>
 		<Apple  text="Collect apples to use boosts"/>
-		<Boosts text="Use boosts"/>
+		<Mushroom text="Speed-up mushroom"/>
+		<Slide text="Slide under bees"/>
+		<Yell text="Screaming at hedgehogs makes them scared and harmless"/>
 	</HelpScreen>
 	<Common>
 		<FarmerName text="Farmer"/>

@@ -5557,7 +5557,8 @@ MonoBehaviour:
   CompleteAction: 0
   NextSceneName: Level3
   DialogName: 
-  ShowTutorial: 0
+  ShowTutorial: 1
+  TutorialName: 2
   ApplesNumber: 5
   ExcludeYell: 1
   ExcludePiano: 1

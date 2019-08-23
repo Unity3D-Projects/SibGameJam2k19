@@ -4,11 +4,13 @@
 		<Credits    text="2019, SMG для Ludum Dare 44"/>
 	</MainMenu>
 	<HelpScreen>
-		<Yell   text="Пугать ежей"/>
-		<Jump   text="Прыгать/Катиться"/>
+		<Jump   text="Прыжок (зажми, чтобы прыгать выше)"/>
+		<Decoy  text="Создает копию для отвлечения"/>
 		<Pause  text="Пауза"/>
-		<Apple  text="Собирай яблоки чтобы использовать бонусы"/>
-		<Boosts text="Используй бонусы"/>
+		<Apple  text="Собирай яблоки чтобы использовать бусты"/>
+		<Mushroom text="Гриб-ускоритель"/>
+		<Slide text="Скользи под пчелами"/>
+		<Yell text="Кричи на ежей чтобы испугать"/>
 	</HelpScreen>
    <Common>
 	  	<FarmerName text="Дед"/>
