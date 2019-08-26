@@ -22,7 +22,7 @@ public sealed class MainMenu : MonoBehaviour {
 	[Header("Level Selection")]
 	public GameObject   LevelChoiceCanvas      = null;
 	public Button       LevelChoiceCloseButton = null;
-	public List<Button> LevelButtons           = null;
+	public List<GameObject> LevelButtons           = null;
 
 	string _levelName = null;
 
@@ -40,12 +40,13 @@ public sealed class MainMenu : MonoBehaviour {
         }
 
 		foreach ( var button in LevelButtons ) {
-			button.onClick.AddListener(delegate { StartLevel(button.GetComponent<LevelButton>().LevelName); });
+			button.GetComponent<Button>().onClick.AddListener(delegate { StartLevel(button.GetComponent<LevelButton>().LevelName); });
 		}
 		LevelChoiceCloseButton.onClick.AddListener(OnClickClose);
 
 		SoundManager.Instance.PlayMusic("menu");
 		LevelChoiceCanvas.gameObject.SetActive(false);
+		UpdateLevelButtons();
     }
 
 	void StartNewGame() {
@@ -81,5 +82,43 @@ public sealed class MainMenu : MonoBehaviour {
 
 	void ExitGame() {
 		Application.Quit();
+	}
+
+	void UpdateLevelButtons() {
+		string appleNum = PlayerPrefs.GetInt(LevelButtons[0].GetComponent<LevelButton>().LevelName).ToString();
+		if ( appleNum == "" ) {
+			appleNum = "0";
+		}
+		var txt = LevelButtons[0].transform.Find("Apples").GetComponent<Text>();
+		txt.text = txt.text.Substring(txt.text.IndexOf('/')); 
+		txt.text = txt.text.Insert(0, appleNum); 
+		for ( int i = 1; i < LevelButtons.Count; i++ ) {
+			if ( PlayerPrefs.HasKey(LevelButtons[i-1].GetComponent<LevelButton>().LevelName) ) {
+				LevelButtons[i].GetComponent<Button>().interactable = true;
+				//LevelButtons[i].transform.Find("Apples").GetComponent<Text>().text.Insert(0, PlayerPrefs.GetInt(LevelButtons[i].GetComponent<LevelButton>().LevelName).ToString()); 
+			} else {
+				LevelButtons[i].GetComponent<Button>().interactable = false; 
+			}
+			appleNum = PlayerPrefs.GetInt(LevelButtons[i].GetComponent<LevelButton>().LevelName).ToString();
+			if ( appleNum == "" ) {
+				appleNum = "0";
+			}
+			txt = LevelButtons[i].transform.Find("Apples").GetComponent<Text>();
+			txt.text = txt.text.Substring(txt.text.IndexOf('/'));
+			txt.text = txt.text.Insert(0, appleNum); 
+		}
+	}
+
+	public void OnClickClearPlayerData() {
+		PlayerPrefs.DeleteAll();
+		UpdateLevelButtons();
+	}
+	public void OnClickUnlockAll() {
+		UnlockAll();
+	}
+	void UnlockAll() {
+		for ( int i = 1; i < LevelButtons.Count; i++ ) {
+			LevelButtons[i].GetComponent<Button>().interactable = true;
+		}
 	}
 }
