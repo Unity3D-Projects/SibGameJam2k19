@@ -20,8 +20,9 @@ public sealed class MainMenu : MonoBehaviour {
 	bool _soundOn = false;
 
 	[Header("Level Selection")]
-	public GameObject   LevelChoiceCanvas      = null;
-	public Button       LevelChoiceCloseButton = null;
+	public GameObject       LevelChoiceCanvas      = null;
+	public Button           LevelChoiceCloseButton = null;
+	public Button           EndlessRunButton       = null;
 	public List<GameObject> LevelButtons           = null;
 
 	string _levelName = null;
@@ -43,6 +44,7 @@ public sealed class MainMenu : MonoBehaviour {
 			button.GetComponent<Button>().onClick.AddListener(delegate { StartLevel(button.GetComponent<LevelButton>().LevelName); });
 		}
 		LevelChoiceCloseButton.onClick.AddListener(OnClickClose);
+		EndlessRunButton.onClick.AddListener(OnClickEndlessRun);
 
 		SoundManager.Instance.PlayMusic("menu");
 		LevelChoiceCanvas.gameObject.SetActive(false);
@@ -120,5 +122,9 @@ public sealed class MainMenu : MonoBehaviour {
 		for ( int i = 1; i < LevelButtons.Count; i++ ) {
 			LevelButtons[i].GetComponent<Button>().interactable = true;
 		}
+	}
+
+	void OnClickEndlessRun() {
+		StartLevel("EndlessRun");
 	}
 }
