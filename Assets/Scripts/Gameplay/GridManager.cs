@@ -21,8 +21,12 @@ public class GridManager : MonoBehaviour {
 		RenderMap(buffer, Tilemap, Tilemap.cellBounds.max.x, GetNodeY());
 		Tilemap.CompressBounds();
 	}
-	void CutSector() {
-		Tilemap.SetTile(new Vector3Int(Tilemap.cellBounds.min.x, 0, 0), null);
+	void CutSector(int _boundX) {
+		for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
+			for ( int y = Tilemap.cellBounds.min.y; y < Tilemap.cellBounds.max.y; y++ ) {
+				Tilemap.SetTile(new Vector3Int(x, y, 0), null); 
+			}
+		}
 		Tilemap.CompressBounds();
 	}
 
@@ -72,11 +76,12 @@ public class GridManager : MonoBehaviour {
 
 		if ( Mathf.Abs(_goatCell - Tilemap.cellBounds.max.x) < DeltaToBuildSector ) {
 			BuildSector();
+			CutSector(20);
 			//Debug.Log("AUTO BUILD");
 		}
 
 		if ( Input.GetKeyDown(KeyCode.N) ) {
-			CutSector();
+			CutSector(10);
 		}
 
 	}
@@ -142,6 +147,11 @@ public class GridManager : MonoBehaviour {
 				} else if ( map[x, y] == 2 ) {
 					tilemap.SetTile(new Vector3Int(shiftX + x, y - shift, 0), Grass);
 				}
+			}
+		}
+		for ( int x = shiftX; x < Tilemap.cellBounds.max.x; x++ ) { //дополняем снизу земли чтоб не было просветов
+			for ( int k = -1; k > -4 ; k-- ) {
+				tilemap.SetTile(new Vector3Int(x, k - shift, 0), Ground); 
 			}
 		}
 	}
