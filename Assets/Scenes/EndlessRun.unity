@@ -150,13 +150,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 1553874828}
-  Goat: {fileID: 3784704160986179409}
-  Farmer: {fileID: 3877597451285669653}
   Grid: {fileID: 1920415372}
   Grass: {fileID: 11400000, guid: c590ea259efd86547ba2204e82c03937, type: 2}
   Ground: {fileID: 11400000, guid: aac682845c254da4e939e64e3590df75, type: 2}
+  Goat: {fileID: 3784704160986179409}
+  Farmer: {fileID: 3877597451285669653}
+  Bush: {fileID: 4029183667802786674, guid: 02253bbb201195144a7edbaf9a585a7d, type: 3}
+  Obstacles:
+  - {fileID: 7618553101212665598, guid: a6aa24623a8117447b6d155007957c1f, type: 3}
+  - {fileID: 4007214834974537803, guid: c4b78c80f0296a14196e7f75afd025c2, type: 3}
+  - {fileID: 4029183667802786674, guid: 02253bbb201195144a7edbaf9a585a7d, type: 3}
   DeltaToBuildSector: 5
   seed: 6.5
+  _obstacleDelta: 0.5
+  obstacleMinScale: 0.7
 --- !u!4 &35848190
 Transform:
   m_ObjectHideFlags: 0
