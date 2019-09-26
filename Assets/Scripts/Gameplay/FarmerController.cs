@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using System.Collections.Generic;
+
 using SMGCore.EventSys;
 using KOZA.Events;
 
@@ -10,15 +12,39 @@ public sealed class FarmerController : MonoBehaviour {
 	public PhysicsObject Controller = null;
 	public Animation     Anim       = null;
 
+	//хз как это правильно оформить
+	protected ContactFilter2D contactFilter;
+	protected RaycastHit2D[] hitBuffer = new RaycastHit2D[2];
+	protected Rigidbody2D rb2d;
+	protected Vector2 _cast = new Vector2(1, 0);
+	protected float distance = 1;
+
 	bool _started = false;
 
 	void Start() {
 		Controller.SetMoveSpeed(0f);
 		EventManager.Subscribe<Event_FarmerActionTrigger>(this, OnFarmerActionTrigger);
 	}
+	void OnEnable() {
+		rb2d = Controller.GetComponent<Rigidbody2D>();
+	}
 
 	void OnDestroy() {
 		EventManager.Unsubscribe<Event_FarmerActionTrigger>(OnFarmerActionTrigger);
+	}
+
+	void UpdateObstacleJumping() {
+		var count = rb2d.Cast(_cast, contactFilter, hitBuffer, distance);
+		if ( count != 0  ) {
+			for ( int i = 0; i < hitBuffer.Length; i++ ) {
+				if ( hitBuffer[i] ) {
+					if ( hitBuffer[i].transform.GetComponent<GoatController>() != null ) {
+						return;
+					} 
+				} 
+			}
+			Jump();
+		}
 	}
 
 	void Update() {
@@ -38,6 +64,7 @@ public sealed class FarmerController : MonoBehaviour {
 		} else {
 			Controller.SetMoveSpeed(MoveSpeed);
 		}
+
 	}
 
 	void FixedUpdate() {
@@ -49,6 +76,9 @@ public sealed class FarmerController : MonoBehaviour {
 				EventManager.Fire(new Event_GoatDies());
 				break;
 			}
+		}
+		if ( LevelSettings.Instance.Endless & Controller.Grounded ) {
+			UpdateObstacleJumping(); 
 		}
 	}
 

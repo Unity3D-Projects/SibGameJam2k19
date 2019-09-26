@@ -895,6 +895,7 @@ MonoBehaviour:
   ShowTutorial: 0
   TutorialName: 1
   ApplesNumber: 3
+  Endless: 1
   ExcludeYell: 1
   ExcludePiano: 1
   ExcludeMushroom: 1

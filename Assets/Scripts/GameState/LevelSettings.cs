@@ -8,7 +8,8 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 	public string              DialogName     = null;
 	public bool                ShowTutorial   = false;
 	public string              TutorialName   = null;
-	public int                 ApplesNumber   = 0; 
+	public int                 ApplesNumber   = 0;
+	public bool                Endless        = false;
 
 	[Header("Excluding Perks")] 
 	public bool ExcludeYell     = false;
