@@ -14,10 +14,10 @@ public class GridManager : MonoBehaviour {
 	public TileBase   Ground  = null;
 
 	[Header("GameObjects")]
+	public GameObject Apple   = null;
 	public GameObject Goat    = null;
 	public GameObject Farmer  = null;
-	public GameObject Bush    = null; 
-	public List<GameObject> Obstacles = null;
+	public List<ObstacleData> ObstacleDatas = null;
 
 	public int DeltaToBuildSector = 10;
 	int[,] buffer = new int[32, 8];
@@ -32,12 +32,19 @@ public class GridManager : MonoBehaviour {
 	int[] obstacleHash = {0, 0, 0, 0, 0, 1, 1, 2, 3};
 	GameObject _previousObstacle = null;
 
+	[System.Serializable]
+	public class ObstacleData {
+		public GameObject Prefab = null;
+		public Vector2 ScaleLimits = new Vector2(0, 0);
+	}
+
 	void BuildSector() {
 		buffer = RandomWalkTopSmoothed(buffer, rand, 2);
 		buffer = SetTextureRules(buffer);
 		RenderMap(buffer, Tilemap, Tilemap.cellBounds.max.x, GetNodeY());
 		Tilemap.CompressBounds();
-		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x);
+		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1); 
+		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1);
 	}
 	void CutSector(int _boundX) {
 		for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
@@ -98,23 +105,38 @@ public class GridManager : MonoBehaviour {
 		for ( int x = _startx; x <= _endx; x++ ) {
 			obstaclesNum = obstacleHash[rand.Next(obstacleHash.Length)];
 			if ( obstaclesNum > 0 ) {
-				GameObject _obstacle = Obstacles[rand.Next(Obstacles.Count)];
+				ObstacleData _obstacle = ObstacleDatas[rand.Next(ObstacleDatas.Count)];
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
-				float rndScale = obstacleMinScale + rand.Next((int)(100 * (1-obstacleMinScale))) / 100f;
-				float _newXsize = _obstacle.GetComponent<SpriteRenderer>().size.x * rndScale; 
+				float rndScale = _obstacle.ScaleLimits.x + rand.Next((int)(100 * (_obstacle.ScaleLimits.y-_obstacle.ScaleLimits.x))) / 100f;
+				float _newXsize = _obstacle.Prefab.GetComponent<SpriteRenderer>().size.x * rndScale; 
 				pos.y += Grid.cellSize.y + obstacleShift;
 				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + (_newXsize / 2);
 				if ( _previousObstacle != null ) {
-					float minimalDistance = _previousObstacle.transform.position.x + (_obstacle.GetComponent<SpriteRenderer>().size.x) + _obstacleDelta; //может сделать точнее
+					float minimalDistance = _previousObstacle.transform.position.x + (_obstacle.Prefab.GetComponent<SpriteRenderer>().size.x) + _obstacleDelta; //может сделать точнее
 					if ( pos.x < minimalDistance ) {
 						pos.x = minimalDistance;
 					}
 				}
 				Vector3Int _adjCell = Grid.WorldToCell(new Vector3(pos.x + (_newXsize / 2f), pos.y));
 				if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) != Ground && Tilemap.GetTile(_adjCell) != Grass) {
-					_previousObstacle = Instantiate(_obstacle, pos, Quaternion.identity); 
+					_previousObstacle = Instantiate(_obstacle.Prefab, pos, Quaternion.identity); 
 					_previousObstacle.transform.localScale = new Vector3(rndScale, rndScale, rndScale);
+					if ( rand.Next(2) == 0 ) {
+						_previousObstacle.transform.Rotate(new Vector3(0, 180, 0));
+					}
 				} 
+			}
+		} 
+	}
+
+	void PlaceApples(int _startx, int _endx) {
+		int _dropRate = 20;
+		for ( int x = _startx; x <= _endx; x++ ) {
+			if ( rand.Next(100) < _dropRate ) {
+				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
+				pos.y += Grid.cellSize.y + 0.9f;
+				pos.x += Grid.cellSize.x / 2f;
+				Instantiate(Apple, pos, Quaternion.identity);
 			}
 		} 
 	}
