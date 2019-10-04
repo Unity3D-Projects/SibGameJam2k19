@@ -6,12 +6,14 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour {
 
-	public Tilemap    Tilemap = null;
-	public GridLayout Grid    = null;
+	public Tilemap    Tilemap         = null;
+	public Tilemap    ForegroundGrass = null;
+	public GridLayout Grid            = null;
 
 	[Header("Tiles")]
-	public TileBase   Grass   = null;
-	public TileBase   Ground  = null;
+	public TileBase       Grass      = null;
+	public TileBase       Ground     = null;
+	public List<TileBase> DecorGrass = null;
 
 	[Header("GameObjects")]
 	public GameObject Apple   = null;
@@ -41,7 +43,10 @@ public class GridManager : MonoBehaviour {
 	void BuildSector() {
 		buffer = RandomWalkTopSmoothed(buffer, rand, 2);
 		buffer = SetTextureRules(buffer);
-		RenderMap(buffer, Tilemap, Tilemap.cellBounds.max.x, GetNodeY());
+		int _x = Tilemap.cellBounds.max.x;
+		int _y = GetNodeY(Tilemap);
+		int sh = RenderMap(buffer, Tilemap, _x, _y);
+		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
 		Tilemap.CompressBounds();
 		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1); 
 		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1);
@@ -58,6 +63,7 @@ public class GridManager : MonoBehaviour {
 	private void Start() {
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
+		ForegroundGrass.ClearAllTiles();
 		BuildSector();
 	} 
 
@@ -75,10 +81,10 @@ public class GridManager : MonoBehaviour {
 
 
 
-	int GetNodeY() {
-		int x = Tilemap.cellBounds.xMax - 1;
-		for ( int y = Tilemap.cellBounds.yMax; y >= Tilemap.cellBounds.yMin; y-- ) {
-			if ( Tilemap.GetTile(new Vector3Int(x, y, 0)) != null ) {
+	int GetNodeY(Tilemap tilemap) {
+		int x = tilemap.cellBounds.xMax - 1;
+		for ( int y = tilemap.cellBounds.yMax; y >= tilemap.cellBounds.yMin; y-- ) {
+			if ( tilemap.GetTile(new Vector3Int(x, y, 0)) != null ) {
 				return y;
 			}
 		}
@@ -202,7 +208,7 @@ public class GridManager : MonoBehaviour {
 		}
 		return map;
 	}
-	public void RenderMap(int[,] map, Tilemap tilemap, int shiftX, int shiftY) {
+	public int RenderMap(int[,] map, Tilemap tilemap, int shiftX, int shiftY) {
 		int y0 = 0;
 		for ( int y = map.GetUpperBound(1); y >= 0; y-- ) {
 			if ( map[0, y] != 0 ) {
@@ -228,5 +234,16 @@ public class GridManager : MonoBehaviour {
 				tilemap.SetTile(new Vector3Int(x, k - shift, 0), Ground); 
 			}
 		}
+		return shift;
 	} 
+	public void RenderGrassMap(int[,] map, Tilemap tilemap, int shiftX, int shiftY) {
+		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
+			for ( int y = 0; y <= map.GetUpperBound(1); y++ ) {
+				if ( map[x, y] == 2 ) {
+					tilemap.SetTile(new Vector3Int(shiftX + x, y - shiftY + 1, 0), DecorGrass[rand.Next(DecorGrass.Count)]);
+					break;
+				}
+			}
+		} 
+	}
 }
