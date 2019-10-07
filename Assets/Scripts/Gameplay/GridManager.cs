@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-using System.Collections.Generic;
-
+using System.Collections.Generic; 
 
 public class GridManager : MonoBehaviour {
 
@@ -11,9 +10,11 @@ public class GridManager : MonoBehaviour {
 	public GridLayout Grid            = null;
 
 	[Header("Tiles")]
-	public TileBase       Grass      = null;
-	public TileBase       Ground     = null;
-	public List<TileBase> DecorGrass = null;
+	public TileBase       Grass            = null;
+	public TileBase       GrassLeftCorner  = null;
+	public TileBase       GrassRightCorner = null;
+	public TileBase       Ground           = null;
+	public List<TileBase> DecorGrass       = null;
 
 	[Header("GameObjects")]
 	public GameObject Apple   = null;
@@ -24,8 +25,7 @@ public class GridManager : MonoBehaviour {
 	public int DeltaToBuildSector = 10;
 	int[,] buffer = new int[32, 8];
 	System.Random rand;
-	public float seed = 6.5f;
-
+	public float seed = 6.5f; 
 
 	float obstacleShift = 0.2f;
 	public float _obstacleDelta = 0.5f;
@@ -40,6 +40,28 @@ public class GridManager : MonoBehaviour {
 		public Vector2 ScaleLimits = new Vector2(0, 0);
 	}
 
+
+	private void Start() {
+		rand = new System.Random(seed.GetHashCode());
+		Tilemap.ClearAllTiles();
+		ForegroundGrass.ClearAllTiles();
+		BuildSector();
+	} 
+
+	private void Update() { 
+		int _goatCell = Grid.WorldToCell(Goat.transform.position).x;
+
+		if ( Mathf.Abs(_goatCell - Tilemap.cellBounds.max.x) < DeltaToBuildSector ) {
+			BuildSector();
+			CutSector(20);
+			//Debug.Log("AUTO BUILD");
+		}
+
+		if ( Input.GetKeyDown(KeyCode.N) ) {
+			CutSector(10);
+		} 
+	}
+
 	void BuildSector() {
 		buffer = RandomWalkTopSmoothed(buffer, rand, 2);
 		buffer = SetTextureRules(buffer);
@@ -50,7 +72,8 @@ public class GridManager : MonoBehaviour {
 		Tilemap.CompressBounds();
 		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1); 
 		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1);
-	}
+	} 
+
 	void CutSector(int _boundX) {
 		for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
 			for ( int y = Tilemap.cellBounds.min.y; y < Tilemap.cellBounds.max.y; y++ ) {
@@ -58,13 +81,16 @@ public class GridManager : MonoBehaviour {
 			}
 		}
 		Tilemap.CompressBounds();
-	}
+	} 
 
-	private void Start() {
-		rand = new System.Random(seed.GetHashCode());
-		Tilemap.ClearAllTiles();
-		ForegroundGrass.ClearAllTiles();
-		BuildSector();
+	int GetNodeY(Tilemap tilemap) {
+		int x = tilemap.cellBounds.xMax - 1;
+		for ( int y = tilemap.cellBounds.yMax; y >= tilemap.cellBounds.yMin; y-- ) {
+			if ( tilemap.GetTile(new Vector3Int(x, y, 0)) != null ) {
+				return y;
+			}
+		}
+		return 0;
 	} 
 
 	int[,] SetTextureRules(int[,] map) {
@@ -79,33 +105,6 @@ public class GridManager : MonoBehaviour {
 		return map;
 	}
 
-
-
-	int GetNodeY(Tilemap tilemap) {
-		int x = tilemap.cellBounds.xMax - 1;
-		for ( int y = tilemap.cellBounds.yMax; y >= tilemap.cellBounds.yMin; y-- ) {
-			if ( tilemap.GetTile(new Vector3Int(x, y, 0)) != null ) {
-				return y;
-			}
-		}
-		return 0;
-	} 
-
-	private void Update() {
-
-		int _goatCell = Grid.WorldToCell(Goat.transform.position).x;
-
-		if ( Mathf.Abs(_goatCell - Tilemap.cellBounds.max.x) < DeltaToBuildSector ) {
-			BuildSector();
-			CutSector(20);
-			//Debug.Log("AUTO BUILD");
-		}
-
-		if ( Input.GetKeyDown(KeyCode.N) ) {
-			CutSector(10);
-		}
-
-	}
 	void PlaceObstacles(int _startx, int _endx) {
 		int obstaclesNum = 0;
 		for ( int x = _startx; x <= _endx; x++ ) {
@@ -222,15 +221,23 @@ public class GridManager : MonoBehaviour {
 		}
 		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
 			for ( int y = 0; y <= map.GetUpperBound(1); y++ ) {
+				int _tx = shiftX + x;
+				int _ty = y - shift;
 				if ( map[x, y] == 1 ) {
-					tilemap.SetTile(new Vector3Int(shiftX + x, y - shift, 0), Ground);
+					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Ground);
 				} else if ( map[x, y] == 2 ) {
-					tilemap.SetTile(new Vector3Int(shiftX + x, y - shift, 0), Grass);
+					if ( tilemap.GetTile(new Vector3Int(_tx - 1, _ty - shift, 0)) == null ) {
+						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassLeftCorner);
+					} else if ( tilemap.GetTile(new Vector3Int(_tx + 1, _ty - shift, 0)) == null & x < map.GetUpperBound(0) ) {
+						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassRightCorner);
+					} else {
+						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
+					}
 				}
 			}
 		}
 		for ( int x = shiftX; x < Tilemap.cellBounds.max.x; x++ ) { //дополняем снизу земли чтоб не было просветов
-			for ( int k = -1; k > -4 ; k-- ) {
+			for ( int k = -1; k > -4; k-- ) {
 				tilemap.SetTile(new Vector3Int(x, k - shift, 0), Ground); 
 			}
 		}

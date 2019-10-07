@@ -153,6 +153,8 @@ MonoBehaviour:
   ForegroundGrass: {fileID: 1461391411}
   Grid: {fileID: 1920415372}
   Grass: {fileID: 11400000, guid: c590ea259efd86547ba2204e82c03937, type: 2}
+  GrassLeftCorner: {fileID: 11400000, guid: 868d24e80ea44a149a2f0828f9354162, type: 2}
+  GrassRightCorner: {fileID: 11400000, guid: 36eb74dbf289e064f917985246e93e72, type: 2}
   Ground: {fileID: 11400000, guid: aac682845c254da4e939e64e3590df75, type: 2}
   DecorGrass:
   - {fileID: 11400000, guid: b936197dd8d450c4da925ac6dc924b29, type: 2}
