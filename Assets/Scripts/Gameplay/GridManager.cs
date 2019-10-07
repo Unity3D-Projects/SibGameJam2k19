@@ -123,7 +123,8 @@ public class GridManager : MonoBehaviour {
 					}
 				}
 				Vector3Int _adjCell = Grid.WorldToCell(new Vector3(pos.x + (_newXsize / 2f), pos.y));
-				if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) != Ground && Tilemap.GetTile(_adjCell) != Grass) {
+				//if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) != Ground && Tilemap.GetTile(_adjCell) != Grass) {
+				if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) == null) {
 					_previousObstacle = Instantiate(_obstacle.Prefab, pos, Quaternion.identity); 
 					_previousObstacle.transform.localScale = new Vector3(rndScale, rndScale, rndScale);
 					if ( rand.Next(2) == 0 ) {
