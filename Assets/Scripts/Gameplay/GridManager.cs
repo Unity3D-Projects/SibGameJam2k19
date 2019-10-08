@@ -22,7 +22,19 @@ public class GridManager : MonoBehaviour {
 	public GameObject Farmer  = null;
 	public List<ObstacleData> ObstacleDatas = null;
 
-	public int DeltaToBuildSector = 10;
+	[Header("Scenario")]
+	public float GoatSpeedMax             = 3f;
+	public float GoatSpeedDelta           = 0.1f;
+	public float FarmerSpeedMax           = 3f;
+	public float FarmerSpeedDelta         = 0.1f;
+	public int   ObstacleProbability      = 10;
+	public int   ObstacleProbabilityMax   = 80;
+	public int   ObstacleProbabilityDelta = 1;
+	public int   ApplesProbability        = 5;
+
+
+
+	public int DeltaToBuildSector = 16;
 	int[,] buffer = new int[32, 8];
 	System.Random rand;
 	public float seed = 6.5f; 
@@ -54,6 +66,7 @@ public class GridManager : MonoBehaviour {
 		if ( Mathf.Abs(_goatCell - Tilemap.cellBounds.max.x) < DeltaToBuildSector ) {
 			BuildSector();
 			CutSector(20);
+			UpdateScenario();
 			//Debug.Log("AUTO BUILD");
 		}
 
@@ -70,8 +83,8 @@ public class GridManager : MonoBehaviour {
 		int sh = RenderMap(buffer, Tilemap, _x, _y);
 		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
 		Tilemap.CompressBounds();
-		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1); 
-		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1);
+		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1, ObstacleProbability); 
+		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1, ApplesProbability);
 	} 
 
 	void CutSector(int _boundX) {
@@ -82,6 +95,18 @@ public class GridManager : MonoBehaviour {
 		}
 		Tilemap.CompressBounds();
 	} 
+
+	void UpdateScenario() {
+		if ( Goat.GetComponent<GoatController>().RunSpeed + GoatSpeedDelta <= GoatSpeedMax  ) {
+			Goat.GetComponent<GoatController>().RunSpeed += GoatSpeedDelta;
+		}
+		if ( Farmer.GetComponent<FarmerController>().MoveSpeed + FarmerSpeedDelta <= FarmerSpeedMax  ) {
+			Farmer.GetComponent<FarmerController>().MoveSpeed += FarmerSpeedDelta;
+		}
+		if ( ObstacleProbability + ObstacleProbabilityDelta <= ObstacleProbabilityMax ) {
+			ObstacleProbability += ObstacleProbabilityDelta;
+		}
+	}
 
 	int GetNodeY(Tilemap tilemap) {
 		int x = tilemap.cellBounds.xMax - 1;
@@ -105,11 +130,12 @@ public class GridManager : MonoBehaviour {
 		return map;
 	}
 
-	void PlaceObstacles(int _startx, int _endx) {
-		int obstaclesNum = 0;
+	void PlaceObstacles(int _startx, int _endx, int _probability) {
+		//int obstaclesNum = 0;
 		for ( int x = _startx; x <= _endx; x++ ) {
-			obstaclesNum = obstacleHash[rand.Next(obstacleHash.Length)];
-			if ( obstaclesNum > 0 ) {
+			//obstaclesNum = obstacleHash[rand.Next(obstacleHash.Length)];
+			//if ( obstaclesNum > 0 ) {
+			if ( rand.Next(100) < _probability ) {
 				ObstacleData _obstacle = ObstacleDatas[rand.Next(ObstacleDatas.Count)];
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
 				float rndScale = _obstacle.ScaleLimits.x + rand.Next((int)(100 * (_obstacle.ScaleLimits.y-_obstacle.ScaleLimits.x))) / 100f;
@@ -135,10 +161,9 @@ public class GridManager : MonoBehaviour {
 		} 
 	}
 
-	void PlaceApples(int _startx, int _endx) {
-		int _dropRate = 20;
+	void PlaceApples(int _startx, int _endx, int _probability) {
 		for ( int x = _startx; x <= _endx; x++ ) {
-			if ( rand.Next(100) < _dropRate ) {
+			if ( rand.Next(100) < _probability ) {
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
 				pos.y += Grid.cellSize.y + 0.9f;
 				pos.x += Grid.cellSize.x / 2f;

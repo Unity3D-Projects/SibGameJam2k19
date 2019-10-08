@@ -172,7 +172,15 @@ MonoBehaviour:
   - Prefab: {fileID: 4029183667802786674, guid: 02253bbb201195144a7edbaf9a585a7d,
       type: 3}
     ScaleLimits: {x: 0.55, y: 1}
-  DeltaToBuildSector: 5
+  GoatSpeedMax: 8
+  GoatSpeedDelta: 0.1
+  FarmerSpeedMax: 3
+  FarmerSpeedDelta: 0.1
+  ObstacleProbability: 10
+  ObstacleProbabilityMax: 80
+  ObstacleProbabilityDelta: 1
+  ApplesProbability: 5
+  DeltaToBuildSector: 8
   seed: 6.5
   _obstacleDelta: 0.5
   obstacleMinScale: 0.7
