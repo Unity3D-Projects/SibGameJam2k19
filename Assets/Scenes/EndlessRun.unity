@@ -152,6 +152,7 @@ MonoBehaviour:
   Tilemap: {fileID: 1553874828}
   ForegroundGrass: {fileID: 1461391411}
   Grid: {fileID: 1920415372}
+  Obstacles: {fileID: 645614960}
   Grass: {fileID: 11400000, guid: c590ea259efd86547ba2204e82c03937, type: 2}
   GrassLeftCorner: {fileID: 11400000, guid: 868d24e80ea44a149a2f0828f9354162, type: 2}
   GrassRightCorner: {fileID: 11400000, guid: 36eb74dbf289e064f917985246e93e72, type: 2}
@@ -166,24 +167,29 @@ MonoBehaviour:
   - Prefab: {fileID: 7618553101212665598, guid: a6aa24623a8117447b6d155007957c1f,
       type: 3}
     ScaleLimits: {x: 0.9, y: 1.3}
+    PoolPath: Prefabs/Obstacles/Bush
   - Prefab: {fileID: 4007214834974537803, guid: c4b78c80f0296a14196e7f75afd025c2,
       type: 3}
     ScaleLimits: {x: 0.55, y: 1}
+    PoolPath: Prefabs/Obstacles/Rock
   - Prefab: {fileID: 4029183667802786674, guid: 02253bbb201195144a7edbaf9a585a7d,
       type: 3}
     ScaleLimits: {x: 0.55, y: 1}
-  GoatSpeedMax: 8
+    PoolPath: Prefabs/Obstacles/Stump
+  GoatSpeedMax: 5
   GoatSpeedDelta: 0.1
   FarmerSpeedMax: 3
   FarmerSpeedDelta: 0.1
-  ObstacleProbability: 10
+  ObstacleProbability: 25
   ObstacleProbabilityMax: 80
-  ObstacleProbabilityDelta: 1
-  ApplesProbability: 5
-  DeltaToBuildSector: 8
+  ObstacleProbabilityDelta: 2
+  ApplesProbability: 30
+  DeltaToBuildSector: 16
+  DeltaToCutSector: 20
+  DeltaBeforeFarmerToCut: 6
+  ObstacleVerticalShift: 0.2
+  ObstacleDelta: 0.5
   seed: 6.5
-  _obstacleDelta: 0.5
-  obstacleMinScale: 0.7
 --- !u!4 &35848190
 Transform:
   m_ObjectHideFlags: 0
@@ -915,7 +921,7 @@ MonoBehaviour:
   ShowTutorial: 0
   TutorialName: 1
   ApplesNumber: 3
-  Endless: 0
+  Endless: 1
   ExcludeYell: 1
   ExcludePiano: 1
   ExcludeMushroom: 1

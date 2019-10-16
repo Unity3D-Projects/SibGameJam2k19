@@ -3,11 +3,14 @@ using UnityEngine.Tilemaps;
 
 using System.Collections.Generic; 
 
+using SMGCore;
+
 public class GridManager : MonoBehaviour {
 
 	public Tilemap    Tilemap         = null;
 	public Tilemap    ForegroundGrass = null;
 	public GridLayout Grid            = null;
+	public Transform  Obstacles       = null;
 
 	[Header("Tiles")]
 	public TileBase       Grass            = null;
@@ -30,30 +33,49 @@ public class GridManager : MonoBehaviour {
 	public int   ObstacleProbability      = 10;
 	public int   ObstacleProbabilityMax   = 80;
 	public int   ObstacleProbabilityDelta = 1;
-	public int   ApplesProbability        = 5;
+	public int   ApplesProbability        = 5; 
+
+	[Header("MapBuilding")]
+	public int   DeltaToBuildSector     = 16;  //расстояние от козы до правого края, когда начинается ген нового блока
+	public int   DeltaToCutSector       = 30;
+	public int   DeltaBeforeFarmerToCut = 6;  //количество клеток от деда влево, до куда обрежется карта
+	public float ObstacleVerticalShift  = 0.2f;
+	public float ObstacleDelta          = 0.5f;   //minimal distance between obstacles
 
 
-
-	public int DeltaToBuildSector = 16;
 	int[,] buffer = new int[32, 8];
 	System.Random rand;
 	public float seed = 6.5f; 
 
-	float obstacleShift = 0.2f;
-	public float _obstacleDelta = 0.5f;
-	public float obstacleMinScale = 0.6f;
 
-	int[] obstacleHash = {0, 0, 0, 0, 0, 1, 1, 2, 3};
-	GameObject _previousObstacle = null;
+	GameObject _previousObstacle = null; 
+
+
+	public class ObstaclePool: PrefabPool<Obstacle> { 
+		public ObstaclePool(string _path) {
+			PresenterPrefabPath = _path;
+		}
+	}
+
 
 	[System.Serializable]
 	public class ObstacleData {
 		public GameObject Prefab = null;
 		public Vector2 ScaleLimits = new Vector2(0, 0);
+		public string PoolPath;
+		public ObstaclePool Pool;
+	}
+
+	private void InitObstacleData() {
+		for ( int i = 0; i < ObstacleDatas.Count; i++ ) {
+			ObstacleDatas[i].Pool = new ObstaclePool(ObstacleDatas[i].PoolPath);
+			ObstacleDatas[i].Pool.Init();
+		}
 	}
 
 
 	private void Start() {
+		InitObstacleData();
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
 		ForegroundGrass.ClearAllTiles();
@@ -62,17 +84,19 @@ public class GridManager : MonoBehaviour {
 
 	private void Update() { 
 		int _goatCell = Grid.WorldToCell(Goat.transform.position).x;
+		int _farmerCell = Grid.WorldToCell(Farmer.transform.position).x;
 
 		if ( Mathf.Abs(_goatCell - Tilemap.cellBounds.max.x) < DeltaToBuildSector ) {
 			BuildSector();
-			CutSector(20);
 			UpdateScenario();
-			//Debug.Log("AUTO BUILD");
+		}
+		if (  Mathf.Abs((_farmerCell - DeltaBeforeFarmerToCut) - Tilemap.cellBounds.min.x) > DeltaToCutSector  ) {
+			CutSector(_farmerCell - DeltaBeforeFarmerToCut);
 		}
 
-		if ( Input.GetKeyDown(KeyCode.N) ) {
-			CutSector(10);
-		} 
+		//if ( Input.GetKeyDown(KeyCode.N) ) {
+		//	CutSector(10);
+		//} 
 	}
 
 	void BuildSector() {
@@ -88,13 +112,27 @@ public class GridManager : MonoBehaviour {
 	} 
 
 	void CutSector(int _boundX) {
-		for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
+		Vector3 _world = Tilemap.CellToWorld(new Vector3Int(_boundX, 0, 0));
+		//for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
+		for ( int x = Tilemap.cellBounds.min.x; x < _boundX; x++ ) {
 			for ( int y = Tilemap.cellBounds.min.y; y < Tilemap.cellBounds.max.y; y++ ) {
 				Tilemap.SetTile(new Vector3Int(x, y, 0), null); 
 			}
 		}
 		Tilemap.CompressBounds();
+		foreach ( Transform obstacle in Obstacles.transform ) {
+			if ( obstacle.position.x != 0 & obstacle.position.x < _world.x ) {
+				for ( int i = 0; i < ObstacleDatas.Count; i++ ) {
+					if ( ObstacleDatas[i].Prefab.GetComponent<Obstacle>().Type == obstacle.GetComponent<Obstacle>().Type ) {
+						ObstacleDatas[i].Pool.Return(obstacle.GetComponent<Obstacle>());
+						break;
+					} 
+				}
+			}
+		}
 	} 
+
+
 
 	void UpdateScenario() {
 		if ( Goat.GetComponent<GoatController>().RunSpeed + GoatSpeedDelta <= GoatSpeedMax  ) {
@@ -116,12 +154,24 @@ public class GridManager : MonoBehaviour {
 			}
 		}
 		return 0;
-	} 
+	}
 
-	int[,] SetTextureRules(int[,] map) {
+	static int[,] SetTextureRules(int[,] map) {  //осталось еще края блоков обновлять
 		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
 			for ( int y = map.GetUpperBound(1); y >= 0; y-- ) {
 				if ( map[x, y] == 1 ) {
+					if ( x > 0 ) {
+						if ( map[x - 1, y] == 0 ) {
+							map[x, y] = 3;
+							break;
+						}
+					}
+					if ( x > 0 & x < map.GetUpperBound(0) ) {
+						if ( map[x + 1, y] == 0 ) {
+							map[x, y] = 4;
+							break;
+						}
+					}
 					map[x, y] = 2;
 					break;
 				}
@@ -131,27 +181,25 @@ public class GridManager : MonoBehaviour {
 	}
 
 	void PlaceObstacles(int _startx, int _endx, int _probability) {
-		//int obstaclesNum = 0;
 		for ( int x = _startx; x <= _endx; x++ ) {
-			//obstaclesNum = obstacleHash[rand.Next(obstacleHash.Length)];
-			//if ( obstaclesNum > 0 ) {
 			if ( rand.Next(100) < _probability ) {
 				ObstacleData _obstacle = ObstacleDatas[rand.Next(ObstacleDatas.Count)];
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
 				float rndScale = _obstacle.ScaleLimits.x + rand.Next((int)(100 * (_obstacle.ScaleLimits.y-_obstacle.ScaleLimits.x))) / 100f;
 				float _newXsize = _obstacle.Prefab.GetComponent<SpriteRenderer>().size.x * rndScale; 
-				pos.y += Grid.cellSize.y + obstacleShift;
+				pos.y += Grid.cellSize.y + ObstacleVerticalShift;
 				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + (_newXsize / 2);
 				if ( _previousObstacle != null ) {
-					float minimalDistance = _previousObstacle.transform.position.x + (_obstacle.Prefab.GetComponent<SpriteRenderer>().size.x) + _obstacleDelta; //может сделать точнее
+					float minimalDistance = _previousObstacle.transform.position.x + (_obstacle.Prefab.GetComponent<SpriteRenderer>().size.x) + ObstacleDelta; //может сделать точнее
 					if ( pos.x < minimalDistance ) {
 						pos.x = minimalDistance;
 					}
 				}
 				Vector3Int _adjCell = Grid.WorldToCell(new Vector3(pos.x + (_newXsize / 2f), pos.y));
-				//if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) != Ground && Tilemap.GetTile(_adjCell) != Grass) {
 				if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) == null) {
-					_previousObstacle = Instantiate(_obstacle.Prefab, pos, Quaternion.identity); 
+					_previousObstacle = _obstacle.Pool.Get().gameObject;
+					_previousObstacle.transform.SetParent(Obstacles);
+					_previousObstacle.transform.position = pos;
 					_previousObstacle.transform.localScale = new Vector3(rndScale, rndScale, rndScale);
 					if ( rand.Next(2) == 0 ) {
 						_previousObstacle.transform.Rotate(new Vector3(0, 180, 0));
@@ -252,16 +300,26 @@ public class GridManager : MonoBehaviour {
 				if ( map[x, y] == 1 ) {
 					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Ground);
 				} else if ( map[x, y] == 2 ) {
-					if ( tilemap.GetTile(new Vector3Int(_tx - 1, _ty - shift, 0)) == null ) {
-						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassLeftCorner);
-					} else if ( tilemap.GetTile(new Vector3Int(_tx + 1, _ty - shift, 0)) == null & x < map.GetUpperBound(0) ) {
-						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassRightCorner);
-					} else {
-						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
-					}
+					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
+					//if ( tilemap.GetTile(new Vector3Int(_tx - 1, _ty, 0)) == null ) {
+					//	tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassLeftCorner);
+					//} else if ( tilemap.GetTile(new Vector3Int(_tx + 1, _ty - shift, 0)) == null & x < map.GetUpperBound(0) ) {
+					//	tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassRightCorner);
+					//} else {
+					//	tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
+					//}
+				} else if ( map[x, y] == 3 ) {
+					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassLeftCorner);
+				} else if ( map[x, y] == 4 ) {
+					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassRightCorner);
 				}
 			}
 		}
+
+		if ( tilemap.GetTile(new Vector3Int(shiftX, GetTopGroundIndex(shiftX - 1), 0)) == null ) {
+			tilemap.SetTile(new Vector3Int(shiftX-1, GetTopGroundIndex(shiftX - 1), 0), GrassRightCorner); 
+		}
+
 		for ( int x = shiftX; x < Tilemap.cellBounds.max.x; x++ ) { //дополняем снизу земли чтоб не было просветов
 			for ( int k = -1; k > -4; k-- ) {
 				tilemap.SetTile(new Vector3Int(x, k - shift, 0), Ground); 

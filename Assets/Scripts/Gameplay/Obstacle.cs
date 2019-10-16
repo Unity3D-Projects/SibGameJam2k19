@@ -7,11 +7,12 @@ using KOZA.Events;
 public enum ObstacleType {
 	Bush,
 	Stump,
+	Rock,
 	Bee,
 	Hedgehog
 }
 
-public class Obstacle : MonoBehaviour {
+public class Obstacle : MonoBehaviour, IPoolItem {
 	public ObstacleType Type         = ObstacleType.Bush;
 	public float        CoolDownTime = 1f;
 
@@ -38,5 +39,8 @@ public class Obstacle : MonoBehaviour {
 
 		_lastHitTime = curTime;
 		EventManager.Fire(new Event_Obstacle_Collided { Obstacle = this });
+	}
+	public void DeInit() {
+		transform.position = new Vector3(0, -1, 0);
 	}
 }

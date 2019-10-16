@@ -13,11 +13,11 @@ public sealed class FarmerController : MonoBehaviour {
 	public Animation     Anim       = null;
 
 	//хз как это правильно оформить
-	protected ContactFilter2D contactFilter;
-	protected RaycastHit2D[] hitBuffer = new RaycastHit2D[2];
-	protected Rigidbody2D rb2d;
-	protected Vector2 _cast = new Vector2(1, 0);
-	protected float distance = 1;
+	ContactFilter2D contactFilter;
+	RaycastHit2D[] hitBuffer = new RaycastHit2D[2];
+	Rigidbody2D rb2d;
+	Vector2 _cast = new Vector2(1, 0);
+	float distance = 1;
 
 	bool _started = false;
 
