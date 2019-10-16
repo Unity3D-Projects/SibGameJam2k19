@@ -74,7 +74,7 @@ public class GridManager : MonoBehaviour {
 	}
 
 
-	private void Start() {
+	private void Start() { 
 		InitObstacleData();
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
@@ -213,11 +213,18 @@ public class GridManager : MonoBehaviour {
 		for ( int x = _startx; x <= _endx; x++ ) {
 			if ( rand.Next(100) < _probability ) {
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
-				pos.y += Grid.cellSize.y + 0.9f;
+				pos.y += Grid.cellSize.y + 0.8f;
 				pos.x += Grid.cellSize.x / 2f;
-				Instantiate(Apple, pos, Quaternion.identity);
+				var a = Instantiate(Apple, pos, Quaternion.identity);
+				foreach ( Transform obstacle in Obstacles.transform ) {
+					if ( Mathf.Abs( obstacle.position.x - pos.x) < 1 ) {
+						if ( IsOverlapping(a, obstacle.gameObject) ) {
+							a.transform.position += new Vector3(0, 0.5f, 0);
+						}
+					}
+				}
 			}
-		} 
+		}
 	}
 
 	int GetTopGroundIndex(int x) {
@@ -336,5 +343,12 @@ public class GridManager : MonoBehaviour {
 				}
 			}
 		} 
+	}
+
+	public static bool IsOverlapping(GameObject o1, GameObject o2) {
+		float m1 = o1.GetComponent<SpriteRenderer>().size.magnitude;
+		float m2 = o2.GetComponent<SpriteRenderer>().size.magnitude;
+		Vector2 result = o1.transform.position - o2.transform.position;
+		return result.magnitude < (m1 + m2) / 2f; 
 	}
 }
