@@ -153,6 +153,7 @@ MonoBehaviour:
   ForegroundGrass: {fileID: 1461391411}
   Grid: {fileID: 1920415372}
   Obstacles: {fileID: 645614960}
+  Apples: {fileID: 1345786202}
   Grass: {fileID: 11400000, guid: c590ea259efd86547ba2204e82c03937, type: 2}
   GrassLeftCorner: {fileID: 11400000, guid: 868d24e80ea44a149a2f0828f9354162, type: 2}
   GrassRightCorner: {fileID: 11400000, guid: 36eb74dbf289e064f917985246e93e72, type: 2}
@@ -1600,7 +1601,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345786201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 61.58636, y: 0.25235045, z: -11.878054}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

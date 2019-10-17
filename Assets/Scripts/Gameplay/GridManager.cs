@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour {
 	public Tilemap    ForegroundGrass = null;
 	public GridLayout Grid            = null;
 	public Transform  Obstacles       = null;
+	public Transform  Apples          = null;
 
 	[Header("Tiles")]
 	public TileBase       Grass            = null;
@@ -130,6 +131,11 @@ public class GridManager : MonoBehaviour {
 				}
 			}
 		}
+		foreach ( Transform apple in Apples.transform ) {
+			if ( apple.position.x < _world.x ) {
+				Destroy(apple.gameObject); 
+			} 
+		}
 	} 
 
 
@@ -215,7 +221,7 @@ public class GridManager : MonoBehaviour {
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
 				pos.y += Grid.cellSize.y + 0.8f;
 				pos.x += Grid.cellSize.x / 2f;
-				var a = Instantiate(Apple, pos, Quaternion.identity);
+				var a = Instantiate(Apple, pos, Quaternion.identity, Apples);
 				foreach ( Transform obstacle in Obstacles.transform ) {
 					if ( Mathf.Abs( obstacle.position.x - pos.x) < 1 ) {
 						if ( IsOverlapping(a, obstacle.gameObject) ) {
