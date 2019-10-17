@@ -80,7 +80,17 @@ public class GridManager : MonoBehaviour {
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
 		ForegroundGrass.ClearAllTiles();
-		BuildSector();
+
+		//BuildSector(); 
+		buffer = RandomWalkTopSmoothed(buffer, rand, 2);
+		buffer = SetTextureRules(buffer);
+		int _x = Tilemap.cellBounds.max.x;
+		int _y = GetNodeY(Tilemap);
+		int sh = RenderMap(buffer, Tilemap, _x, _y);
+		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
+		Tilemap.CompressBounds();
+		PlaceObstacles(4, Tilemap.cellBounds.max.x - 1, ObstacleProbability);  //BuildSector скопирован из-за этой строчки, чтобы не начинать в препятствии
+		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1, ApplesProbability);
 	} 
 
 	private void Update() { 
@@ -117,8 +127,12 @@ public class GridManager : MonoBehaviour {
 		//for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
 		for ( int x = Tilemap.cellBounds.min.x; x < _boundX; x++ ) {
 			for ( int y = Tilemap.cellBounds.min.y; y < Tilemap.cellBounds.max.y; y++ ) {
+				//var vec = new Vector3Int(x,y,0);
 				Tilemap.SetTile(new Vector3Int(x, y, 0), null); 
+				//Tilemap.SetTile(vec, null);
+				//ForegroundGrass.SetTile(vec, null);
 			}
+			ForegroundGrass.SetTile(new Vector3Int(x, GetUpperBound(ForegroundGrass, x), 0), null);
 		}
 		Tilemap.CompressBounds();
 		foreach ( Transform obstacle in Obstacles.transform ) {
@@ -160,6 +174,14 @@ public class GridManager : MonoBehaviour {
 			}
 		}
 		return 0;
+	}
+	int GetUpperBound(Tilemap tilemap, int x) {
+		for ( int y = tilemap.cellBounds.yMax; y >= tilemap.cellBounds.yMin; y-- ) {
+			if ( tilemap.GetTile(new Vector3Int(x, y, 0)) != null ) {
+				return y;
+			}
+		}
+		return 0; 
 	}
 
 	static int[,] SetTextureRules(int[,] map) {  //осталось еще края блоков обновлять
@@ -343,7 +365,7 @@ public class GridManager : MonoBehaviour {
 	public void RenderGrassMap(int[,] map, Tilemap tilemap, int shiftX, int shiftY) {
 		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
 			for ( int y = 0; y <= map.GetUpperBound(1); y++ ) {
-				if ( map[x, y] == 2 ) {
+				if ( map[x, y] != 0 & map[x, y] != 1 ) {
 					tilemap.SetTile(new Vector3Int(shiftX + x, y - shiftY + 1, 0), DecorGrass[rand.Next(DecorGrass.Count)]);
 					break;
 				}
