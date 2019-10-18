@@ -90,8 +90,13 @@ public class GridManager : MonoBehaviour {
 		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
 		Tilemap.CompressBounds();
 		PlaceObstacles(4, Tilemap.cellBounds.max.x - 1, ObstacleProbability);  //BuildSector скопирован из-за этой строчки, чтобы не начинать в препятствии
-		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1, ApplesProbability);
-	} 
+		PlaceApples(4, Tilemap.cellBounds.max.x - 1, ApplesProbability);
+
+		//Vector3Int goatCellIndex = Tilemap.WorldToCell(Goat.transform.position);
+		//Vector3 goatCellPos = Tilemap.CellToWorld(new Vector3Int(goatCellIndex.x, GetUpperBound(Tilemap, goatCellIndex.x), 0));
+		//Goat.transform.position = new Vector3(Goat.transform.position.x, goatCellPos.y + Tilemap.layoutGrid.cellSize.y + 0.2f);
+
+	}
 
 	private void Update() { 
 		int _goatCell = Grid.WorldToCell(Goat.transform.position).x;
@@ -124,13 +129,9 @@ public class GridManager : MonoBehaviour {
 
 	void CutSector(int _boundX) {
 		Vector3 _world = Tilemap.CellToWorld(new Vector3Int(_boundX, 0, 0));
-		//for ( int x = Tilemap.cellBounds.min.x; x < Tilemap.cellBounds.min.x + _boundX; x++ ) {
 		for ( int x = Tilemap.cellBounds.min.x; x < _boundX; x++ ) {
 			for ( int y = Tilemap.cellBounds.min.y; y < Tilemap.cellBounds.max.y; y++ ) {
-				//var vec = new Vector3Int(x,y,0);
 				Tilemap.SetTile(new Vector3Int(x, y, 0), null); 
-				//Tilemap.SetTile(vec, null);
-				//ForegroundGrass.SetTile(vec, null);
 			}
 			ForegroundGrass.SetTile(new Vector3Int(x, GetUpperBound(ForegroundGrass, x), 0), null);
 		}
