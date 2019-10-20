@@ -170,6 +170,7 @@ public sealed class JumpState : State {
 		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
 		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 		SoundManager.Instance.PlaySound("Jump");
+		Controller.CharController.GravityModifier = Controller.CharController.GravityModifierBaseValue;
 		Controller.Jump();
 	}
 
