@@ -3324,7 +3324,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   player: {fileID: 0}
-  initDelta: 10
+  initDelta: 8
 --- !u!1 &1208076745
 GameObject:
   m_ObjectHideFlags: 0

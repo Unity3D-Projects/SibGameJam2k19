@@ -82,19 +82,25 @@ public class GridManager : MonoBehaviour {
 		ForegroundGrass.ClearAllTiles();
 
 		//BuildSector(); 
-		buffer = RandomWalkTopSmoothed(buffer, rand, 2);
-		buffer = SetTextureRules(buffer);
+		//buffer = RandomWalkTopSmoothed(buffer, rand, 2);
+		//buffer = SetTextureRules(buffer);
 		int _x = Tilemap.cellBounds.max.x;
 		int _y = GetNodeY(Tilemap);
-		int sh = RenderMap(buffer, Tilemap, _x, _y);
-		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
+		int[,] straight = BuildStraight(8);
+		straight = SetTextureRules(straight);
+		int sh = RenderMap(straight, Tilemap, _x, _y);
+		RenderGrassMap(straight, ForegroundGrass, _x, sh);
 		Tilemap.CompressBounds();
-		PlaceObstacles(4, Tilemap.cellBounds.max.x - 1, ObstacleProbability);  //BuildSector скопирован из-за этой строчки, чтобы не начинать в препятствии
-		PlaceApples(4, Tilemap.cellBounds.max.x - 1, ApplesProbability);
+		//PlaceObstacles(4, Tilemap.cellBounds.max.x - 1, ObstacleProbability);  //BuildSector скопирован из-за этой строчки, чтобы не начинать в препятствии
+		//PlaceApples(4, Tilemap.cellBounds.max.x - 1, ApplesProbability);
 
-		//Vector3Int goatCellIndex = Tilemap.WorldToCell(Goat.transform.position);
-		//Vector3 goatCellPos = Tilemap.CellToWorld(new Vector3Int(goatCellIndex.x, GetUpperBound(Tilemap, goatCellIndex.x), 0));
-		//Goat.transform.position = new Vector3(Goat.transform.position.x, goatCellPos.y + Tilemap.layoutGrid.cellSize.y + 0.2f);
+		Vector3Int goatCellIndex = Tilemap.WorldToCell(Goat.transform.position);
+		Vector3 goatCellPos = Tilemap.CellToWorld(new Vector3Int(goatCellIndex.x, GetUpperBound(Tilemap, goatCellIndex.x), 0));
+		Goat.transform.position = new Vector3(Goat.transform.position.x, goatCellPos.y + Tilemap.layoutGrid.cellSize.y + 0.2f);
+
+		Vector3Int farmerCellIndex = Tilemap.WorldToCell(Farmer.transform.position);
+		Vector3 farmerCellPos = Tilemap.CellToWorld(new Vector3Int(farmerCellIndex.x, GetUpperBound(Tilemap, farmerCellIndex.x), 0));
+		Farmer.transform.position = new Vector3(Farmer.transform.position.x, farmerCellPos.y + Tilemap.layoutGrid.cellSize.y + 1f);
 
 	}
 
@@ -276,7 +282,16 @@ public class GridManager : MonoBehaviour {
 	}
 
 
-	//------------------Взято из юнитевских доков
+	int[,] BuildStraight(int len) {
+		int[,] map = new int[len, 4];
+		for ( int i = 0; i <= map.GetUpperBound(0); i++ ) {
+			for ( int j = 0; j <= map.GetUpperBound(1); j++ ) {
+				map[i, j] = 1;
+			}
+		}
+		return map;
+	}
+
 	public static int[,] RandomWalkTopSmoothed(int[,] map, System.Random rnd, int minSectionWidth) {
 		//System.Random rand = new System.Random(seed.GetHashCode());
 
