@@ -77,7 +77,8 @@ public sealed class FarmerController : MonoBehaviour {
 				break;
 			}
 		}
-		if ( LevelSettings.Instance.Endless & Controller.Grounded ) {
+		//if ( LevelSettings.Instance.Endless & Controller.Grounded ) {
+		if ( Controller.Grounded ) {
 			UpdateObstacleJumping(); 
 		}
 	}

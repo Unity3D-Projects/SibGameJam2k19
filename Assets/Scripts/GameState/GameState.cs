@@ -238,6 +238,11 @@ public sealed class GameState : MonoSingleton<GameState> {
 			return;
 		}
 
+		if ( e.Obstacle.Type == ObstacleType.Rock ) {
+			Goat.CurrentState.TryChangeState(new ObstacleState(Goat));
+			return;
+		}
+
 		if ( e.Obstacle.Type == ObstacleType.Hedgehog ) {
 			Goat.CurrentState.TryChangeState(new ObstacleState(Goat));
 			return;
