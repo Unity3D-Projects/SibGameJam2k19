@@ -103,6 +103,9 @@ public sealed class GameState : MonoSingleton<GameState> {
 		if ( ls.ExcludePiano ) {
 			UICanvas.transform.Find("ButtonPiano").gameObject.SetActive(false); 
 		}
+		if ( ls.ChangeFarmerSpeed ) {
+			Farmer.MoveSpeed = ls.NewFarmerSpeed; 
+		}
 
 		BoostWatcher.Init(this);
 

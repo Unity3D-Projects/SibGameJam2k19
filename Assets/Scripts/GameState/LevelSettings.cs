@@ -15,6 +15,10 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 	public bool ExcludeYell     = false;
 	public bool ExcludePiano    = false;
 	public bool ExcludeMushroom = false;
+
+	[Header("Speed")]
+	public bool  ChangeFarmerSpeed = false;
+	public float NewFarmerSpeed    = 0;
 }
 
 public enum LevelCompleteAction {
