@@ -1889,12 +1889,12 @@ PrefabInstance:
     - target: {fileID: 3178253738400340325, guid: f77d0527cc70771468bfc730962749c4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.81
+      value: 10.86
       objectReference: {fileID: 0}
     - target: {fileID: 3178253738400340325, guid: f77d0527cc70771468bfc730962749c4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.95
+      value: 4.44
       objectReference: {fileID: 0}
     - target: {fileID: 3178253738400340325, guid: f77d0527cc70771468bfc730962749c4,
         type: 3}
@@ -8354,7 +8354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CompleteAction: 0
-  NextSceneName: Level7
+  NextSceneName: BaseLevelWithGrid
   DialogName: 
   ShowTutorial: 0
   TutorialName: 4
