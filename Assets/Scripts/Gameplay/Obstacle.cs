@@ -40,7 +40,7 @@ public class Obstacle : MonoBehaviour, IPoolItem {
 		_lastHitTime = curTime;
 		EventManager.Fire(new Event_Obstacle_Collided { Obstacle = this });
 	}
-	public void DeInit() {
+	public virtual void DeInit() {
 		transform.position = new Vector3(0, -1, 0);
 	}
 }

@@ -20,7 +20,7 @@ public sealed class Hedgehog : Obstacle {
 
 	void OnGoatYell(Event_GoatYell e ) {
 		var goat = GameState.Instance.Goat;
-		var distance = transform.position.x - goat.transform.position.x;
+		var distance = Mathf.Abs(transform.position.x - goat.transform.position.x);
 		if ( _active && distance < TurnOffDistance ) {
 			_active = false;
 			PlayScareAnimation();
@@ -36,5 +36,12 @@ public sealed class Hedgehog : Obstacle {
 		if ( _active ) {
 			base.OnTriggerEnter2D(other);
 		}
+	}
+	public override void DeInit() {
+		ScaredVisual.SetActive(false);
+		NormalVisual.SetActive(true);
+		_active = true;
+		transform.localScale.Set(1, 1, 1);
+		transform.position = new Vector3(0, -1, 0);
 	}
 }

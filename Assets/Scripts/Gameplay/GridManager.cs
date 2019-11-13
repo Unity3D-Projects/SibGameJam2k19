@@ -12,6 +12,8 @@ public class GridManager : MonoBehaviour {
 	public GridLayout Grid            = null;
 	public Transform  Obstacles       = null;
 	public Transform  Apples          = null;
+	public Transform  Bees            = null;
+	public Transform  Hogs            = null;
 
 	[Header("Tiles")]
 	public TileBase       Grass            = null;
@@ -42,19 +44,31 @@ public class GridManager : MonoBehaviour {
 	public int   DeltaBeforeFarmerToCut = 6;  //количество клеток от деда влево, до куда обрежется карта
 	public float ObstacleVerticalShift  = 0.2f;
 	public float ObstacleDelta          = 0.5f;   //minimal distance between obstacles
-
+	public int   MaxHogsOnTenCells      = 1;
 
 	int[,] buffer = new int[32, 8];
 	System.Random rand;
 	public float seed = 6.5f; 
 
 
-	GameObject _previousObstacle = null; 
+	GameObject _previousObstacle = null;
+	HogPool hogPool = new HogPool();
+	BeePool beePool = new BeePool();
 
 
 	public class ObstaclePool: PrefabPool<Obstacle> { 
 		public ObstaclePool(string _path) {
 			PresenterPrefabPath = _path;
+		}
+	} 
+	public class HogPool: PrefabPool<Hedgehog> {
+		public HogPool() {
+			PresenterPrefabPath = "Prefabs/Hedgehog";
+		}
+	} 
+	public class BeePool: PrefabPool<Obstacle> {
+		public BeePool() {
+			PresenterPrefabPath = "Prefabs/bee"; 
 		}
 	}
 
@@ -77,6 +91,9 @@ public class GridManager : MonoBehaviour {
 
 	private void Start() { 
 		InitObstacleData();
+		hogPool.Init();
+		beePool.Init();
+		
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
 		ForegroundGrass.ClearAllTiles();
@@ -129,8 +146,18 @@ public class GridManager : MonoBehaviour {
 		int sh = RenderMap(buffer, Tilemap, _x, _y);
 		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
 		Tilemap.CompressBounds();
-		PlaceObstacles(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1, ObstacleProbability); 
-		PlaceApples(Tilemap.cellBounds.max.x - buffer.GetUpperBound(0), Tilemap.cellBounds.max.x - 1, ApplesProbability);
+		int _x0 = Tilemap.cellBounds.max.x - buffer.GetUpperBound(0);
+		int _x1 = Tilemap.cellBounds.max.x - 2; // -1 потому что бауд зачем-то ставит одну пустую линию в конце и еще -1 из-за граничных условий расстановки препятствий
+
+		var CellsStates = new Dictionary<int, int>();
+		for ( int i = _x0; i < _x1; i++ ) {
+			CellsStates.Add(i, 0);
+		}
+
+		PlaceHogs(MaxHogsOnTenCells, CellsStates);
+		PlaceBees(MaxHogsOnTenCells, CellsStates);
+		PlaceObstacles(ObstacleProbability, CellsStates);
+		PlaceApples(ApplesProbability, CellsStates);
 	} 
 
 	void CutSector(int _boundX) {
@@ -155,6 +182,16 @@ public class GridManager : MonoBehaviour {
 		foreach ( Transform apple in Apples.transform ) {
 			if ( apple.position.x < _world.x ) {
 				Destroy(apple.gameObject); 
+			} 
+		}
+		foreach ( Transform bee in Bees ) {
+			if ( bee.position.x != 0 & bee.position.x < _world.x ) {
+				beePool.Return(bee.GetComponent<Obstacle>()); 
+			} 
+		}
+		foreach ( Transform hog in Hogs ) {
+			if ( hog.position.x != 0 & hog.position.x < _world.x ) {
+				hogPool.Return(hog.GetComponent<Hedgehog>()); 
 			} 
 		}
 	} 
@@ -215,23 +252,39 @@ public class GridManager : MonoBehaviour {
 		return map;
 	}
 
-	void PlaceObstacles(int _startx, int _endx, int _probability) {
-		for ( int x = _startx; x <= _endx; x++ ) {
-			if ( rand.Next(100) < _probability ) {
+	void PlaceObstacles(int _probability, Dictionary<int, int> cells) {
+		var freeCells = new List<int>();
+		foreach ( KeyValuePair<int, int> c in cells ) {
+			if ( c.Value == 0 ) {
+				freeCells.Add(c.Key);
+			}
+		}
+		for ( int i = 0; i < freeCells.Count; i++ ) {
+
+			int x = freeCells[i];
+			if ( rand.Next(100) <= _probability ) {
 				ObstacleData _obstacle = ObstacleDatas[rand.Next(ObstacleDatas.Count)];
-				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
+				int y = GetTopGroundIndex(x);
+				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, y, 0));
+				float constraintLeft = pos.x;
+				float constraintRight = pos.x + Grid.cellSize.x;
 				float rndScale = _obstacle.ScaleLimits.x + rand.Next((int)(100 * (_obstacle.ScaleLimits.y-_obstacle.ScaleLimits.x))) / 100f;
 				float _newXsize = _obstacle.Prefab.GetComponent<SpriteRenderer>().size.x * rndScale; 
 				pos.y += Grid.cellSize.y + ObstacleVerticalShift;
-				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + (_newXsize / 2);
+				int leftConstraint = 0;
+				if (  Tilemap.GetTile(new Vector3Int(x - 1, y + 1, 0)) != null | Tilemap.GetTile(new Vector3Int(x - 1, y, 0)) == null  ) {
+					leftConstraint = 1; 
+				}
+				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + leftConstraint * (_newXsize / 2);
 				if ( _previousObstacle != null ) {
 					float minimalDistance = _previousObstacle.transform.position.x + (_obstacle.Prefab.GetComponent<SpriteRenderer>().size.x) + ObstacleDelta; //может сделать точнее
 					if ( pos.x < minimalDistance ) {
 						pos.x = minimalDistance;
 					}
 				}
+				pos = new Vector2(Mathf.Clamp(pos.x, constraintLeft, constraintRight), pos.y);
 				Vector3Int _adjCell = Grid.WorldToCell(new Vector3(pos.x + (_newXsize / 2f), pos.y));
-				if (Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) == null) {
+				if ( Tilemap.GetTile(new Vector3Int(_adjCell.x, _adjCell.y - 1, _adjCell.z)) != null && Tilemap.GetTile(_adjCell) == null ) {
 					_previousObstacle = _obstacle.Pool.Get().gameObject;
 					_previousObstacle.transform.SetParent(Obstacles);
 					_previousObstacle.transform.position = pos;
@@ -239,25 +292,100 @@ public class GridManager : MonoBehaviour {
 					if ( rand.Next(2) == 0 ) {
 						_previousObstacle.transform.Rotate(new Vector3(0, 180, 0));
 					}
+					cells[x] = 3;
 				} 
 			}
 		} 
 	}
 
-	void PlaceApples(int _startx, int _endx, int _probability) {
-		for ( int x = _startx; x <= _endx; x++ ) {
-			if ( rand.Next(100) < _probability ) {
-				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, GetTopGroundIndex(x), 0));
-				pos.y += Grid.cellSize.y + 0.8f;
-				pos.x += Grid.cellSize.x / 2f;
-				var a = Instantiate(Apple, pos, Quaternion.identity, Apples);
-				foreach ( Transform obstacle in Obstacles.transform ) {
-					if ( Mathf.Abs( obstacle.position.x - pos.x) < 1 ) {
-						if ( IsOverlapping(a, obstacle.gameObject) ) {
-							a.transform.position += new Vector3(0, 0.5f, 0);
-						}
+	void PlaceApples(int _probability, Dictionary<int, int> cells) {
+		foreach ( KeyValuePair<int, int> c in cells ) {
+			if ( c.Value == 0 | c.Value == 3 ) {
+				if ( rand.Next(100) <= _probability ) {
+					Vector2 pos = Grid.CellToWorld(new Vector3Int(c.Key, GetTopGroundIndex(c.Key), 0));
+					pos.y += Grid.cellSize.y + 0.8f;
+					pos.x += Grid.cellSize.x / 2f;
+					var a = Instantiate(Apple, pos, Quaternion.identity, Apples);
+					if ( c.Value == 3 ) {
+						a.transform.position += new Vector3(0, 0.5f, 0); 
 					}
+				} 
+			}
+		}
+	}
+
+	void PlaceHogs(int _maxNum, Dictionary<int, int> cells) {
+		int hogNum = 0;
+		for ( int i = 0; i <= cells.Count / 10; i++ ) {
+			hogNum += rand.Next(_maxNum + 1);
+		}
+		var freeCells = new List<int>();
+		foreach ( KeyValuePair<int, int> c in cells ) {
+			if ( c.Value == 0 ) {
+				if ( Tilemap.GetTile(new Vector3Int(c.Key - 1, GetUpperBound(Tilemap, c.Key) + 1, 0)) == null & Tilemap.GetTile(new Vector3Int(c.Key + 1, GetUpperBound(Tilemap, c.Key) + 1, 0)) == null ) {
+					freeCells.Add(c.Key);
+				} 
+			} 
+		}
+		for ( int i = 0; i < hogNum; i++ ) {
+			int rndIndex = rand.Next(freeCells.Count);
+			int rndX = freeCells[rndIndex];
+
+			for ( int j = rndX - 1; j <= rndX + 1; j++ ) {
+				freeCells.Remove(j);
+				if ( cells.ContainsKey(j) ) {
+					cells[j] = 1; 
 				}
+			} 
+
+			Vector2 pos = Grid.CellToWorld(new Vector3Int(rndX, GetTopGroundIndex(rndX), 0));
+			pos.y += Grid.cellSize.y + 0.8f;
+			pos.x += Grid.cellSize.x / 2f;
+			var hog = hogPool.Get().gameObject;
+			hog.transform.SetParent(Hogs);
+			hog.transform.position = pos;
+			float rndScale = 0.75f + rand.Next(20) / 100f;
+			hog.transform.localScale = new Vector3(rndScale, rndScale, 1);
+			if ( rand.Next(4) == 0 ) {
+				hog.transform.Rotate(new Vector3(0, 180, 0));
+			}
+		}
+	}
+	void PlaceBees(int _maxNum, Dictionary<int, int> cells) {
+		int beeNum = 0;
+		for ( int i = 0; i <= cells.Count / 10; i++ ) {
+			beeNum += rand.Next(_maxNum + 1);
+		}
+		var freeCells = new List<int>();
+		foreach ( KeyValuePair<int, int> c in cells ) {
+			if ( c.Value == 0 ) {
+				if ( Tilemap.GetTile(new Vector3Int(c.Key - 1, GetUpperBound(Tilemap, c.Key) + 1, 0)) == null & Tilemap.GetTile(new Vector3Int(c.Key + 1, GetUpperBound(Tilemap, c.Key) + 1, 0)) == null ) {
+					freeCells.Add(c.Key);
+				} 
+			} 
+		}
+		for ( int i = 0; i < beeNum; i++ ) {
+			int rndIndex = rand.Next(freeCells.Count);
+			int rndX = freeCells[rndIndex];
+			for ( int j = rndX - 1; j <= rndX + 1; j++ ) {
+				freeCells.Remove(j);
+				if ( cells.ContainsKey(j) ) {
+					cells[j] = 2; 
+				}
+			}
+			Vector2 pos = Grid.CellToWorld(new Vector3Int(rndX, GetTopGroundIndex(rndX), 0));
+			pos.y += Grid.cellSize.y + 1.4f;
+			pos.x += Grid.cellSize.x / 2f;
+			var bee = beePool.Get().gameObject;
+			bee.transform.SetParent(Bees); 
+			if ( Tilemap.GetTile(new Vector3Int(rndX - 1, GetTopGroundIndex(rndX), 0)) == null ) {
+				pos += new Vector2(0, 0.25f);
+			}
+			bee.transform.position = pos;
+			float rndScale = 0.75f + rand.Next(25) / 100f;
+			bee.transform.localScale = new Vector3(rndScale, rndScale, 1);
+			if ( rand.Next(4) == 0 ) {
+				bee.transform.Rotate(new Vector3(0, 180, 0));
 			}
 		}
 	}
