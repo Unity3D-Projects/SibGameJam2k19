@@ -97,6 +97,9 @@ public sealed class GameState : MonoSingleton<GameState> {
 		if ( ls.ExcludeYell ) {
 			UICanvas.transform.Find("ButtonYell").gameObject.SetActive(false);
 		}
+		if ( ls.ExcludeClone ) {
+			UICanvas.transform.Find("ButtonClone").gameObject.SetActive(false); 
+		}
 		if ( ls.ExcludeMushroom ) {
 			UICanvas.transform.Find("ButtonSpeedUp").gameObject.SetActive(false); 
 		}
@@ -341,7 +344,8 @@ public class BoostWatcher {
 			case BoostType.Clone:
 				return true;
 			case BoostType.Piano:
-				return _owner.Farmer.Controller.Grounded;
+				return true;
+				//return _owner.Farmer.Controller.Grounded;
 			default:
 				break;
 		}

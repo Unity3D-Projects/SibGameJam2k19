@@ -13,8 +13,9 @@ public class LevelSettings : MonoSingleton<LevelSettings> {
 
 	[Header("Excluding Perks")] 
 	public bool ExcludeYell     = false;
-	public bool ExcludePiano    = false;
+	public bool ExcludeClone    = false;
 	public bool ExcludeMushroom = false;
+	public bool ExcludePiano    = false;
 
 	[Header("Speed")]
 	public bool  ChangeFarmerSpeed = false;

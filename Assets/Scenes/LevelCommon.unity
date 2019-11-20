@@ -2901,7 +2901,7 @@ MonoBehaviour:
     Price: 2
     EffectTime: 4
   - Type: 2
-    Price: 6
+    Price: 4
     EffectTime: 2.5
   BoostButtons:
   - {fileID: 1368789547}

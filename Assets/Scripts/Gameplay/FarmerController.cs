@@ -16,8 +16,8 @@ public sealed class FarmerController : MonoBehaviour {
 	ContactFilter2D contactFilter;
 	RaycastHit2D[] hitBuffer = new RaycastHit2D[2];
 	Rigidbody2D rb2d;
-	Vector2 _cast = new Vector2(1, 0);
-	float distance = 1;
+	Vector2 _cast = new Vector2(1.2f, 0);
+	float distance = 1.2f;
 
 	bool _started = false;
 
