@@ -207,7 +207,7 @@ public sealed class SlideState : State {
 			GoatState.Jump,
 		};
 		Type = GoatState.Slide;
-		//TimeToExit = 1.5f;   если вернуть, появляется баг: пока катишься спамишь прыжок и в момент выхода козу глючит
+		//TimeToExit = 1.5f;   РµСЃР»Рё РІРµСЂРЅСѓС‚СЊ, РїРѕСЏРІР»СЏРµС‚СЃСЏ Р±Р°Рі: РїРѕРєР° РєР°С‚РёС€СЊСЃСЏ СЃРїР°РјРёС€СЊ РїСЂС‹Р¶РѕРє Рё РІ РјРѕРјРµРЅС‚ РІС‹С…РѕРґР° РєРѕР·Сѓ РіР»СЋС‡РёС‚
 		ExitState = GoatState.Run;
 	}
 
@@ -263,6 +263,7 @@ public sealed class SlowDownState : State {
 		Controller.SetRunSpeed(Controller.SlowSpeed);
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
+		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 	}
 
 	protected override void LeaveState() {
@@ -276,6 +277,9 @@ public sealed class SlowDownState : State {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new JumpState(Controller));
 		}
+	}
+	void OnJumpFall(Event_JumpMaxHeightReached e) {
+		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
 	}
 
 	void OnYellButtonPushed(Event_YellButtonPushed e) {
@@ -300,6 +304,7 @@ public sealed class ObstacleState : State {
 		base.Init();
 		Controller.SetRunSpeed(0, true);
 		EventManager.Subscribe< Event_JumpButtonPushed>(this,OnJumpButtonPushed);
+		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 		SoundManager.Instance.PlaySound("Hit");
 	}
 
@@ -320,6 +325,9 @@ public sealed class ObstacleState : State {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new JumpState(Controller));
 		}
+	}
+	void OnJumpFall(Event_JumpMaxHeightReached e) {
+		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
 	}
 }
 
