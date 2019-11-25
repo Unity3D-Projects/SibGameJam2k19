@@ -290,7 +290,13 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	public void UpdateBoostButtonsAvailability() {
 		foreach ( var button in BoostButtons ) {
-			var price =BoostWatcher.GetBoostPrice(button.GetComponent<BoostButton>().BoostType);
+			var type = button.GetComponent<BoostButton>().BoostType;
+			if ( !Instance.BoostWatcher.CanActivateBoost(type) ) {
+				button.GetComponent<Button>().interactable = false;
+				continue;
+			}
+			//var price =BoostWatcher.GetBoostPrice(button.GetComponent<BoostButton>().BoostType);
+			var price =BoostWatcher.GetBoostPrice(type);
 			if ( Score >= price ) {
 				button.GetComponent<Button>().interactable = true;
 			} else {
@@ -361,10 +367,12 @@ public class BoostWatcher {
 			_owner.SpendScore(price);
 			_activeBoost = GetAction(e.Type);
 		}
+		_owner.UpdateBoostButtonsAvailability();
 	}
 
 	void OnBoostEnded(Event_BoostEnded e) {
 		_activeBoost = null;
+		_owner.UpdateBoostButtonsAvailability();
 	}
 
 	BoostAction GetAction(BoostType type) {
