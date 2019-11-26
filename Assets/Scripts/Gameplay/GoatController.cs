@@ -47,7 +47,7 @@ public class State {
 		if ( TimeToExit >= 0 && ExitState != GoatState.None && !GameState.Instance.TimeController.IsPause ) {
 			var curTime = GameState.Instance.TimeController.CurrentTime;
 			if ( curTime > TimeToExit + EnterTime ) {
-				LeaveState();
+				//LeaveState();
 				TryChangeState(CreateStateFromEnum(ExitState));
 				return;
 			}
@@ -59,8 +59,11 @@ public class State {
 	protected virtual void LeaveState() {}
 
 	public void TryChangeState(State newState) {
+		Debug.Log("CALLING TRYCHANGESTATE "  + Time.frameCount);
 		if ( newState != null && CanChangeState(newState.Type) ) {
+			Debug.Log("TRYING TO CHANGE STATE TO: " + newState.Type);
 			ChangeState(newState);
+			Debug.Log("SUCESSFULLY CHANGED TO: " + newState.Type);
 		}
 	}
 
@@ -121,6 +124,7 @@ public sealed class RunState : State {
 		EventManager.Subscribe<Event_JumpButtonPushed> (this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonPushed>(this, OnSlideButtonPushed);
 		EventManager.Subscribe<Event_YellButtonPushed> (this, OnYellButtonPushed);
+		EventManager.Subscribe<Event_SlideButtonReleased> (this, OnSlideButtonReleased);
 	}
 
 	protected override void ProcessState() {
@@ -133,6 +137,7 @@ public sealed class RunState : State {
 		EventManager.Unsubscribe<Event_JumpButtonPushed> (OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonPushed>(OnSlideButtonPushed);
 		EventManager.Unsubscribe<Event_YellButtonPushed> (OnYellButtonPushed);
+		EventManager.Unsubscribe<Event_SlideButtonReleased> (OnSlideButtonReleased);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
@@ -142,13 +147,17 @@ public sealed class RunState : State {
 	}
 
 	void OnSlideButtonPushed(Event_SlideButtonPushed e) {
-		if ( Controller.CharController.Grounded ) {
+		if ( Controller.CharController.Grounded & Controller.SlideReleasedFlag ) {
 			TryChangeState(new SlideState(Controller));
 		}
 	}
 
 	void OnYellButtonPushed(Event_YellButtonPushed e) {
 		TryChangeState(new YellState(Controller));
+	}
+
+	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
+		Controller.SlideReleasedFlag = true;
 	}
 }
 
@@ -169,6 +178,7 @@ public sealed class JumpState : State {
 		EventManager.Subscribe<Event_PhysicsObjectGrounded>(this, OnGrounded);
 		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
 		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
+		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 		SoundManager.Instance.PlaySound("Jump");
 		Controller.CharController.GravityModifier = Controller.CharController.GravityModifierBaseValue;
 		Controller.Jump();
@@ -179,6 +189,7 @@ public sealed class JumpState : State {
 		EventManager.Unsubscribe<Event_PhysicsObjectGrounded>(OnGrounded);
 		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
 		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
+		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
 	}
 
 	void OnGrounded(Event_PhysicsObjectGrounded e) {
@@ -195,6 +206,9 @@ public sealed class JumpState : State {
 	void OnJumpFall(Event_JumpMaxHeightReached e) {
 		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
 	}
+	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
+		Controller.SlideReleasedFlag = true;
+	}
 }
 
 public sealed class SlideState : State {
@@ -207,15 +221,16 @@ public sealed class SlideState : State {
 			GoatState.Jump,
 		};
 		Type = GoatState.Slide;
-		//TimeToExit = 1.5f;   если вернуть, появляется баг: пока катишься спамишь прыжок и в момент выхода козу глючит
+		TimeToExit = 1.5f;   //если вернуть, появляется баг: пока катишься спамишь прыжок и в момент выхода козу глючит
 		ExitState = GoatState.Run;
 	}
 
 	protected override void Init() {
 		base.Init();
 		Controller.CharController.SetLowProfile(true);
+		Controller.SlideReleasedFlag = false;
 		Debug.Log("Slide on");
-		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
+		//EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 		SoundManager.Instance.PlaySound("Whoosh");
 	}
@@ -224,17 +239,18 @@ public sealed class SlideState : State {
 		base.LeaveState();
 		Debug.Log("Slide off");
 		Controller.CharController.SetLowProfile(false);
-		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
+	//	EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
 	}
 
-	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
-		if ( Controller.CharController.Grounded ) {
-			TryChangeState(new SlideState(Controller));
-		}
-	}
+	//void OnJumpButtonPushed(Event_JumpButtonPushed e) {
+	//	if ( Controller.CharController.Grounded ) {
+	//		TryChangeState(new SlideState(Controller));
+	//	}
+	//}
 
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
+		Controller.SlideReleasedFlag = true;
 		TryChangeState(new RunState(Controller));
 	}
 
@@ -263,6 +279,7 @@ public sealed class SlowDownState : State {
 		Controller.SetRunSpeed(Controller.SlowSpeed);
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_YellButtonPushed>(this, OnYellButtonPushed);
+		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 	}
 
@@ -271,6 +288,8 @@ public sealed class SlowDownState : State {
 		Debug.Log("SlowDown off");
 		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
+		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
@@ -284,6 +303,10 @@ public sealed class SlowDownState : State {
 
 	void OnYellButtonPushed(Event_YellButtonPushed e) {
 		TryChangeState(new YellState(Controller));
+	}
+
+	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
+		Controller.SlideReleasedFlag = true;
 	}
 }
 
@@ -305,6 +328,7 @@ public sealed class ObstacleState : State {
 		Controller.SetRunSpeed(0, true);
 		EventManager.Subscribe< Event_JumpButtonPushed>(this,OnJumpButtonPushed);
 		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
+		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 		SoundManager.Instance.PlaySound("Hit");
 	}
 
@@ -319,6 +343,8 @@ public sealed class ObstacleState : State {
 	protected override void LeaveState() {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
+		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
@@ -328,6 +354,9 @@ public sealed class ObstacleState : State {
 	}
 	void OnJumpFall(Event_JumpMaxHeightReached e) {
 		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
+	}
+	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
+		Controller.SlideReleasedFlag = true; 
 	}
 }
 
@@ -349,17 +378,23 @@ public sealed class YellState : State {
 		SoundManager.Instance.PlaySound("Yell");
 		EventManager.Fire(new Event_GoatYell());
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
+		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 	}
 
 	protected override void LeaveState() {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
+		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
 		if ( Controller.CharController.Grounded ) {
 			TryChangeState(new JumpState(Controller));
 		}
+	}
+
+	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
+		Controller.SlideReleasedFlag = true;
 	}
 }
 
@@ -390,6 +425,7 @@ public sealed class GoatController : MonoBehaviour {
 
 	float _targetSpeed  = 0f;
 	float _currentSpeed = 0f;
+	public bool  SlideReleasedFlag = true;
 
 	private void Start() {
 		CurrentState = new RunState(this);

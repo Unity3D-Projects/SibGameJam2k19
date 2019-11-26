@@ -81,6 +81,7 @@ public class PhysicsObject : MonoBehaviour {
 		move = Vector2.up * deltaPosition.y;
 
 		Movement(move, true, true);
+		//Debug.Log("GROUNDED: " + Grounded);
 	}
 
 	void Movement(Vector2 move, bool yMovement, bool updateGrounded) {
