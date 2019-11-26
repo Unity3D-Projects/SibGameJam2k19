@@ -47,7 +47,7 @@ public class State {
 		if ( TimeToExit >= 0 && ExitState != GoatState.None && !GameState.Instance.TimeController.IsPause ) {
 			var curTime = GameState.Instance.TimeController.CurrentTime;
 			if ( curTime > TimeToExit + EnterTime ) {
-				//LeaveState();
+				LeaveState();
 				TryChangeState(CreateStateFromEnum(ExitState));
 				return;
 			}
@@ -59,11 +59,8 @@ public class State {
 	protected virtual void LeaveState() {}
 
 	public void TryChangeState(State newState) {
-		Debug.Log("CALLING TRYCHANGESTATE "  + Time.frameCount);
 		if ( newState != null && CanChangeState(newState.Type) ) {
-			Debug.Log("TRYING TO CHANGE STATE TO: " + newState.Type);
 			ChangeState(newState);
-			Debug.Log("SUCESSFULLY CHANGED TO: " + newState.Type);
 		}
 	}
 
@@ -221,7 +218,7 @@ public sealed class SlideState : State {
 			GoatState.Jump,
 		};
 		Type = GoatState.Slide;
-		TimeToExit = 1.5f;   //если вернуть, появляется баг: пока катишься спамишь прыжок и в момент выхода козу глючит
+		TimeToExit = 1.5f;
 		ExitState = GoatState.Run;
 	}
 
@@ -230,7 +227,6 @@ public sealed class SlideState : State {
 		Controller.CharController.SetLowProfile(true);
 		Controller.SlideReleasedFlag = false;
 		Debug.Log("Slide on");
-		//EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 		SoundManager.Instance.PlaySound("Whoosh");
 	}
@@ -239,15 +235,8 @@ public sealed class SlideState : State {
 		base.LeaveState();
 		Debug.Log("Slide off");
 		Controller.CharController.SetLowProfile(false);
-	//	EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
-	}
-
-	//void OnJumpButtonPushed(Event_JumpButtonPushed e) {
-	//	if ( Controller.CharController.Grounded ) {
-	//		TryChangeState(new SlideState(Controller));
-	//	}
-	//}
+	} 
 
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		Controller.SlideReleasedFlag = true;
