@@ -3,6 +3,19 @@
 		<PlayButton text="Играть!"/>
 		<Credits    text="2019, SMG для Ludum Dare 44"/>
 	</MainMenu>
+	<LevelNames>
+		<Level_1 text="Погоня 1"/>
+		<Level_2 text="Погоня 2"/>
+		<Level_3 text="Погоня 3"/>
+		<Level_4 text="Погоня 4"/>
+		<Level_5 text="Погоня 5"/>
+		<Level_6 text="Погоня 6"/>
+		<Level_7 text="Погоня 7"/>
+		<Level_8 text="Погоня 8"/>
+		<Level_9 text="Погоня 9"/>
+		<Level_10 text="Погоня 10"/>
+		<Level_Endless text="Бесконечное преследование"/>
+	</LevelNames>
 	<HelpScreen>
 		<Jump   text="Прыжок (зажми, чтобы прыгать выше)"/>
 		<Decoy  text="Создает копию для отвлечения"/>

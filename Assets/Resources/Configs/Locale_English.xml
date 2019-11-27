@@ -3,6 +3,19 @@
 		<PlayButton text="Play!"/>
 		<Credits    text="2019, SMG for Ludum Dare 44"/>
 	</MainMenu>
+	<LevelNames>
+		<Level_1 text="Chase 1"/>
+		<Level_2 text="Chase 2"/>
+		<Level_3 text="Chase 3"/>
+		<Level_4 text="Chase 4"/>
+		<Level_5 text="Chase 5"/>
+		<Level_6 text="Chase 6"/>
+		<Level_7 text="Chase 7"/>
+		<Level_8 text="Chase 8"/>
+		<Level_9 text="Chase 9"/>
+		<Level_10 text="Chase 10"/>
+		<Level_Endless text="Endless pursuit"/>
+	</LevelNames>
 	<HelpScreen>
 		<Jump   text="Jump (hold to jump higher)"/>
 		<Decoy  text="Creates a decoy"/>
