@@ -24,6 +24,7 @@
 		<Mushroom text="Speed-up mushroom"/>
 		<Slide text="Slide under bees"/>
 		<Yell text="Screaming at hedgehogs makes them scared and harmless"/>
+		<Piano text="Heavy objects effectively slow people down"/>
 	</HelpScreen>
 	<Common>
 		<FarmerName text="Farmer"/>

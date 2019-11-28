@@ -24,6 +24,7 @@
 		<Mushroom text="Гриб-ускоритель"/>
 		<Slide text="Скользи под пчелами"/>
 		<Yell text="Кричи на ежей чтобы испугать"/>
+		<Piano text="Тяжелые объекты эффективно замедляют людей"/>
 	</HelpScreen>
    <Common>
 	  	<FarmerName text="Дед"/>

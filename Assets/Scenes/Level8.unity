@@ -7914,9 +7914,9 @@ MonoBehaviour:
   CompleteAction: 0
   NextSceneName: Level9
   DialogName: 
-  ShowTutorial: 0
-  TutorialName: 4
-  ApplesNumber: 5
+  ShowTutorial: 1
+  TutorialName: 5
+  ApplesNumber: 8
   Endless: 0
   ExcludeYell: 0
   ExcludeClone: 1

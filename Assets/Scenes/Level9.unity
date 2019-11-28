@@ -9593,10 +9593,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CompleteAction: 0
-  NextSceneName: BaseLevelWithGrid
+  NextSceneName: Level10
   DialogName: 
   ShowTutorial: 0
-  TutorialName: 4
+  TutorialName: 5
   ApplesNumber: 8
   Endless: 0
   ExcludeYell: 0
