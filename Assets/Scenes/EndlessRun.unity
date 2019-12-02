@@ -156,6 +156,7 @@ MonoBehaviour:
   Apples: {fileID: 1345786202}
   Bees: {fileID: 1232234430}
   Hogs: {fileID: 1868739591}
+  Islands: {fileID: 183733136}
   Grass: {fileID: 11400000, guid: c590ea259efd86547ba2204e82c03937, type: 2}
   GrassLeftCorner: {fileID: 11400000, guid: 868d24e80ea44a149a2f0828f9354162, type: 2}
   GrassRightCorner: {fileID: 11400000, guid: 36eb74dbf289e064f917985246e93e72, type: 2}
@@ -166,6 +167,7 @@ MonoBehaviour:
   Apple: {fileID: 577713570601994630, guid: dee08f4241a70114588aa556b55f32ab, type: 3}
   Goat: {fileID: 3784704160986179409}
   Farmer: {fileID: 3877597451285669653}
+  Island: {fileID: 421674985486034817, guid: f2ca827c1fa4b8c4ba90d23c94368f4d, type: 3}
   ObstacleDatas:
   - Prefab: {fileID: 7618553101212665598, guid: a6aa24623a8117447b6d155007957c1f,
       type: 3}
@@ -429,6 +431,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &183733135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 183733136}
+  m_Layer: 0
+  m_Name: Islands
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &183733136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183733135}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &275940337
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,8 +959,9 @@ MonoBehaviour:
   ApplesNumber: 3
   Endless: 1
   ExcludeYell: 0
-  ExcludePiano: 1
+  ExcludeClone: 0
   ExcludeMushroom: 0
+  ExcludePiano: 1
   ChangeFarmerSpeed: 0
   NewFarmerSpeed: 0
 --- !u!4 &681992120

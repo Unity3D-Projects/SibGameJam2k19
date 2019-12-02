@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour {
 	public Transform  Apples          = null;
 	public Transform  Bees            = null;
 	public Transform  Hogs            = null;
+	public Transform  Islands         = null;
 
 	[Header("Tiles")]
 	public TileBase       Grass            = null;
@@ -26,6 +27,7 @@ public class GridManager : MonoBehaviour {
 	public GameObject Apple   = null;
 	public GameObject Goat    = null;
 	public GameObject Farmer  = null;
+	public GameObject Island  = null;
 	public List<ObstacleData> ObstacleDatas = null;
 
 	[Header("Scenario")]
@@ -153,11 +155,13 @@ public class GridManager : MonoBehaviour {
 		for ( int i = _x0; i < _x1; i++ ) {
 			CellsStates.Add(i, 0);
 		}
+		// 0-empty, 1-hog, 2-bee, 3-obstacle
 
 		PlaceHogs(MaxHogsOnTenCells, CellsStates);
 		PlaceBees(MaxHogsOnTenCells, CellsStates);
 		PlaceObstacles(ObstacleProbability, CellsStates);
 		PlaceApples(ApplesProbability, CellsStates);
+		PlaceIslands(CellsStates);
 	} 
 
 	void CutSector(int _boundX) {
@@ -390,6 +394,70 @@ public class GridManager : MonoBehaviour {
 		}
 	}
 
+	void PlaceIslands(Dictionary<int, int> cells) {
+		float maxDeltaUp   = 2.5f;
+		float maxDeltaDown = 1f;
+		float minDistance  = 1.5f;
+		float maxDistance  = 3.8f;
+		float minHeight    = Tilemap.cellSize.y + 0.5f;
+		float lastX        = 0f;
+		int   recCounter   = 0; 
+		var   scaleBounds  = new Vector2(0.5f, 1);
+
+		var indexes = new List<int>();
+		foreach ( KeyValuePair<int, int> c in cells ) {
+			indexes.Add(c.Key);
+		}
+		indexes.Sort();
+		var nodes = new List<int>();
+		for ( int i = 0; i < indexes.Count; i++ ) {
+			if ( Tilemap.GetTile(new Vector3Int(indexes[i] + 1, GetUpperBound(Tilemap, indexes[i]), 0)) == null  ) {
+				nodes.Add(indexes[i]);
+			}
+		}
+		for ( int i = 0; i < nodes.Count; i++ ) {
+			Vector2 node = Tilemap.CellToWorld(new Vector3Int(nodes[i], GetUpperBound(Tilemap, nodes[i]), 0));
+			node.x += Tilemap.cellSize.x;
+			node.y += Tilemap.cellSize.y;
+			if ( node.x < lastX) {
+				continue;
+			}
+			recCounter = 0;
+			TryPlace(node);
+		}
+
+		void TryPlace(Vector2 node) {
+			recCounter++;
+			if ( recCounter > 3 ) {
+				return;
+			}
+			float scaleX = Random.Range(scaleBounds.x, scaleBounds.y);
+			float islandY = 0f;
+			float islandX = 0f;
+			float newSizeX = Island.GetComponent<Renderer>().bounds.size.x * scaleX; 
+			float baseShift = node.x + 0.5f * newSizeX;
+			islandX = Random.Range(baseShift + minDistance, baseShift + maxDistance);
+			if ( recCounter == 1 ) {
+				islandY = Random.Range(node.y + 1, node.y + maxDeltaUp);
+			} else {
+				islandY = Random.Range(node.y - maxDeltaDown, node.y + maxDeltaUp);
+			}
+			if ( GetHeight(islandX + (newSizeX * 0.5f), islandY ) >= minHeight) {
+				var island = Instantiate(Island, new Vector2(islandX, islandY), Quaternion.identity, Islands);
+				island.transform.localScale = new Vector3(scaleX, 1, 1);
+				lastX = islandX;
+				Vector2 newNode = new Vector2(islandX + (newSizeX * 0.5f), islandY);
+				TryPlace(newNode);
+			} 
+		}
+
+		float GetHeight(float x, float y) {
+			int cellX = Tilemap.WorldToCell(new Vector3(x, 0, 0)).x;
+			Vector3 pos = Tilemap.CellToWorld(new Vector3Int(cellX, GetUpperBound(Tilemap, cellX), 0));
+			return y - (pos.y + Tilemap.cellSize.y); 
+		} 
+	}
+
 	int GetTopGroundIndex(int x) {
 		for ( int y = Tilemap.cellBounds.max.y; y > Tilemap.cellBounds.min.y; y-- ) {
 			if ( Tilemap.GetTile(new Vector3Int(x, y, 0)) != null ) {
@@ -398,16 +466,6 @@ public class GridManager : MonoBehaviour {
 		}
 		return 0;
 	} 
-	private void PrintArray(int[,] arr) {
-		string str = "\n";
-		for ( int j = arr.GetUpperBound(1); j >= 0; j-- ) {
-			for ( int i = 0; i <= arr.GetUpperBound(0); i++ ) {
-				str = str + arr[i, j].ToString() + " ";
-			}
-			str = str + "\n";
-		}
-		Debug.Log(str);
-	}
 
 
 	int[,] BuildStraight(int len) {
@@ -522,5 +580,15 @@ public class GridManager : MonoBehaviour {
 		float m2 = o2.GetComponent<SpriteRenderer>().size.magnitude;
 		Vector2 result = o1.transform.position - o2.transform.position;
 		return result.magnitude < (m1 + m2) / 2f; 
+	}
+	private void PrintArray(int[,] arr) {
+		string str = "\n";
+		for ( int j = arr.GetUpperBound(1); j >= 0; j-- ) {
+			for ( int i = 0; i <= arr.GetUpperBound(0); i++ ) {
+				str = str + arr[i, j].ToString() + " ";
+			}
+			str = str + "\n";
+		}
+		Debug.Log(str);
 	}
 }
