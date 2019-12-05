@@ -53,10 +53,12 @@ public class GridManager : MonoBehaviour {
 	public float seed = 6.5f; 
 
 
-	GameObject _previousObstacle = null;
-	HogPool hogPool = new HogPool();
-	BeePool beePool = new BeePool();
 
+	HogPool     hogPool     = new HogPool();
+	BeePool     beePool     = new BeePool();
+	IslandsPool islandsPool = new IslandsPool();
+
+	GameObject _previousObstacle = null;
 
 	public class ObstaclePool: PrefabPool<Obstacle> { 
 		public ObstaclePool(string _path) {
@@ -71,6 +73,12 @@ public class GridManager : MonoBehaviour {
 	public class BeePool: PrefabPool<Obstacle> {
 		public BeePool() {
 			PresenterPrefabPath = "Prefabs/bee"; 
+		}
+	}
+
+	public class IslandsPool: PrefabPool<PoolItem> {
+		public IslandsPool() {
+			PresenterPrefabPath = "Prefabs/ostrov";
 		}
 	}
 
@@ -95,6 +103,7 @@ public class GridManager : MonoBehaviour {
 		InitObstacleData();
 		hogPool.Init();
 		beePool.Init();
+		islandsPool.Init();
 		
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
@@ -134,10 +143,6 @@ public class GridManager : MonoBehaviour {
 		if (  Mathf.Abs((_farmerCell - DeltaBeforeFarmerToCut) - Tilemap.cellBounds.min.x) > DeltaToCutSector  ) {
 			CutSector(_farmerCell - DeltaBeforeFarmerToCut);
 		}
-
-		//if ( Input.GetKeyDown(KeyCode.N) ) {
-		//	CutSector(10);
-		//} 
 	}
 
 	void BuildSector() {
@@ -196,6 +201,11 @@ public class GridManager : MonoBehaviour {
 		foreach ( Transform hog in Hogs ) {
 			if ( hog.position.x != 0 & hog.position.x < _world.x ) {
 				hogPool.Return(hog.GetComponent<Hedgehog>()); 
+			} 
+		}
+		foreach ( Transform island in Islands ) {
+			if ( island.position.x != 0 & island.position.x < _world.x ) {
+				islandsPool.Return(island.GetComponent<PoolItem>()); 
 			} 
 		}
 	} 
@@ -427,15 +437,11 @@ public class GridManager : MonoBehaviour {
 		}
 
 		void TryPlace(Vector2 node) {
-			recCounter++;
-			if ( recCounter > 3 ) {
-				return;
-			}
 			float scaleX = Random.Range(scaleBounds.x, scaleBounds.y);
-			float islandY = 0f;
-			float islandX = 0f;
 			float newSizeX = Island.GetComponent<Renderer>().bounds.size.x * scaleX; 
 			float baseShift = node.x + 0.5f * newSizeX;
+			float islandY = 0f;
+			float islandX = 0f;
 			islandX = Random.Range(baseShift + minDistance, baseShift + maxDistance);
 			if ( recCounter == 1 ) {
 				islandY = Random.Range(node.y + 1, node.y + maxDeltaUp);
@@ -443,9 +449,19 @@ public class GridManager : MonoBehaviour {
 				islandY = Random.Range(node.y - maxDeltaDown, node.y + maxDeltaUp);
 			}
 			if ( GetHeight(islandX + (newSizeX * 0.5f), islandY ) >= minHeight) {
-				var island = Instantiate(Island, new Vector2(islandX, islandY), Quaternion.identity, Islands);
+				var island = islandsPool.Get().gameObject;
+				//var island = Instantiate(Island, new Vector2(islandX, islandY), Quaternion.identity, Islands);
+				if ( island.transform.parent == null ) {
+					island.transform.SetParent(Islands); 
+				}
+				island.transform.position = new Vector2(islandX, islandY);
 				island.transform.localScale = new Vector3(scaleX, 1, 1);
 				lastX = islandX;
+
+				recCounter++;
+				if ( recCounter >= 3 ) {
+					return;
+				}
 				Vector2 newNode = new Vector2(islandX + (newSizeX * 0.5f), islandY);
 				TryPlace(newNode);
 			} 
