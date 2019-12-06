@@ -387,13 +387,16 @@ public class GridManager : MonoBehaviour {
 					cells[j] = 2; 
 				}
 			}
-			Vector2 pos = Grid.CellToWorld(new Vector3Int(rndX, GetTopGroundIndex(rndX), 0));
+			int topGroundIndex = GetTopGroundIndex(rndX);
+			Vector2 pos = Grid.CellToWorld(new Vector3Int(rndX, topGroundIndex, 0));
 			pos.y += Grid.cellSize.y + 1.4f;
 			pos.x += Grid.cellSize.x / 2f;
 			var bee = beePool.Get().gameObject;
 			bee.transform.SetParent(Bees); 
-			if ( Tilemap.GetTile(new Vector3Int(rndX - 1, GetTopGroundIndex(rndX), 0)) == null ) {
-				pos += new Vector2(0, 0.25f);
+			if ( Tilemap.GetTile(new Vector3Int(rndX - 1, topGroundIndex, 0)) == null ) {
+				pos += new Vector2(0.4f, 0.25f);
+			} else if ( Tilemap.GetTile(new Vector3Int(rndX + 1, topGroundIndex, 0)) == null ) {
+				pos += new Vector2(-0.5f, 0.25f); 
 			}
 			bee.transform.position = pos;
 			float rndScale = 0.75f + rand.Next(25) / 100f;
@@ -405,14 +408,14 @@ public class GridManager : MonoBehaviour {
 	}
 
 	void PlaceIslands(Dictionary<int, int> cells) {
-		float maxDeltaUp   = 2.5f;
-		float maxDeltaDown = 1f;
-		float minDistance  = 1.5f;
-		float maxDistance  = 3.8f;
+		float maxDeltaUp   = 2.3f;
+		float maxDeltaDown = 1.5f;
+		float minDistance  = 1.3f;
+		float maxDistance  = 4f;
 		float minHeight    = Tilemap.cellSize.y + 0.5f;
 		float lastX        = 0f;
 		int   recCounter   = 0; 
-		var   scaleBounds  = new Vector2(0.5f, 1);
+		var   scaleBounds  = new Vector2(0.3f, 1);
 
 		var indexes = new List<int>();
 		foreach ( KeyValuePair<int, int> c in cells ) {
@@ -437,33 +440,67 @@ public class GridManager : MonoBehaviour {
 		}
 
 		void TryPlace(Vector2 node) {
+			if ( Random.Range(0,5) == 4) {
+				return;
+			}
 			float scaleX = Random.Range(scaleBounds.x, scaleBounds.y);
 			float newSizeX = Island.GetComponent<Renderer>().bounds.size.x * scaleX; 
 			float baseShift = node.x + 0.5f * newSizeX;
 			float islandY = 0f;
 			float islandX = 0f;
-			islandX = Random.Range(baseShift + minDistance, baseShift + maxDistance);
 			if ( recCounter == 1 ) {
+				islandX = Random.Range(baseShift + 0.8f, baseShift + maxDistance);
 				islandY = Random.Range(node.y + 1, node.y + maxDeltaUp);
 			} else {
+				islandX = Random.Range(baseShift + minDistance, baseShift + maxDistance);
 				islandY = Random.Range(node.y - maxDeltaDown, node.y + maxDeltaUp);
 			}
-			if ( GetHeight(islandX + (newSizeX * 0.5f), islandY ) >= minHeight) {
-				var island = islandsPool.Get().gameObject;
-				//var island = Instantiate(Island, new Vector2(islandX, islandY), Quaternion.identity, Islands);
-				if ( island.transform.parent == null ) {
-					island.transform.SetParent(Islands); 
-				}
-				island.transform.position = new Vector2(islandX, islandY);
-				island.transform.localScale = new Vector3(scaleX, 1, 1);
-				lastX = islandX;
 
-				recCounter++;
-				if ( recCounter >= 3 ) {
+			int islandCellX = Tilemap.WorldToCell(new Vector3(islandX, 0, 0)).x;
+			if ( cells.ContainsKey(islandCellX) ) {
+				if ( cells[islandCellX] == 2 ) {
 					return;
-				}
-				Vector2 newNode = new Vector2(islandX + (newSizeX * 0.5f), islandY);
-				TryPlace(newNode);
+				} 
+			}
+
+			float rightEdgeX = islandX + (newSizeX * 0.5f);
+			float leftEdgeX = islandX - (newSizeX * 0.5f);
+			if ((GetHeight(leftEdgeX, islandY ) >= minHeight) & (GetHeight(rightEdgeX, islandY ) >= minHeight)) { 
+				if ( IsPassable(rightEdgeX, islandY, scaleX) ) {
+					var island = islandsPool.Get().gameObject;
+					if ( island.transform.parent == null ) {
+						island.transform.SetParent(Islands);
+					}
+					island.transform.position = new Vector2(islandX, islandY);
+					island.transform.localScale = new Vector3(scaleX, 1, 1);
+					lastX = rightEdgeX;
+
+					recCounter++;
+					if ( recCounter == 4 ) {
+						Instantiate(Apple, new Vector2(islandX, islandY + 1f), Quaternion.identity, Apples);
+						return;
+					} else if(recCounter == 3){
+						if ( Random.Range(0, 2) != 0 ) {
+							Instantiate(Apple, new Vector2(islandX, islandY + 1f), Quaternion.identity, Apples);
+						}
+
+					}
+					var newNode = new Vector2(islandX + (newSizeX * 0.5f), islandY);
+					TryPlace(newNode); 
+				} 
+			} 
+		}
+
+		bool IsPassable(float x, float y, float scale) {
+			int cellX = Tilemap.WorldToCell(new Vector3(x, 0, 0)).x + 1;
+			int cellY = GetUpperBound(Tilemap, cellX);
+			Vector2 leftUpperCorner = Tilemap.CellToWorld(new Vector3Int(cellX, cellY, 0));
+			leftUpperCorner += new Vector2(-(Tilemap.cellSize.x / 2), Tilemap.cellSize.y);
+			float magnitude = (new Vector2(x,y) - leftUpperCorner).magnitude;
+			if ( magnitude > 2f ) {
+				return true; 
+			} else {
+				return false;
 			} 
 		}
 
