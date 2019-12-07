@@ -44,8 +44,8 @@ public class GridManager : MonoBehaviour {
 	public int   DeltaToBuildSector     = 16;  //расстояние от козы до правого края, когда начинается ген нового блока
 	public int   DeltaToCutSector       = 30;
 	public int   DeltaBeforeFarmerToCut = 6;  //количество клеток от деда влево, до куда обрежется карта
-	public float ObstacleVerticalShift  = 0.2f;
-	public float ObstacleDelta          = 0.5f;   //minimal distance between obstacles
+	public float ObstacleVerticalShift  = 0f;
+	public float ObstacleDelta          = 2f;   //minimal distance between obstacles
 	public int   MaxHogsOnTenCells      = 1;
 
 	int[,] buffer = new int[32, 8];
@@ -273,6 +273,7 @@ public class GridManager : MonoBehaviour {
 				freeCells.Add(c.Key);
 			}
 		}
+		freeCells.Sort();
 		for ( int i = 0; i < freeCells.Count; i++ ) {
 
 			int x = freeCells[i];
@@ -282,16 +283,22 @@ public class GridManager : MonoBehaviour {
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, y, 0));
 				float constraintLeft = pos.x;
 				float constraintRight = pos.x + Grid.cellSize.x;
-				float rndScale = _obstacle.ScaleLimits.x + rand.Next((int)(100 * (_obstacle.ScaleLimits.y-_obstacle.ScaleLimits.x))) / 100f;
-				float _newXsize = _obstacle.Prefab.GetComponent<SpriteRenderer>().size.x * rndScale; 
-				pos.y += Grid.cellSize.y + ObstacleVerticalShift;
+				float rndScale = Random.Range(_obstacle.ScaleLimits.x, _obstacle.ScaleLimits.y); 
+				float _newXsize = _obstacle.Prefab.GetComponent<Renderer>().bounds.size.x * rndScale; 
+				float _yShift;
+				if ( _obstacle.Prefab.name == "Bush" ) {
+					_yShift = _obstacle.Prefab.GetComponent<Renderer>().bounds.size.y * rndScale * 0.385f;
+				} else {
+					_yShift = _obstacle.Prefab.GetComponent<Renderer>().bounds.size.y * rndScale * 0.5f;
+				}
+				pos += new Vector2(0, (Grid.cellSize.y * 0.95f ) + _yShift);
 				int leftConstraint = 0;
 				if (  Tilemap.GetTile(new Vector3Int(x - 1, y + 1, 0)) != null | Tilemap.GetTile(new Vector3Int(x - 1, y, 0)) == null  ) {
 					leftConstraint = 1; 
 				}
-				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + leftConstraint * (_newXsize / 2);
+				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + leftConstraint * (_newXsize * 0.5f);
 				if ( _previousObstacle != null ) {
-					float minimalDistance = _previousObstacle.transform.position.x + (_obstacle.Prefab.GetComponent<SpriteRenderer>().size.x) + ObstacleDelta; //может сделать точнее
+					float minimalDistance = _previousObstacle.transform.position.x + (_previousObstacle.GetComponent<Renderer>().bounds.size.x * 0.5f) + (_newXsize * 0.5f) + ObstacleDelta;
 					if ( pos.x < minimalDistance ) {
 						pos.x = minimalDistance;
 					}

@@ -193,7 +193,7 @@ MonoBehaviour:
   DeltaToCutSector: 20
   DeltaBeforeFarmerToCut: 6
   ObstacleVerticalShift: 0.2
-  ObstacleDelta: 0.5
+  ObstacleDelta: 1.3
   MaxHogsOnTenCells: 1
   seed: 6.5
 --- !u!4 &35848190
@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8edbe013eedabc41a449bc457576c19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goat: {fileID: 3784704160986179410}
+  Camera: {fileID: 0}
   Frames:
   - {fileID: 601532153}
   - {fileID: 1304356778}
@@ -4136,12 +4136,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3784704160986179408}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &3784704160986179410 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3784704159680927256, guid: 22590b03fdb68294db8b321af31c4149,
-    type: 3}
-  m_PrefabInstance: {fileID: 3784704160986179408}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3877597451285669652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4158,16 +4152,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3877597450996859253, guid: 8645960119cfd4548b4f6114fda71a10,
-        type: 3}
-      propertyPath: JumpPower
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3877597450996859253, guid: 8645960119cfd4548b4f6114fda71a10,
-        type: 3}
-      propertyPath: StartDelay
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3877597450996859252, guid: 8645960119cfd4548b4f6114fda71a10,
         type: 3}
@@ -4223,6 +4207,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877597450996859253, guid: 8645960119cfd4548b4f6114fda71a10,
+        type: 3}
+      propertyPath: JumpPower
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877597450996859253, guid: 8645960119cfd4548b4f6114fda71a10,
+        type: 3}
+      propertyPath: StartDelay
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8645960119cfd4548b4f6114fda71a10, type: 3}
