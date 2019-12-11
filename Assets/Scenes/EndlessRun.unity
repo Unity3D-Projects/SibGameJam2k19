@@ -195,6 +195,8 @@ MonoBehaviour:
   ObstacleVerticalShift: 0.2
   ObstacleDelta: 1.3
   MaxHogsOnTenCells: 1
+  MaxY: 20
+  MinY: -5
   seed: 6.5
 --- !u!4 &35848190
 Transform:
@@ -4076,12 +4078,12 @@ PrefabInstance:
     - target: {fileID: 3784704159680927256, guid: 22590b03fdb68294db8b321af31c4149,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.9
+      value: 10.1
       objectReference: {fileID: 0}
     - target: {fileID: 3784704159680927256, guid: 22590b03fdb68294db8b321af31c4149,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.6
+      value: 14.4
       objectReference: {fileID: 0}
     - target: {fileID: 3784704159680927256, guid: 22590b03fdb68294db8b321af31c4149,
         type: 3}

@@ -47,6 +47,10 @@ public class GridManager : MonoBehaviour {
 	public float ObstacleVerticalShift  = 0f;
 	public float ObstacleDelta          = 2f;   //minimal distance between obstacles
 	public int   MaxHogsOnTenCells      = 1;
+	public float MaxY                   = 20f;
+	public float MinY                   = -4f;
+
+	int _minCellY;
 
 	int[,] buffer = new int[32, 8];
 	System.Random rand;
@@ -100,6 +104,9 @@ public class GridManager : MonoBehaviour {
 
 
 	private void Start() { 
+
+		_minCellY = Tilemap.WorldToCell(new Vector3(0, MinY, 0)).y; 
+
 		InitObstacleData();
 		hogPool.Init();
 		beePool.Init();
@@ -146,10 +153,10 @@ public class GridManager : MonoBehaviour {
 	}
 
 	void BuildSector() {
-		buffer = RandomWalkTopSmoothed(buffer, rand, 2);
-		buffer = SetTextureRules(buffer);
 		int _x = Tilemap.cellBounds.max.x;
 		int _y = GetNodeY(Tilemap);
+		buffer = RandomWalkTopSmoothed(buffer, rand, 2, _y);
+		buffer = SetTextureRules(buffer);
 		int sh = RenderMap(buffer, Tilemap, _x, _y);
 		RenderGrassMap(buffer, ForegroundGrass, _x, sh);
 		Tilemap.CompressBounds();
@@ -538,11 +545,22 @@ public class GridManager : MonoBehaviour {
 		return map;
 	}
 
-	public static int[,] RandomWalkTopSmoothed(int[,] map, System.Random rnd, int minSectionWidth) {
-		//System.Random rand = new System.Random(seed.GetHashCode());
+	public int[,] RandomWalkTopSmoothed(int[,] map, System.Random rnd, int minSectionWidth, int nodeY) {
 
 		//Determine the start position
 		int lastHeight = Random.Range(0, map.GetUpperBound(1));
+
+		int shift = lastHeight - nodeY;
+		if ( shift < 0 ) shift = 0;
+
+		int bottomBound;
+		if ( _minCellY < -shift  ) {
+			bottomBound = 0; 
+		} else {
+			bottomBound = _minCellY + shift;
+		}
+
+
 
 		//Used to determine which direction to go
 		int nextMove = 0;
@@ -561,7 +579,8 @@ public class GridManager : MonoBehaviour {
 			nextMove = rnd.Next(2);
 
 			//Only change the height if we have used the current height more than the minimum required section width
-			if ( nextMove == 0 && lastHeight > 0 && sectionWidth > minSectionWidth ) {
+			//if ( nextMove == 0 && lastHeight > 0 && sectionWidth > minSectionWidth ) {
+			if ( nextMove == 0 && lastHeight > bottomBound && sectionWidth > minSectionWidth ) {
 				lastHeight--;
 				sectionWidth = 0;
 			} else if ( nextMove == 1 && lastHeight < map.GetUpperBound(1) && sectionWidth > minSectionWidth ) {
@@ -586,7 +605,7 @@ public class GridManager : MonoBehaviour {
 				break;
 			}
 		}
-		int shift = y0 - shiftY;
+		int shift = y0 - shiftY - 1;
 		if ( shift < 0 ) {
 			shift = 0;
 		}
@@ -598,13 +617,6 @@ public class GridManager : MonoBehaviour {
 					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Ground);
 				} else if ( map[x, y] == 2 ) {
 					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
-					//if ( tilemap.GetTile(new Vector3Int(_tx - 1, _ty, 0)) == null ) {
-					//	tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassLeftCorner);
-					//} else if ( tilemap.GetTile(new Vector3Int(_tx + 1, _ty - shift, 0)) == null & x < map.GetUpperBound(0) ) {
-					//	tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassRightCorner);
-					//} else {
-					//	tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
-					//}
 				} else if ( map[x, y] == 3 ) {
 					tilemap.SetTile(new Vector3Int(_tx, _ty, 0), GrassLeftCorner);
 				} else if ( map[x, y] == 4 ) {
