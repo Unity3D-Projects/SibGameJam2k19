@@ -196,7 +196,7 @@ MonoBehaviour:
   ObstacleDelta: 1.3
   MaxHogsOnTenCells: 1
   MaxY: 20
-  MinY: -5
+  MinY: -4
   seed: 6.5
 --- !u!4 &35848190
 Transform:
