@@ -396,7 +396,6 @@ public class GridManager : MonoBehaviour {
 	void PlaceHogs(int _maxNum, Dictionary<int, int> cells) {
 		int hogNum = 0;
 		for ( int i = 0; i < cells.Count / 10; i++ ) {
-			//hogNum += rand.Next(_maxNum + 1);
 			hogNum += Random.Range(0, _maxNum + 1);
 		}
 		var freeCells = new List<int>();
@@ -408,8 +407,6 @@ public class GridManager : MonoBehaviour {
 			} 
 		}
 		for ( int i = 0; i < hogNum; i++ ) {
-			//int rndIndex = rand.Next(freeCells.Count);
-			//int rndIndex = rand.Next(freeCells.Count);
 			int rndX = freeCells[Random.Range(0, freeCells.Count)];
 
 			for ( int j = rndX - 1; j <= rndX + 1; j++ ) {
@@ -420,13 +417,18 @@ public class GridManager : MonoBehaviour {
 			} 
 
 			Vector2 pos = Grid.CellToWorld(new Vector3Int(rndX, GetTopGroundIndex(rndX), 0));
-			pos.y += Grid.cellSize.y + 0.8f;
-			pos.x += Grid.cellSize.x / 2f;
+			float rndScale = Random.Range(0.75f, 1f);
 			var hog = hogPool.Get().gameObject;
-			hog.transform.SetParent(Hogs);
-			hog.transform.position = pos;
-			float rndScale = 0.75f + rand.Next(20) / 100f;
+			if ( hog.transform.parent == null ) {
+				hog.transform.SetParent(Hogs);
+			}
 			hog.transform.localScale = new Vector3(rndScale, rndScale, 1);
+			//float _yShift = hog.GetComponent<Renderer>().bounds.size.y * 0.5f;
+			float _yShift = hog.transform.GetChild(0).GetComponent<Renderer>().bounds.size.y * 0.5f;
+			//pos.y += Grid.cellSize.y + 0.8f;
+			pos.y += Grid.cellSize.y * 0.95f + _yShift;
+			pos.x += Grid.cellSize.x * 0.5f;
+			hog.transform.position = pos;
 			if ( rand.Next(4) == 0 ) {
 				hog.transform.Rotate(new Vector3(0, 180, 0));
 			}
@@ -644,7 +646,7 @@ public class GridManager : MonoBehaviour {
 			if ( nextMove == 0 && lastHeight > bottomBound && sectionWidth > minSectionWidth ) {
 				lastHeight--;
 				sectionWidth = 0;
-			} else if ( nextMove == 1 && lastHeight <= map.GetUpperBound(1) && sectionWidth > minSectionWidth ) {
+			} else if ( nextMove == 1 && lastHeight < map.GetUpperBound(1) && sectionWidth > minSectionWidth ) {
 				lastHeight++;
 				sectionWidth = 0;
 			}

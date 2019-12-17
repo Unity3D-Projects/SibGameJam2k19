@@ -506,7 +506,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 230083223}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.9, y: 3.3, z: 0}
+  m_LocalPosition: {x: 10.9, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 601532153}
@@ -2264,7 +2264,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -4, y: -9, z: 0}
   m_Size: {x: 105, y: 13, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.33, z: 0}
+  m_TileAnchor: {x: 0.5, y: 0.32, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -2331,7 +2331,7 @@ CompositeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.1}
+  m_Offset: {x: 0, y: -0.15}
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
@@ -2348,10 +2348,10 @@ CompositeCollider2D:
         Y: -80000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 7.999987, y: -0.100095704}
-      - {x: -22, y: -0.1004611}
-      - {x: -21.99954, y: -8.1}
-      - {x: 7.999987, y: -8.100001}
+    - - {x: 7.999987, y: -0.1500957}
+      - {x: -22, y: -0.15046111}
+      - {x: -21.99954, y: -8.15}
+      - {x: 7.999987, y: -8.150001}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.000005
 --- !u!50 &1553874825
