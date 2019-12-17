@@ -181,23 +181,23 @@ MonoBehaviour:
       type: 3}
     ScaleLimits: {x: 0.55, y: 1}
     PoolPath: Prefabs/Obstacles/Stump
-  GoatSpeedMax: 5
-  GoatSpeedDelta: 0.1
-  FarmerSpeedMax: 3
-  FarmerSpeedDelta: 0.1
-  ObstacleProbability: 25
-  ObstacleProbabilityMax: 80
+  GoatSpeedMax: 4
+  GoatSpeedDelta: 0.05
+  FarmerSpeedMax: 5
+  FarmerSpeedDelta: 0.05
+  ObstacleProbability: 15
+  ObstacleProbabilityMax: 85
   ObstacleProbabilityDelta: 2
-  ApplesProbability: 30
+  ApplesProbability: 12
   DeltaToBuildSector: 16
   DeltaToCutSector: 20
   DeltaBeforeFarmerToCut: 6
-  ObstacleVerticalShift: 0.2
-  ObstacleDelta: 1.3
+  ObstacleVerticalShift: 0.25
+  ObstacleDelta: 1.4
   MaxHogsOnTenCells: 1
   MaxY: 20
   MinY: -4
-  seed: 6.5
+  seed: 3.5
 --- !u!4 &35848190
 Transform:
   m_ObjectHideFlags: 0

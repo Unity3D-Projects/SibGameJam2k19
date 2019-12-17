@@ -58,24 +58,35 @@ public class GridManager : MonoBehaviour {
 	public float seed = 6.5f;
 
 	int[,] pattern1 = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 2, 2, 0, 0, 0},
-		{0, 0, 0, 0, 2, 1, 1, 2, 0, 0},
-		{0, 0, 2, 2, 1, 1, 1, 1, 2, 0},
-		{0, 2, 1, 1, 1, 1, 1, 1, 1, 0},
-		{2, 1, 1, 1, 1, 1, 1, 1, 1, 2}
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+		{0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 1},
+		{0, 0, 0, 0, 2, 1, 1, 2, 0, 2, 1, 1},
+		{0, 0, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1},
+		{0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	}; 
 	int[,] pattern2 = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{2, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-		{1, 0, 0, 0, 0, 2, 1, 2, 2, 0},
-		{1, 0, 0, 0, 2, 1, 1, 1, 1, 0},
-		{1, 0, 2, 2, 1, 1, 1, 1, 1, 0},
-		{1, 2, 1, 1, 1, 1, 1, 1, 1, 0},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 2}
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+		{1, 0, 0, 0, 0, 2, 1, 2, 2, 0, 2, 0},
+		{1, 0, 0, 0, 2, 1, 1, 1, 1, 2, 1, 0},
+		{1, 0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2},
+		{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	};
+
+	int[,] pattern3 = {
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+		{2, 0, 0, 0, 0, 2, 1, 0, 0, 2, 0, 2},
+		{1, 0, 0, 0, 2, 1, 1, 0, 2, 1, 2, 1},
+		{1, 0, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1},
+		{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 
 	List<int[,]> Patterns = new List<int[,]>();
@@ -141,6 +152,7 @@ public class GridManager : MonoBehaviour {
 
 		Patterns.Add(RotateMap(pattern1));
 		Patterns.Add(RotateMap(pattern2)); 
+		Patterns.Add(RotateMap(pattern3)); 
 
 		_minCellY = Tilemap.WorldToCell(new Vector3(0, MinY, 0)).y; 
 		_maxCellY = Tilemap.WorldToCell(new Vector3(0, MaxY, 0)).y; 
@@ -159,11 +171,9 @@ public class GridManager : MonoBehaviour {
 		int[,] straight = BuildStraight(8);
 		straight = SetTextureRules(straight);
 		int sh = RenderMap(straight, Tilemap, _x, _y);
-		//RenderGrassMap(straight, ForegroundGrass, _x, sh);
 		RenderGrassMap(_x, 8);
 		Tilemap.CompressBounds();
 		//PlaceObstacles(4, Tilemap.cellBounds.max.x - 1, ObstacleProbability);  //BuildSector скопирован из-за этой строчки, чтобы не начинать в препятствии
-		//PlaceApples(4, Tilemap.cellBounds.max.x - 1, ApplesProbability);
 
 		Vector3Int goatCellIndex = Tilemap.WorldToCell(Goat.transform.position);
 		Vector3 goatCellPos = Tilemap.CellToWorld(new Vector3Int(goatCellIndex.x, GetUpperBound(Tilemap, goatCellIndex.x), 0));
@@ -191,25 +201,25 @@ public class GridManager : MonoBehaviour {
 		int _x = Tilemap.cellBounds.max.x;
 		int _y = GetNodeY(Tilemap);
 		int[,] buf;
-		if ( Random.Range(0,3) != 2 ) {
+		if ( Random.Range(0,3) == 2 ) {
 			buf = Patterns[Random.Range(0, Patterns.Count)];
 		} else {
 			buf = RandomWalkTopSmoothed(buffer, rand, 2, _y);
 			buf = SetTextureRules(buf);
 		}
 		int sh = RenderMap(buf, Tilemap, _x, _y);
-		//RenderGrassMap(buf, ForegroundGrass, _x, sh);
+
 		Tilemap.CompressBounds();
-		int _x0 = Tilemap.cellBounds.max.x - 1 - buf.GetUpperBound(0);
-		int _x1 = Tilemap.cellBounds.max.x - 2; // -1 потому что бауд зачем-то ставит одну пустую линию в конце и еще -1 из-за граничных условий расстановки препятствий
+		int _x0 = Tilemap.cellBounds.max.x - buf.GetLength(0);
+		int _x1 = Tilemap.cellBounds.max.x - 2; // -1 потому что в конце пустой столбец и еще -1 чтобы не ставить препятствия в последнюю клетку блока 
 		RenderGrassMap(_x0, _x1 + 1);
 
 		var CellsStates = new Dictionary<int, int>();
-		for ( int i = _x0; i < _x1; i++ ) {
+		for ( int i = _x0; i <= _x1; i++ ) {
 			CellsStates.Add(i, 0);
 		}
-		// 0-empty, 1-hog, 2-bee, 3-obstacle
 
+		// 0-empty, 1-hog, 2-bee, 3-obstacle
 		PlaceHogs(MaxHogsOnTenCells, CellsStates);
 		PlaceBees(MaxHogsOnTenCells, CellsStates);
 		PlaceObstacles(ObstacleProbability, CellsStates);
@@ -385,8 +395,9 @@ public class GridManager : MonoBehaviour {
 
 	void PlaceHogs(int _maxNum, Dictionary<int, int> cells) {
 		int hogNum = 0;
-		for ( int i = 0; i <= cells.Count / 10; i++ ) {
-			hogNum += rand.Next(_maxNum + 1);
+		for ( int i = 0; i < cells.Count / 10; i++ ) {
+			//hogNum += rand.Next(_maxNum + 1);
+			hogNum += Random.Range(0, _maxNum + 1);
 		}
 		var freeCells = new List<int>();
 		foreach ( KeyValuePair<int, int> c in cells ) {
@@ -397,8 +408,9 @@ public class GridManager : MonoBehaviour {
 			} 
 		}
 		for ( int i = 0; i < hogNum; i++ ) {
-			int rndIndex = rand.Next(freeCells.Count);
-			int rndX = freeCells[rndIndex];
+			//int rndIndex = rand.Next(freeCells.Count);
+			//int rndIndex = rand.Next(freeCells.Count);
+			int rndX = freeCells[Random.Range(0, freeCells.Count)];
 
 			for ( int j = rndX - 1; j <= rndX + 1; j++ ) {
 				freeCells.Remove(j);
@@ -422,8 +434,9 @@ public class GridManager : MonoBehaviour {
 	}
 	void PlaceBees(int _maxNum, Dictionary<int, int> cells) {
 		int beeNum = 0;
-		for ( int i = 0; i <= cells.Count / 10; i++ ) {
-			beeNum += rand.Next(_maxNum + 1);
+		for ( int i = 0; i < cells.Count / 10; i++ ) {
+			//beeNum += rand.Next(_maxNum + 1);
+			beeNum += Random.Range(0, _maxNum + 1);
 		}
 		var freeCells = new List<int>();
 		foreach ( KeyValuePair<int, int> c in cells ) {
@@ -434,8 +447,9 @@ public class GridManager : MonoBehaviour {
 			} 
 		}
 		for ( int i = 0; i < beeNum; i++ ) {
-			int rndIndex = rand.Next(freeCells.Count);
-			int rndX = freeCells[rndIndex];
+			//int rndIndex = rand.Next(freeCells.Count);
+			//int rndX = freeCells[rndIndex];
+			int rndX = freeCells[Random.Range(0, freeCells.Count)];
 			for ( int j = rndX - 1; j <= rndX + 1; j++ ) {
 				freeCells.Remove(j);
 				if ( cells.ContainsKey(j) ) {
@@ -471,12 +485,14 @@ public class GridManager : MonoBehaviour {
 		float lastX        = 0f;
 		int   recCounter   = 0; 
 		var   scaleBounds  = new Vector2(0.3f, 1);
+		float cutOffX      = 0f;
 
 		var indexes = new List<int>();
 		foreach ( KeyValuePair<int, int> c in cells ) {
 			indexes.Add(c.Key);
 		}
 		indexes.Sort();
+		cutOffX = Tilemap.CellToWorld(new Vector3Int(indexes[indexes.Count - 1], 0, 0)).x;
 		var nodes = new List<int>();
 		for ( int i = 0; i < indexes.Count; i++ ) {
 			if ( Tilemap.GetTile(new Vector3Int(indexes[i] + 1, GetUpperBound(Tilemap, indexes[i]), 0)) == null  ) {
@@ -509,6 +525,9 @@ public class GridManager : MonoBehaviour {
 			} else {
 				islandX = Random.Range(baseShift + minDistance, baseShift + maxDistance);
 				islandY = Random.Range(node.y - maxDeltaDown, node.y + maxDeltaUp);
+			}
+			if ( islandX > cutOffX ) {
+				return;
 			}
 
 			int islandCellX = Tilemap.WorldToCell(new Vector3(islandX, 0, 0)).x;
@@ -589,7 +608,8 @@ public class GridManager : MonoBehaviour {
 	public int[,] RandomWalkTopSmoothed(int[,] map, System.Random rnd, int minSectionWidth, int nodeY) {
 
 		//Determine the start position
-		int lastHeight = Random.Range(0, map.GetUpperBound(1));
+		//int lastHeight = Random.Range(0, map.GetUpperBound(1));
+		int lastHeight = Random.Range(0, map.GetLength(1));
 
 		int shift = lastHeight - nodeY;
 		if ( shift < 0 ) shift = 0;
@@ -624,7 +644,7 @@ public class GridManager : MonoBehaviour {
 			if ( nextMove == 0 && lastHeight > bottomBound && sectionWidth > minSectionWidth ) {
 				lastHeight--;
 				sectionWidth = 0;
-			} else if ( nextMove == 1 && lastHeight < map.GetUpperBound(1) && sectionWidth > minSectionWidth ) {
+			} else if ( nextMove == 1 && lastHeight <= map.GetUpperBound(1) && sectionWidth > minSectionWidth ) {
 				lastHeight++;
 				sectionWidth = 0;
 			}
