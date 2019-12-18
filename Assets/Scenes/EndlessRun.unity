@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 1553874828}
   ForegroundGrass: {fileID: 1461391411}
+  BackgroundGrass: {fileID: 50865923}
   Grid: {fileID: 1920415372}
   Obstacles: {fileID: 645614960}
   Apples: {fileID: 1345786202}

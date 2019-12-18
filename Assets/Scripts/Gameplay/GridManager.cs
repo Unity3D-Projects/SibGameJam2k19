@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour {
 
 	public Tilemap    Tilemap         = null;
 	public Tilemap    ForegroundGrass = null;
+	public Tilemap    BackgroundGrass = null;
 	public GridLayout Grid            = null;
 	public Transform  Obstacles       = null;
 	public Transform  Apples          = null;
@@ -165,6 +166,7 @@ public class GridManager : MonoBehaviour {
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
 		ForegroundGrass.ClearAllTiles();
+		BackgroundGrass.ClearAllTiles();
 
 		int _x = Tilemap.cellBounds.max.x;
 		int _y = GetNodeY(Tilemap);
@@ -234,6 +236,7 @@ public class GridManager : MonoBehaviour {
 				Tilemap.SetTile(new Vector3Int(x, y, 0), null); 
 			}
 			ForegroundGrass.SetTile(new Vector3Int(x, GetUpperBound(ForegroundGrass, x), 0), null);
+			BackgroundGrass.SetTile(new Vector3Int(x, GetUpperBound(BackgroundGrass, x), 0), null);
 		}
 		Tilemap.CompressBounds();
 		foreach ( Transform obstacle in Obstacles.transform ) {
@@ -423,9 +426,7 @@ public class GridManager : MonoBehaviour {
 				hog.transform.SetParent(Hogs);
 			}
 			hog.transform.localScale = new Vector3(rndScale, rndScale, 1);
-			//float _yShift = hog.GetComponent<Renderer>().bounds.size.y * 0.5f;
 			float _yShift = hog.transform.GetChild(0).GetComponent<Renderer>().bounds.size.y * 0.5f;
-			//pos.y += Grid.cellSize.y + 0.8f;
 			pos.y += Grid.cellSize.y * 0.95f + _yShift;
 			pos.x += Grid.cellSize.x * 0.5f;
 			hog.transform.position = pos;
@@ -437,7 +438,6 @@ public class GridManager : MonoBehaviour {
 	void PlaceBees(int _maxNum, Dictionary<int, int> cells) {
 		int beeNum = 0;
 		for ( int i = 0; i < cells.Count / 10; i++ ) {
-			//beeNum += rand.Next(_maxNum + 1);
 			beeNum += Random.Range(0, _maxNum + 1);
 		}
 		var freeCells = new List<int>();
@@ -449,8 +449,6 @@ public class GridManager : MonoBehaviour {
 			} 
 		}
 		for ( int i = 0; i < beeNum; i++ ) {
-			//int rndIndex = rand.Next(freeCells.Count);
-			//int rndX = freeCells[rndIndex];
 			int rndX = freeCells[Random.Range(0, freeCells.Count)];
 			for ( int j = rndX - 1; j <= rndX + 1; j++ ) {
 				freeCells.Remove(j);
@@ -519,8 +517,8 @@ public class GridManager : MonoBehaviour {
 			float scaleX = Random.Range(scaleBounds.x, scaleBounds.y);
 			float newSizeX = Island.GetComponent<Renderer>().bounds.size.x * scaleX; 
 			float baseShift = node.x + 0.5f * newSizeX;
-			float islandY = 0f;
-			float islandX = 0f;
+			float islandY;
+			float islandX;
 			if ( recCounter == 1 ) {
 				islandX = Random.Range(baseShift + 0.8f, baseShift + maxDistance);
 				islandY = Random.Range(node.y + 1, node.y + maxDeltaUp);
@@ -673,11 +671,9 @@ public class GridManager : MonoBehaviour {
 			shift = 0;
 		}
 		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
-			//for ( int y = 0; y <= map.GetUpperBound(1); y++ ) {
 			for ( int y = map.GetUpperBound(1); y >= 0; y-- ) {
 				int _tx = shiftX + x;
 				int _ty = y - shift;
-				//_ty = Mathf.Clamp(_ty, _minCellY, _maxCellY);
 				if ( _ty <= _minCellY ) {
 					if ( tilemap.GetTile(new Vector3Int(_tx, _ty + 1, 0)) == null ) {
 						tilemap.SetTile(new Vector3Int(_tx, _ty, 0), Grass);
@@ -723,7 +719,9 @@ public class GridManager : MonoBehaviour {
 	public void RenderGrassMap(int x0, int x1) {
 		for ( int x = x0; x <= x1; x++ ) {
 			int y = GetUpperBound(Tilemap, x) + 1;
-			ForegroundGrass.SetTile(new Vector3Int(x, y, 0), DecorGrass[Random.Range(0, DecorGrass.Count)]);
+			var v = new Vector3Int(x, y, 0);
+			ForegroundGrass.SetTile(v, DecorGrass[Random.Range(0, DecorGrass.Count)]);
+			BackgroundGrass.SetTile(v, DecorGrass[Random.Range(0, DecorGrass.Count)]);
 		} 
 	}
 
