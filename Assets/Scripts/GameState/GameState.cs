@@ -198,6 +198,15 @@ public sealed class GameState : MonoSingleton<GameState> {
 		var persistence           = ScenePersistence.Instance.Data as KOZAPersistence;
 		persistence.IsWin         = win;
 		persistence.LastLevelName = LevelManager.Instance.CurrentScene;
+		persistence.TotalDistance = Goat.RunDistance;
+		persistence.EndlessLevel  = LevelSettings.Instance.Endless;
+		if ( LevelSettings.Instance.Endless ) {
+			var maxDist = PlayerPrefs.GetFloat("Gameplay.EndlessRecord");
+			if ( maxDist < Goat.RunDistance ) {
+				PlayerPrefs.SetFloat("Gameplay.EndlessRecord", Goat.RunDistance);
+			}
+		}
+
 		Fader.FadeToBlack(1f);
 	}
 
@@ -295,7 +304,6 @@ public sealed class GameState : MonoSingleton<GameState> {
 				button.GetComponent<Button>().interactable = false;
 				continue;
 			}
-			//var price =BoostWatcher.GetBoostPrice(button.GetComponent<BoostButton>().BoostType);
 			var price =BoostWatcher.GetBoostPrice(type);
 			if ( Score >= price ) {
 				button.GetComponent<Button>().interactable = true;

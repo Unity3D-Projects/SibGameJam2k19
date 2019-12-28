@@ -30,6 +30,13 @@
 	  	<FarmerName text="Дед"/>
 		<GoatName   text="Коза"/>
    </Common>
+   	<Gameplay>
+		<RunDistanceText   text="Расстояние: "/>
+		<RunDistanceMeters text=" {0}м."/>
+		<FinishWindow>
+			<ContinueButton text="Продолжить"/>
+		</FinishWindow>
+	</Gameplay>
 	<Level_1>
 		<Dialog_FarmerPhrase_1 text="- Эй, Машка!" />
 		<Dialog_GoatPhrase_1   text="- Чего тебе?" />
@@ -43,6 +50,7 @@
 		<LoseText text="Ваша жизнь была обменяна на три ящика дешевого алкоголя. Какая незавидная участь." />
 		<Restart  text="Сыграть заново" />
 		<MainMenu text="В начало" />
+		<RunMeter text="Вы убегали от старого алкаша целых {0} метров, а ваш рекорд аж {1} метров." />
 		<Credits  text="2019, SMG для Ludum Dare 44"/>
 	</FinalScreen>
 </root>

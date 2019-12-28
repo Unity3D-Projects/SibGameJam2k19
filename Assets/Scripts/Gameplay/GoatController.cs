@@ -407,21 +407,29 @@ public sealed class GoatController : MonoBehaviour {
 	public float RunSpeed            = 3f;
 	public float SlowSpeed           = 2f;
 
-	public PhysicsObject CharController   = null;
-	public GoatVisual    VisualController = null;
+	public PhysicsObject CharController    = null;
+	public GoatVisual    VisualController  = null;
+	public bool          SlideReleasedFlag = true;
 
 	[NonSerialized] public State CurrentState = null;
 
 	float _targetSpeed  = 0f;
 	float _currentSpeed = 0f;
-	public bool  SlideReleasedFlag = true;
+	float _spawnX       = 0f;
 
-	private void Start() {
+	public float RunDistance {
+		get {
+			return transform.position.x - _spawnX;
+		}
+	}
+
+	void Start() {
+		_spawnX = transform.position.x;
 		CurrentState = new RunState(this);
 		CurrentState.Initialize();
 	}
 
-	private void Update() {
+	void Update() {
 		if ( CurrentState != null ) {
 			CurrentState.Update();
 		}
