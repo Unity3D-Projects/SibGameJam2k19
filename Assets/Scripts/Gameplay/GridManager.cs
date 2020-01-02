@@ -16,6 +16,7 @@ public class GridManager : MonoBehaviour {
 	public Transform  Bees            = null;
 	public Transform  Hogs            = null;
 	public Transform  Islands         = null;
+	public Transform  BGDecor         = null;
 
 	[Header("Tiles")]
 	public TileBase       Grass            = null;
@@ -30,6 +31,7 @@ public class GridManager : MonoBehaviour {
 	public GameObject Farmer  = null;
 	public GameObject Island  = null;
 	public List<ObstacleData> ObstacleDatas = null;
+	public List<PoolItemData> BGPropsDatas = null;
 
 	[Header("Scenario")]
 	public float GoatSpeedMax             = 3f;
@@ -48,6 +50,7 @@ public class GridManager : MonoBehaviour {
 	public float ObstacleVerticalShift  = 0f;
 	public float ObstacleDelta          = 2f;   //minimal distance between obstacles
 	public int   MaxHogsOnTenCells      = 1;
+	public int   MaxPropsOnTenCells     = 2;
 	public float MaxY                   = 20f;
 	public float MinY                   = -4f;
 
@@ -97,11 +100,17 @@ public class GridManager : MonoBehaviour {
 	HogPool     hogPool     = new HogPool();
 	BeePool     beePool     = new BeePool();
 	IslandsPool islandsPool = new IslandsPool();
+	BGStonesPool bgStonesPool = new BGStonesPool();
 
 	GameObject _previousObstacle = null;
 
 	public class ObstaclePool: PrefabPool<Obstacle> { 
 		public ObstaclePool(string _path) {
+			PresenterPrefabPath = _path;
+		}
+	} 
+	public class BGPropsPool: PrefabPool<PoolItem> { 
+		public BGPropsPool(string _path) {
 			PresenterPrefabPath = _path;
 		}
 	} 
@@ -122,6 +131,12 @@ public class GridManager : MonoBehaviour {
 		}
 	}
 
+	public class BGStonesPool: PrefabPool<PoolItem> {
+		public BGStonesPool() {
+			PresenterPrefabPath = "Prefabs/Decor/stone_back";
+		}
+	}
+
 
 	[System.Serializable]
 	public class ObstacleData {
@@ -131,10 +146,23 @@ public class GridManager : MonoBehaviour {
 		public ObstaclePool Pool;
 	}
 
+	[System.Serializable]
+	public class PoolItemData {
+		public GameObject Prefab = null;
+		public string PrefabPath;
+		public BGPropsPool Pool;
+	}
+
 	private void InitObstacleData() {
 		for ( int i = 0; i < ObstacleDatas.Count; i++ ) {
 			ObstacleDatas[i].Pool = new ObstaclePool(ObstacleDatas[i].PoolPath);
 			ObstacleDatas[i].Pool.Init();
+		}
+	}
+	private void InitBGPropsData() {
+		for ( int i = 0; i < BGPropsDatas.Count; i++ ) {
+			BGPropsDatas[i].Pool = new BGPropsPool(BGPropsDatas[i].PrefabPath);
+			BGPropsDatas[i].Pool.Init();
 		}
 	}
 
@@ -159,10 +187,12 @@ public class GridManager : MonoBehaviour {
 		_maxCellY = Tilemap.WorldToCell(new Vector3(0, MaxY, 0)).y; 
 
 		InitObstacleData();
+		InitBGPropsData();
 		hogPool.Init();
 		beePool.Init();
 		islandsPool.Init();
-		
+		bgStonesPool.Init();
+
 		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
 		ForegroundGrass.ClearAllTiles();
@@ -215,6 +245,7 @@ public class GridManager : MonoBehaviour {
 		int _x0 = Tilemap.cellBounds.max.x - buf.GetLength(0);
 		int _x1 = Tilemap.cellBounds.max.x - 2; // -1 потому что в конце пустой столбец и еще -1 чтобы не ставить препятствия в последнюю клетку блока 
 		RenderGrassMap(_x0, _x1 + 1);
+		PlaceDecor(_x0, _x1);
 
 		var CellsStates = new Dictionary<int, int>();
 		for ( int i = _x0; i <= _x1; i++ ) {
@@ -583,6 +614,88 @@ public class GridManager : MonoBehaviour {
 			Vector3 pos = Tilemap.CellToWorld(new Vector3Int(cellX, GetUpperBound(Tilemap, cellX), 0));
 			return y - (pos.y + Tilemap.cellSize.y); 
 		} 
+	}
+
+	void PlaceDecor(int _x0, int _x1) {
+		Vector2 scaleLim = new Vector2(0.7f, 3);
+		int propsNum = 0;
+		for ( int i = 0; i < (_x1 - _x0) / 10; i++ ) {
+			propsNum += Random.Range(0, MaxPropsOnTenCells + 1);
+		}
+		List<int> cells = new List<int>();
+		for ( int i = 0; i < propsNum; i++ ) {
+			int nextCell = Random.Range(_x0, _x1);
+			while ( cells.Contains(nextCell) ) {
+				nextCell = Random.Range(_x0, _x1);
+			}
+			cells.Add(nextCell);
+			Vector3 pos = Tilemap.CellToWorld(new Vector3Int(nextCell, GetUpperBound(Tilemap, nextCell), 0));
+			//pos.y += 2.5f;
+			//var decor = bgStonesPool.Get();
+			var dData = BGPropsDatas[Random.Range(0, BGPropsDatas.Count)];
+			float rndScale = Random.Range(scaleLim.x, scaleLim.y);
+			float _yShift = dData.Prefab.GetComponent<Renderer>().bounds.size.y * rndScale * 0.5f;
+			pos.y += Grid.cellSize.y * 0.85f + _yShift; 
+
+			//float _yShift = decor.GetComponent<Renderer>().bounds.size.y * 0.5f;
+
+			int c = 0;
+			//while ( !FullyInGround(decor.transform) ) {
+			while ( !FullyInGround(dData.Prefab.transform, rndScale, pos) ) {
+				//decor.transform.position -= new Vector3(0, Grid.cellSize.y * 0.5f, 0);
+				pos -= new Vector3(0, Grid.cellSize.y * 0.5f, 0);
+				c++;
+				if ( c == 3 ) {
+					return;
+					//bgStonesPool.Return(decor.GetComponent<PoolItem>());
+				}
+			}
+			var decor = dData.Pool.Get();
+			if ( decor.transform.parent == null ) {
+				decor.transform.SetParent(BGDecor);
+			}
+			decor.transform.position = pos;
+			decor.transform.localScale = new Vector3(rndScale, rndScale); 
+
+
+			if ( Random.Range(0, 2) == 1 ) {
+				decor.GetComponent<SpriteRenderer>().flipX = true;
+			} else {
+				decor.GetComponent<SpriteRenderer>().flipX = false; 
+			}
+		} 
+
+		bool IsInGround(Vector3 pos) {
+			if ( Tilemap.GetTile(Tilemap.WorldToCell(pos)) == null ) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		//bool FullyInGround(Transform s) { 
+		//	Renderer rend = s.GetComponent<Renderer>();
+		//	if ( !IsInGround(s.position - rend.bounds.extents)) {
+		//		Debug.Log("LEFT CORNER IS NOT IN THE GROUND");
+		//		return false;
+		//	} else if ( !IsInGround(s.position + new Vector3(rend.bounds.extents.x, -rend.bounds.extents.y, 0)) ) {
+		//		Debug.Log("RIGHT CORNER IS NOT IN THE GROUND");
+		//		return false; 
+		//	} 
+		//	return true;
+		//}
+
+		bool FullyInGround(Transform s, float scale, Vector3 pos) {
+			Renderer rend = s.GetComponent<Renderer>();
+			if ( !IsInGround(pos - (rend.bounds.extents * scale)) ) {
+				Debug.Log("LEFT CORNER IS NOT IN THE GROUND");
+				return false;
+			} else if ( !IsInGround(pos + new Vector3(rend.bounds.extents.x * scale, -rend.bounds.extents.y * scale, 0)) ) {
+				Debug.Log("RIGHT CORNER IS NOT IN THE GROUND");
+				return false; 
+			}
+			return true;
+		}
 	}
 
 	int GetTopGroundIndex(int x) {
