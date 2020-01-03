@@ -617,7 +617,7 @@ public class GridManager : MonoBehaviour {
 	}
 
 	void PlaceDecor(int _x0, int _x1) {
-		Vector2 scaleLim = new Vector2(0.7f, 3);
+		Vector2 scaleLim = new Vector2(0.5f, 2.7f);
 		int propsNum = 0;
 		for ( int i = 0; i < (_x1 - _x0) / 10; i++ ) {
 			propsNum += Random.Range(0, MaxPropsOnTenCells + 1);
@@ -630,33 +630,24 @@ public class GridManager : MonoBehaviour {
 			}
 			cells.Add(nextCell);
 			Vector3 pos = Tilemap.CellToWorld(new Vector3Int(nextCell, GetUpperBound(Tilemap, nextCell), 0));
-			//pos.y += 2.5f;
-			//var decor = bgStonesPool.Get();
 			var dData = BGPropsDatas[Random.Range(0, BGPropsDatas.Count)];
 			float rndScale = Random.Range(scaleLim.x, scaleLim.y);
 			float _yShift = dData.Prefab.GetComponent<Renderer>().bounds.size.y * rndScale * 0.5f;
 			pos.y += Grid.cellSize.y * 0.85f + _yShift; 
-
-			//float _yShift = decor.GetComponent<Renderer>().bounds.size.y * 0.5f;
-
 			int c = 0;
-			//while ( !FullyInGround(decor.transform) ) {
 			while ( !FullyInGround(dData.Prefab.transform, rndScale, pos) ) {
-				//decor.transform.position -= new Vector3(0, Grid.cellSize.y * 0.5f, 0);
 				pos -= new Vector3(0, Grid.cellSize.y * 0.5f, 0);
 				c++;
 				if ( c == 3 ) {
 					return;
-					//bgStonesPool.Return(decor.GetComponent<PoolItem>());
 				}
 			}
 			var decor = dData.Pool.Get();
 			if ( decor.transform.parent == null ) {
 				decor.transform.SetParent(BGDecor);
 			}
-			decor.transform.position = pos;
 			decor.transform.localScale = new Vector3(rndScale, rndScale); 
-
+			decor.transform.position = pos; 
 
 			if ( Random.Range(0, 2) == 1 ) {
 				decor.GetComponent<SpriteRenderer>().flipX = true;
@@ -673,25 +664,11 @@ public class GridManager : MonoBehaviour {
 			}
 		}
 
-		//bool FullyInGround(Transform s) { 
-		//	Renderer rend = s.GetComponent<Renderer>();
-		//	if ( !IsInGround(s.position - rend.bounds.extents)) {
-		//		Debug.Log("LEFT CORNER IS NOT IN THE GROUND");
-		//		return false;
-		//	} else if ( !IsInGround(s.position + new Vector3(rend.bounds.extents.x, -rend.bounds.extents.y, 0)) ) {
-		//		Debug.Log("RIGHT CORNER IS NOT IN THE GROUND");
-		//		return false; 
-		//	} 
-		//	return true;
-		//}
-
 		bool FullyInGround(Transform s, float scale, Vector3 pos) {
 			Renderer rend = s.GetComponent<Renderer>();
 			if ( !IsInGround(pos - (rend.bounds.extents * scale)) ) {
-				Debug.Log("LEFT CORNER IS NOT IN THE GROUND");
 				return false;
 			} else if ( !IsInGround(pos + new Vector3(rend.bounds.extents.x * scale, -rend.bounds.extents.y * scale, 0)) ) {
-				Debug.Log("RIGHT CORNER IS NOT IN THE GROUND");
 				return false; 
 			}
 			return true;
