@@ -300,6 +300,16 @@ public class GridManager : MonoBehaviour {
 				islandsPool.Return(island.GetComponent<PoolItem>()); 
 			} 
 		}
+		foreach ( Transform prop in BGDecor.transform ) {
+			if ( prop.position.x != 0 & prop.position.x < _world.x ) {
+				for ( int i = 0; i < BGPropsDatas.Count; i++ ) {
+					if ( BGPropsDatas[i].Prefab.name + "(Clone)" == prop.name ) { //позор, нужен какой-то способ определения к какому пулу относится объект или чтоб объект сам мог в пул возвращаться
+						BGPropsDatas[i].Pool.Return(prop.GetComponent<PoolItem>());
+						break;
+					} 
+				}
+			}
+		}
 	} 
 
 
