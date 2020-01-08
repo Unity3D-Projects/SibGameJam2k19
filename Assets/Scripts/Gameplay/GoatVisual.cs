@@ -11,14 +11,17 @@ public sealed class GoatVisual : MonoBehaviour {
 	public GameObject ObstacleGoat = null;
 	public GameObject SlowGoat     = null;
 	public ParticleSystem SpeedParticles = null;
+	public ParticleSystem SlideParticles = null;
 
 	private void OnEnable() {
 		var emis = SpeedParticles.emission;
 		emis.enabled = false;
+		emis = SlideParticles.emission;
+		emis.enabled = false;
 
 		EventManager.Subscribe<Event_BoostActivated>(this, OnBoostApply);
 		EventManager.Subscribe<Event_BoostEnded>    (this, OnBoostEnd);
-	}
+	} 
 
 	private void OnDisable() {
 		EventManager.Unsubscribe<Event_BoostActivated>(OnBoostApply);
@@ -75,6 +78,10 @@ public sealed class GoatVisual : MonoBehaviour {
 		JumpingGoat.SetActive(false);
 		ObstacleGoat.SetActive(false);
 		SlowGoat.SetActive(false);
+
+
+		var emis = SlideParticles.emission;
+		emis.enabled = false;
 	}
 
 	void SetNormalState() {
@@ -111,6 +118,8 @@ public sealed class GoatVisual : MonoBehaviour {
 		if ( slideshow ) {
 			slideshow.Play();
 		}
+		var emis = SlideParticles.emission;
+		emis.enabled = true;
 	}
 
 	void SetDeadGoat() {
