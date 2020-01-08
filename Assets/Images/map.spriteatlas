@@ -31,8 +31,11 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 3728cd02a846ff440a667e21825fd868, type: 3}
-    totalSpriteSurfaceArea: 13041027
+    totalSpriteSurfaceArea: 13172099
     bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 3fa8faace6a0248a165c2c318d90ba9c
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: eb56de40f2bce7d43bb99b015bbe199d, type: 3}
@@ -42,11 +45,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ed832eb11beb25341a2f664436d0f922, type: 3}
   - {fileID: 21300000, guid: 11135892781927d43b7d87a63618db53, type: 3}
   - {fileID: 21300000, guid: 5abbdba59fb7cea42ac340c4a1425741, type: 3}
+  - {fileID: 21300000, guid: 24e797c5c5742dc41a72d2bdf21a8d64, type: 3}
   - {fileID: 21300000, guid: bbbebcd55929c914c9ce01d14ec44a84, type: 3}
   - {fileID: 21300000, guid: a923d4565d1b1484ea614ff446da4f1e, type: 3}
   - {fileID: 21300000, guid: 152f8886a21f6b54c8fbfb896a928c8e, type: 3}
   - {fileID: 21300000, guid: 171fede843c58374db76fed6f3b2eed7, type: 3}
   - {fileID: 21300000, guid: 510d6ef9104f46248a7f4726041fdeec, type: 3}
+  - {fileID: 21300000, guid: cd0eeeca82646ed4593c0a3692bda9b2, type: 3}
   - {fileID: 21300000, guid: 4ee9483cb988fbe469beff6906cbc131, type: 3}
   - {fileID: 21300000, guid: b6fb1ecd4fa0db641a46a87fa16fbd3b, type: 3}
   - {fileID: 21300000, guid: be79f3dd8c7327f41820c0d1a5f03d2b, type: 3}
@@ -60,11 +65,13 @@ SpriteAtlas:
   - zemlya1
   - royal
   - ostrov
+  - skull
   - kust_back
   - neHb
   - parallax
   - sky
   - parallax2
+  - bone
   - stoun_back
   - cloud1
   - zemlya2
