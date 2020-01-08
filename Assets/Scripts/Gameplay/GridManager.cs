@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour {
 	public Transform  Hogs            = null;
 	public Transform  Islands         = null;
 	public Transform  BGDecor         = null;
+	public Transform  Decor           = null;
 
 	[Header("Tiles")]
 	public TileBase       Grass            = null;
@@ -32,6 +33,7 @@ public class GridManager : MonoBehaviour {
 	public GameObject Island  = null;
 	public List<ObstacleData> ObstacleDatas = null;
 	public List<PoolItemData> BGPropsDatas = null;
+	public List<PoolItemData> FGPropsDatas = null;
 
 	[Header("Scenario")]
 	public float GoatSpeedMax             = 3f;
@@ -44,15 +46,16 @@ public class GridManager : MonoBehaviour {
 	public int   ApplesProbability        = 5; 
 
 	[Header("MapBuilding")]
-	public int   DeltaToBuildSector     = 16;  //расстояние от козы до правого края, когда начинается ген нового блока
-	public int   DeltaToCutSector       = 30;
-	public int   DeltaBeforeFarmerToCut = 6;  //количество клеток от деда влево, до куда обрежется карта
-	public float ObstacleVerticalShift  = 0f;
-	public float ObstacleDelta          = 2f;   //minimal distance between obstacles
-	public int   MaxHogsOnTenCells      = 1;
-	public int   MaxPropsOnTenCells     = 2;
-	public float MaxY                   = 20f;
-	public float MinY                   = -4f;
+	public int   DeltaToBuildSector      = 16;  //расстояние от козы до правого края, когда начинается ген нового блока
+	public int   DeltaToCutSector        = 30;
+	public int   DeltaBeforeFarmerToCut  = 6;  //количество клеток от деда влево, до куда обрежется карта
+	public float ObstacleVerticalShift   = 0f;
+	public float ObstacleDelta           = 2f;   //minimal distance between obstacles
+	public int   MaxHogsOnTenCells       = 1;
+	public int   MaxPropsOnTenCells      = 2;
+	public int   MaxSmallPropsOnTenCells = 2;
+	public float MaxY                    = 20f;
+	public float MinY                    = -4f;
 
 	int _minCellY;
 	int _maxCellY;
@@ -159,10 +162,14 @@ public class GridManager : MonoBehaviour {
 			ObstacleDatas[i].Pool.Init();
 		}
 	}
-	private void InitBGPropsData() {
+	private void InitPropsData() {
 		for ( int i = 0; i < BGPropsDatas.Count; i++ ) {
 			BGPropsDatas[i].Pool = new BGPropsPool(BGPropsDatas[i].PrefabPath);
 			BGPropsDatas[i].Pool.Init();
+		}
+		for ( int i = 0; i < FGPropsDatas.Count; i++ ) {
+			FGPropsDatas[i].Pool = new BGPropsPool(FGPropsDatas[i].PrefabPath);
+			FGPropsDatas[i].Pool.Init();
 		}
 	}
 
@@ -187,7 +194,7 @@ public class GridManager : MonoBehaviour {
 		_maxCellY = Tilemap.WorldToCell(new Vector3(0, MaxY, 0)).y; 
 
 		InitObstacleData();
-		InitBGPropsData();
+		InitPropsData();
 		hogPool.Init();
 		beePool.Init();
 		islandsPool.Init();
@@ -305,6 +312,16 @@ public class GridManager : MonoBehaviour {
 				for ( int i = 0; i < BGPropsDatas.Count; i++ ) {
 					if ( BGPropsDatas[i].Prefab.name + "(Clone)" == prop.name ) { //позор, нужен какой-то способ определения к какому пулу относится объект или чтоб объект сам мог в пул возвращаться
 						BGPropsDatas[i].Pool.Return(prop.GetComponent<PoolItem>());
+						break;
+					} 
+				}
+			}
+		}
+		foreach ( Transform prop in Decor.transform ) {
+			if ( prop.position.x != 0 & prop.position.x < _world.x ) {
+				for ( int i = 0; i < FGPropsDatas.Count; i++ ) {
+					if ( FGPropsDatas[i].Prefab.name + "(Clone)" == prop.name ) { //позор, нужен какой-то способ определения к какому пулу относится объект или чтоб объект сам мог в пул возвращаться
+						FGPropsDatas[i].Pool.Return(prop.GetComponent<PoolItem>());
 						break;
 					} 
 				}
@@ -627,9 +644,11 @@ public class GridManager : MonoBehaviour {
 	}
 
 	void PlaceDecor(int _x0, int _x1) {
+		//Кусты и камни на заднем фоне
 		Vector2 scaleLim = new Vector2(0.5f, 2.7f);
 		int propsNum = 0;
-		for ( int i = 0; i < (_x1 - _x0) / 10; i++ ) {
+		int iterations = (_x1 - _x0) / 10;
+		for ( int i = 0; i < iterations; i++ ) {
 			propsNum += Random.Range(0, MaxPropsOnTenCells + 1);
 		}
 		List<int> cells = new List<int>();
@@ -665,6 +684,43 @@ public class GridManager : MonoBehaviour {
 				decor.GetComponent<SpriteRenderer>().flipX = false; 
 			}
 		} 
+
+
+		//черепа и кости
+		propsNum = 0;
+		for ( int i = 0; i < iterations; i++ ) {
+			propsNum += Random.Range(0, MaxSmallPropsOnTenCells + 1);
+		} 
+		scaleLim = new Vector2(0.4f, 1.3f);
+		cells.Clear();
+		for ( int i = 0; i < propsNum; i++ ) {
+			int nextCell = Random.Range(_x0, _x1);
+			while ( cells.Contains(nextCell) ) {
+				nextCell = Random.Range(_x0, _x1);
+			}
+			cells.Add(nextCell);
+			Vector3 pos = Tilemap.CellToWorld(new Vector3Int(nextCell, GetUpperBound(Tilemap, nextCell) - Random.Range(0, 2), 0));
+			pos += Grid.cellSize * 0.5f; 
+			var dData = FGPropsDatas[Random.Range(0, FGPropsDatas.Count)];
+			float rndScale = Random.Range(scaleLim.x, scaleLim.y);
+			var decor = dData.Pool.Get();
+			if ( decor.transform.parent == null ) {
+				decor.transform.SetParent(Decor);
+			}
+			decor.transform.localScale = new Vector3(rndScale, rndScale); 
+			decor.transform.position = pos;
+			decor.transform.RotateAroundLocal(new Vector3(0, 0, 1), Random.Range(0, 95f));
+			
+			if ( Random.Range(0, 2) == 1 ) {
+				decor.GetComponent<SpriteRenderer>().flipX = true;
+			} else {
+				decor.GetComponent<SpriteRenderer>().flipX = false; 
+			} 
+		}
+
+
+
+
 
 		bool IsInGround(Vector3 pos) {
 			if ( Tilemap.GetTile(Tilemap.WorldToCell(pos)) == null ) {
