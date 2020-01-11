@@ -10,8 +10,10 @@ public sealed class GoatVisual : MonoBehaviour {
 	public GameObject JumpingGoat  = null;
 	public GameObject ObstacleGoat = null;
 	public GameObject SlowGoat     = null;
+
 	public ParticleSystem SpeedParticles = null;
 	public ParticleSystem SlideParticles = null;
+	public ParticleSystem JumpParticles  = null; 
 
 	private void OnEnable() {
 		var emis = SpeedParticles.emission;
@@ -82,6 +84,8 @@ public sealed class GoatVisual : MonoBehaviour {
 
 		var emis = SlideParticles.emission;
 		emis.enabled = false;
+		//emis = JumpParticles.emission;
+		//emis.enabled = false;
 	}
 
 	void SetNormalState() {
@@ -108,6 +112,7 @@ public sealed class GoatVisual : MonoBehaviour {
 		TurnOffAllStates();
 		JumpingGoat.SetActive(true);
 		JumpingGoat.GetComponent<Animation>().Play();
+		JumpParticles.Play(); 
 	}
 
 	void SetSlidingGoat() {
