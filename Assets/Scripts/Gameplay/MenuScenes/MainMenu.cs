@@ -93,7 +93,12 @@ public sealed class MainMenu : MonoBehaviour {
 		}
 		var txt = LevelButtons[0].transform.Find("Apples").GetComponent<Text>();
 		txt.text = txt.text.Substring(txt.text.IndexOf('/')); 
-		txt.text = txt.text.Insert(0, appleNum); 
+		txt.text = txt.text.Insert(0, appleNum);
+		if ( PlayerPrefs.HasKey(LevelButtons[0].GetComponent<LevelButton>().LevelName + ".Star") ) {
+			LevelButtons[0].transform.Find("Star").gameObject.SetActive(true);
+		} else {
+			LevelButtons[0].transform.Find("Star").gameObject.SetActive(false);
+		}
 		for ( int i = 1; i < LevelButtons.Count; i++ ) {
 			if ( PlayerPrefs.HasKey(LevelButtons[i-1].GetComponent<LevelButton>().LevelName) ) {
 				LevelButtons[i].GetComponent<Button>().interactable = true;
@@ -107,7 +112,13 @@ public sealed class MainMenu : MonoBehaviour {
 			}
 			txt = LevelButtons[i].transform.Find("Apples").GetComponent<Text>();
 			txt.text = txt.text.Substring(txt.text.IndexOf('/'));
-			txt.text = txt.text.Insert(0, appleNum); 
+			txt.text = txt.text.Insert(0, appleNum);
+
+			if ( PlayerPrefs.HasKey(LevelButtons[i].GetComponent<LevelButton>().LevelName + ".Star") ) {
+				LevelButtons[i].transform.Find("Star").gameObject.SetActive(true);
+			} else {
+				LevelButtons[i].transform.Find("Star").gameObject.SetActive(false); 
+			}
 		}
 	}
 

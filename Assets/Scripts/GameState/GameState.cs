@@ -30,6 +30,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	[System.NonSerialized]
 	public int Score = 0;
 	public int ApplesCounter = 0;
+	public bool ObstacleHit = false;
 
 	public readonly TimeController TimeController = new TimeController();
 	public readonly BoostWatcher   BoostWatcher   = new BoostWatcher();
@@ -180,7 +181,12 @@ public sealed class GameState : MonoSingleton<GameState> {
 		if ( !PlayerPrefs.HasKey(sm.CurrentScene) || (PlayerPrefs.GetInt(sm.CurrentScene) < ApplesCounter) ) {
 			PlayerPrefs.SetInt(sm.CurrentScene, ApplesCounter);
 			PlayerPrefs.Save();
-		} 
+		}
+		if ( !ObstacleHit ) {
+			if ( !PlayerPrefs.HasKey(sm.CurrentScene + ".Star") ) {
+				PlayerPrefs.SetInt(sm.CurrentScene + ".Star", 1);
+			}
+		}
 
 		if ( ls.CompleteAction == LevelCompleteAction.FinalScene ) {
 			Fader.OnFadeToBlackFinished.AddListener(sm.LoadEndScene);
@@ -213,6 +219,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	void OnContinueWindowShow() {
 		FinishWindow.SetActive(true);
 		FinishWindow.GetComponent<FinishWindow>().UpdateApplesCounter();
+		FinishWindow.GetComponent<FinishWindow>().UpdateStar();
 	}
 
 	void OnDialogComplete(Event_StartDialogComplete e) {
@@ -236,6 +243,10 @@ public sealed class GameState : MonoSingleton<GameState> {
 	void OnGoatHitObstacle(Event_Obstacle_Collided e) {
 		if ( !Goat ) {
 			return;
+		}
+
+		if ( !ObstacleHit ) {
+			ObstacleHit = true; 
 		}
 
 		if ( e.Obstacle.Type == ObstacleType.Bush ) {
