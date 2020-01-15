@@ -3398,6 +3398,7 @@ GameObject:
   - component: {fileID: 1080138773}
   - component: {fileID: 1080138775}
   - component: {fileID: 1080138774}
+  - component: {fileID: 1080138776}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -3464,6 +3465,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080138772}
   m_CullTransparentMesh: 0
+--- !u!114 &1080138776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080138772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: Common.FarmerName
 --- !u!1001 &1094674296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3761,6 +3775,7 @@ GameObject:
   - component: {fileID: 1208076746}
   - component: {fileID: 1208076748}
   - component: {fileID: 1208076747}
+  - component: {fileID: 1208076749}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -3827,6 +3842,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1208076745}
   m_CullTransparentMesh: 0
+--- !u!114 &1208076749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208076745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180c8603af9aa9f47b154f6a768b3bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: Common.GoatName
 --- !u!224 &1286223229 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7787250717098401531, guid: 847099a3589d3c54291e3ab1dbef019f,
@@ -6097,7 +6125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2785554425882167782
 RectTransform:
   m_ObjectHideFlags: 0

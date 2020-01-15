@@ -137,6 +137,7 @@ public sealed class MainMenu : MonoBehaviour {
 		for ( int i = 1; i < LevelButtons.Count; i++ ) {
 			LevelButtons[i].GetComponent<Button>().interactable = true;
 		}
+		EndlessRunButton.interactable = true;
 	}
 
 	void OnClickEndlessRun() {
