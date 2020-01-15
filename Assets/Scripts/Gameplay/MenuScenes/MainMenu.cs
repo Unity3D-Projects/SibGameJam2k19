@@ -24,6 +24,7 @@ public sealed class MainMenu : MonoBehaviour {
 	public Button           LevelChoiceCloseButton = null;
 	public Button           EndlessRunButton       = null;
 	public List<GameObject> LevelButtons           = null;
+	public int              LevelToActivateEndless = 3;
 
 	string _levelName = null;
 
@@ -99,10 +100,13 @@ public sealed class MainMenu : MonoBehaviour {
 		} else {
 			LevelButtons[0].transform.Find("Star").gameObject.SetActive(false);
 		}
+		EndlessRunButton.interactable = false;
 		for ( int i = 1; i < LevelButtons.Count; i++ ) {
 			if ( PlayerPrefs.HasKey(LevelButtons[i-1].GetComponent<LevelButton>().LevelName) ) {
 				LevelButtons[i].GetComponent<Button>().interactable = true;
-				//LevelButtons[i].transform.Find("Apples").GetComponent<Text>().text.Insert(0, PlayerPrefs.GetInt(LevelButtons[i].GetComponent<LevelButton>().LevelName).ToString()); 
+				if ( i == LevelToActivateEndless ) {
+					EndlessRunButton.interactable = true;
+				}
 			} else {
 				LevelButtons[i].GetComponent<Button>().interactable = false; 
 			}

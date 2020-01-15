@@ -218,8 +218,10 @@ public sealed class GameState : MonoSingleton<GameState> {
 
 	void OnContinueWindowShow() {
 		FinishWindow.SetActive(true);
-		FinishWindow.GetComponent<FinishWindow>().UpdateApplesCounter();
-		FinishWindow.GetComponent<FinishWindow>().UpdateStar();
+		var fv = FinishWindow.GetComponent<FinishWindow>();
+		fv.UpdateApplesCounter();
+		fv.UpdateStar();
+		fv.UpdateResetButton(); 
 	}
 
 	void OnDialogComplete(Event_StartDialogComplete e) {
