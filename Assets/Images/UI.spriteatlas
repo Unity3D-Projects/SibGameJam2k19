@@ -32,20 +32,24 @@ SpriteAtlas:
     packables:
     - {fileID: 102900000, guid: 76e87ea64476afb489d786672b777267, type: 3}
     - {fileID: 2800000, guid: 8d3b5c679e25475488506c7bcc66eee3, type: 3}
-    totalSpriteSurfaceArea: 2732108
+    totalSpriteSurfaceArea: 2945546
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: 0a007b7fa944b226ebd77b63bda67798
+      Hash: c64a3680e00e447df1f67912f02b9783
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: d5f3c110284603347b5be9b63aee50d6, type: 3}
   - {fileID: 21300000, guid: da13cfa0afccb7f4f841c0e4abe6917d, type: 3}
   - {fileID: 21300000, guid: 797239e013a820548b4da2af002cffc0, type: 3}
+  - {fileID: 21300000, guid: 8a2d2d2394c911f469c4011f3076c3c4, type: 3}
   - {fileID: 21300000, guid: 7b896e057dcc87b4594e8dde80b8a60d, type: 3}
   - {fileID: 21300000, guid: c708a636188ea3847a06e71c020041a3, type: 3}
   - {fileID: 21300000, guid: 0a5a0196af328ee468e96789769e08e9, type: 3}
+  - {fileID: 21300000, guid: cd80d7e6085884e44979c8524efb15d6, type: 3}
   - {fileID: 21300000, guid: 8d3b5c679e25475488506c7bcc66eee3, type: 3}
   - {fileID: 21300000, guid: 5ae33ed8cda0e8a42bc7cf01e105f193, type: 3}
+  - {fileID: 21300000, guid: 302ed04a4e8debf4bace2929f9969b5b, type: 3}
   - {fileID: 21300000, guid: a5e9214d5b2c2304ca33457fa27a6803, type: 3}
   - {fileID: 21300000, guid: 9b7f719d3ee63bc40bcb9cc766cf22bb, type: 3}
   - {fileID: 21300000, guid: ea48441e01e6d4b4fac61aba9427426e, type: 3}
@@ -54,13 +58,17 @@ SpriteAtlas:
   - {fileID: 21300000, guid: aa62dd6f54efe8a49bd7fc49e0e6db71, type: 3}
   - {fileID: 21300000, guid: dd7bb8cf4c4b1f14398a3a82ebe23ac3, type: 3}
   m_PackedSpriteNamesToIndex:
+  - scroll_back_sliced
   - life_full
   - boost2
+  - scroll_small
   - boost1
   - boost3
   - brvl
+  - window_small_sliced
   - star
   - down
+  - scroll_handle_sliced
   - pause
   - life_non
   - up
