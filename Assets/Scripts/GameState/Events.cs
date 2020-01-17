@@ -1,4 +1,15 @@
 namespace KOZA.Events {
+
+	/// <summary>
+	/// Ads
+	/// </summary>
+	///
+	public struct OnAdReady {
+		public string PlacementId;
+		public OnAdReady(string placement) {
+			PlacementId = placement;
+		}
+	}
 	public struct Event_JumpButtonPushed {
 	}
 

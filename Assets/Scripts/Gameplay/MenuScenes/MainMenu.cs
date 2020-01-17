@@ -133,6 +133,13 @@ public sealed class MainMenu : MonoBehaviour {
 	public void OnClickUnlockAll() {
 		UnlockAll();
 	}
+	public void ShowVideoAd() {
+		var ac = AdvertisementController.Instance;
+		if ( ac.IsCanShowAd(AdvertisementController.NextLevelHelpReward) ) {
+			ac.ShowVideoAd(AdvertisementController.NextLevelHelpReward, null);
+		}
+	}
+
 	void UnlockAll() {
 		for ( int i = 1; i < LevelButtons.Count; i++ ) {
 			LevelButtons[i].GetComponent<Button>().interactable = true;
