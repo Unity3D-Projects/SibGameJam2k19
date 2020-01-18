@@ -47,7 +47,7 @@ public sealed class EndGame : MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		AdvertisementController.Instance.HideBannerAd();
+		AdvertisementController.HideBannerAd();
 	}
 
 	void SetupWatchAdButton(int failCount) {

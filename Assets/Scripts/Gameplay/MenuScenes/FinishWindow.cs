@@ -20,7 +20,7 @@ public class FinishWindow : MonoBehaviour {
 		persistence.FastRestart = true;
 		//Fader.OnFadeToBlackFinished.AddListener(() => LevelManager.Instance.LoadLevel(persistence.LastLevelName));
 		LevelManager.Instance.LoadLevel(persistence.LastLevelName);
-		AdvertisementController.Instance.HideBannerAd();
+		AdvertisementController.HideBannerAd();
 	}
 
 	public void UpdateApplesCounter() {

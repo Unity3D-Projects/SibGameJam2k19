@@ -40,7 +40,7 @@ public class AdvertisementController : MonoSingleton<AdvertisementController> {
 	}
 
 	void Start() {
-		DontDestroyOnLoad(this.gameObject);
+		DontDestroyOnLoad(gameObject);
 
 		_adWatchCounter = PlayerPrefs.GetInt("WatchedAdCount");
 
@@ -73,7 +73,7 @@ public class AdvertisementController : MonoSingleton<AdvertisementController> {
 		Advertisement.Banner.Show(placement);
 	}
 
-	public void HideBannerAd() {
+	public static void HideBannerAd() {
 		Advertisement.Banner.Hide();
 	}
 

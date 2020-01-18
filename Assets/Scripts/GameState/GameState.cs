@@ -63,7 +63,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Unsubscribe<Event_SceneLoaded>(OnSceneLoaded);
 		BoostWatcher.DeInit();
 
-		AdvertisementController.Instance.HideBannerAd();
+		AdvertisementController.HideBannerAd();
 	}
 
 	void Update() {
