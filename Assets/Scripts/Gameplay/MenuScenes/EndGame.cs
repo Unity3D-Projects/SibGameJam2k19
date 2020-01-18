@@ -35,7 +35,7 @@ public sealed class EndGame : MonoBehaviour {
 		SetupWatchAdButton(pData.ConsecutiveFailCount);
 		Fader.FadeToWhite(1f);
 
-		if ( isWin && AdvertisementController.Instance.IsCanShowAd(AdvertisementController.LevelWinBanner) ) {
+		if ( (isWin || isEndless) && AdvertisementController.Instance.IsCanShowAd(AdvertisementController.LevelWinBanner) ) {
 			AdvertisementController.Instance.ShowBannerAd(AdvertisementController.LevelWinBanner);
 		}
 	}
