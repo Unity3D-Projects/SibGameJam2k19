@@ -19,8 +19,8 @@ public enum GoatState {
 }
 
 public class State {
-	protected GoatState      Type                  = GoatState.None;
-	protected float          TimeToExit            = -1;
+	protected GoatState       Type                  = GoatState.None;
+	protected float           TimeToExit            = -1;
 	protected List<GoatState> AvailableTransitions = new List<GoatState>();
 	protected GoatState       ExitState            = GoatState.None;
 	protected GoatController  Controller           = null;
@@ -226,14 +226,14 @@ public sealed class SlideState : State {
 		base.Init();
 		Controller.CharController.SetLowProfile(true);
 		Controller.SlideReleasedFlag = false;
-		Debug.Log("Slide on");
+		//Debug.Log("Slide on");
 		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
 		SoundManager.Instance.PlaySound("Whoosh");
 	}
 
 	protected override void LeaveState() {
 		base.LeaveState();
-		Debug.Log("Slide off");
+		//Debug.Log("Slide off");
 		Controller.CharController.SetLowProfile(false);
 		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
 	} 
@@ -274,7 +274,7 @@ public sealed class SlowDownState : State {
 
 	protected override void LeaveState() {
 		base.LeaveState();
-		Debug.Log("SlowDown off");
+		//Debug.Log("SlowDown off");
 		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_YellButtonPushed>(OnYellButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);

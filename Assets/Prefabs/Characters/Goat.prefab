@@ -10026,6 +10026,8 @@ MonoBehaviour:
   JumpingGoat: {fileID: 7993769881649238041}
   ObstacleGoat: {fileID: 7150662557502835143}
   SlowGoat: {fileID: 530777127585310820}
+  YellEffect: {fileID: 5950474308347726294, guid: e5923e68792df4545adb21b9769d0f2b,
+    type: 3}
   SpeedParticles: {fileID: 540947837293949076}
   SlideParticles: {fileID: 5163116258375364116}
   JumpParticles: {fileID: 8663663047940224032}
