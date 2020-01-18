@@ -567,6 +567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 15, y: 0}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!1001 &163814344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1353,7 +1354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &360176149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1937,6 +1938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 0, y: -15}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!1 &497719522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2337,6 +2339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 0, y: -15}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!224 &581333305 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2214543294655525828, guid: a42f06877fcb0b146a34568cc0c284fe,
@@ -2615,6 +2618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: -15, y: 0}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!1 &682168906
 GameObject:
   m_ObjectHideFlags: 0
@@ -2703,6 +2707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 15, y: 0}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!1 &689470032
 GameObject:
   m_ObjectHideFlags: 0
@@ -2882,6 +2887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 15, y: 0}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!1 &720355533
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,6 +3460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 10, y: -10}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!114 &1016549357 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8262552943827242536, guid: 847099a3589d3c54291e3ab1dbef019f,
@@ -5137,6 +5144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {x: 0, y: -15}
   Time: 0.5
+  MaxStartDelay: 0.1
 --- !u!1 &1752938901
 GameObject:
   m_ObjectHideFlags: 0
