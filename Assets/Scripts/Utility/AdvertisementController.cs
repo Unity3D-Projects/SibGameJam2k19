@@ -14,12 +14,15 @@ public class AdvertisementController : MonoSingleton<AdvertisementController> {
 	public static readonly string NextLevelHelpReward = "NextLevelHelpReward";
 
 #if UNITY_ANDROID
+	readonly bool   _enabled   = true;
 	readonly bool   _testMode  = true;
 	readonly string _gameAdsID = "3436080";
 #elif UNITY_IOS
+	readonly bool   _enabled   = true;
 	readonly bool   _testMode  = true;
 	readonly string _gameAdsID = "3436081";
 #else
+	readonly bool   _enabled   = false;
 	readonly bool   _testMode  = true;
 	readonly string _gameAdsID = "none";
 #endif
@@ -27,9 +30,14 @@ public class AdvertisementController : MonoSingleton<AdvertisementController> {
 	AdsListener _adListener     = null;
 	int         _adWatchCounter = 0;
 
-
 	//AdsListener _listener;
 	Dictionary<string, Action<bool>> _activeAds = new Dictionary<string, Action<bool>>();
+
+	public int NextLevelHelpRewardFailCount {
+		get {
+			return 3;
+		}
+	}
 
 	void Start() {
 		DontDestroyOnLoad(this.gameObject);
@@ -43,7 +51,7 @@ public class AdvertisementController : MonoSingleton<AdvertisementController> {
 	}
 
 	public bool IsCanShowAd(string placementName) {
-		return Advertisement.IsReady(placementName);
+		return _enabled && Advertisement.IsReady(placementName);
 	}
 
 	public void ShowVideoAd(string name, Action<bool> onFinish) {
@@ -63,6 +71,10 @@ public class AdvertisementController : MonoSingleton<AdvertisementController> {
 		}
 		Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
 		Advertisement.Banner.Show(placement);
+	}
+
+	public void HideBannerAd() {
+		Advertisement.Banner.Hide();
 	}
 
 	void IncrementViews() {

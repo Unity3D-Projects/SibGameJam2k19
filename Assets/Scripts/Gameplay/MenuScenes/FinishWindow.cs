@@ -4,10 +4,9 @@ using UnityEngine.UI;
 using SMGCore;
 
 public class FinishWindow : MonoBehaviour {
-
-	public GameObject ApplesCounter;
-	public GameObject Star;
-	public GameObject ResetButton;
+	public GameObject ApplesCounter = null;
+	public GameObject Star          = null;
+	public GameObject ResetButton   = null;
  
 	public void OnContinueClick() {
 		var nextLevel = LevelSettings.Instance.NextSceneName;
@@ -17,15 +16,11 @@ public class FinishWindow : MonoBehaviour {
 		LevelManager.Instance.LoadMainMenu();
 	}
 	public void FastRestart() {
-		//if ( _closing ) {
-		//	return;
-		//}
-		//_closing = true;
-		//Fader.FadeToBlack(1f);
 		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
 		persistence.FastRestart = true;
 		//Fader.OnFadeToBlackFinished.AddListener(() => LevelManager.Instance.LoadLevel(persistence.LastLevelName));
-		LevelManager.Instance.LoadLevel(persistence.LastLevelName); 
+		LevelManager.Instance.LoadLevel(persistence.LastLevelName);
+		AdvertisementController.Instance.HideBannerAd();
 	}
 
 	public void UpdateApplesCounter() {

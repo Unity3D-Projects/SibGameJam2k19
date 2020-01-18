@@ -54,5 +54,7 @@
 		<Credits  text="2019, SMG для Ludum Dare 44"/>
 		<NoDamage text="Препятствия не задеты"/>
 		<Escaped  text="Убежал!"/>
+		<AdWatchedButton  text="+3 яблока в следующей попытке!"/>
+		<WatchAdButton    text="Посмотри и получи"/>
 	</FinalScreen>
 </root>

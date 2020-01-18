@@ -62,6 +62,8 @@ public sealed class GameState : MonoSingleton<GameState> {
 		EventManager.Unsubscribe<Event_GoatYell>(OnGoatYell);
 		EventManager.Unsubscribe<Event_SceneLoaded>(OnSceneLoaded);
 		BoostWatcher.DeInit();
+
+		AdvertisementController.Instance.HideBannerAd();
 	}
 
 	void Update() {
@@ -133,8 +135,13 @@ public sealed class GameState : MonoSingleton<GameState> {
 				EventManager.Fire(new Event_HelpScreenClosed());
 			}
 		}
-		ScenePersistence.Instance.SetupHolder(new KOZAPersistence());
-
+		var cachedFailCount = 0;
+		var cachedAddScore = persistence.AdditionalScore;
+		if ( persistence.FastRestart ) {
+			cachedFailCount = persistence.ConsecutiveFailCount;
+		}		
+		ScenePersistence.Instance.SetupHolder(new KOZAPersistence() { ConsecutiveFailCount = cachedFailCount, AdditionalScore = cachedAddScore });
+		Score = cachedAddScore;
 		Fader.FadeToWhite(1f);
 		ScoreCountText.text = string.Format("x{0}", Score);
 		UpdateBoostButtonsAvailability();
@@ -219,6 +226,9 @@ public sealed class GameState : MonoSingleton<GameState> {
 	void OnContinueWindowShow() {
 		FinishWindow.SetActive(true);
 		var fv = FinishWindow.GetComponent<FinishWindow>();
+		if ( AdvertisementController.Instance.IsCanShowAd(AdvertisementController.LevelWinBanner) ) {
+			AdvertisementController.Instance.ShowBannerAd(AdvertisementController.LevelWinBanner);
+		}
 		fv.UpdateApplesCounter();
 		fv.UpdateStar();
 		fv.UpdateResetButton(); 

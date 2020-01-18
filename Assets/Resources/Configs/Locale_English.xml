@@ -54,5 +54,7 @@
 		<Credits  text="2019, SMG for Ludum Dare 44"/>
 		<NoDamage text="Obstacles avoided"/>
 		<Escaped  text="Escaped!"/>
+		<AdWatchedButton  text="You've got +3 apples for next try!"/>
+		<WatchAdButton    text="Watch and get"/>
 	</FinalScreen>
 </root>

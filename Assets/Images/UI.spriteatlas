@@ -32,11 +32,11 @@ SpriteAtlas:
     packables:
     - {fileID: 102900000, guid: 76e87ea64476afb489d786672b777267, type: 3}
     - {fileID: 2800000, guid: 8d3b5c679e25475488506c7bcc66eee3, type: 3}
-    totalSpriteSurfaceArea: 2945546
+    totalSpriteSurfaceArea: 3011082
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: 23bf433210affdc6022a124d8236d557
+      Hash: b37d5b8f530063f124f79cb40ce821cd
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: d5f3c110284603347b5be9b63aee50d6, type: 3}
@@ -54,6 +54,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9b7f719d3ee63bc40bcb9cc766cf22bb, type: 3}
   - {fileID: 21300000, guid: ea48441e01e6d4b4fac61aba9427426e, type: 3}
   - {fileID: 21300000, guid: 84944cbea15e2dd4c9f7f1a29e214a72, type: 3}
+  - {fileID: 21300000, guid: 38b5f6fe8065a214baa492412d0479fa, type: 3}
   - {fileID: 21300000, guid: 6fb47f2fdbcf5e546a0500c3acaae657, type: 3}
   - {fileID: 21300000, guid: aa62dd6f54efe8a49bd7fc49e0e6db71, type: 3}
   - {fileID: 21300000, guid: dd7bb8cf4c4b1f14398a3a82ebe23ac3, type: 3}
@@ -73,6 +74,7 @@ SpriteAtlas:
   - life_non
   - up
   - boost_cena
+  - adIcon
   - life_hf
   - hint
   - or
