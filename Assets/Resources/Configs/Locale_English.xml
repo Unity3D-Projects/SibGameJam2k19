@@ -52,5 +52,7 @@
 		<MainMenu text="Main menu" />
 		<RunMeter text="You've ran away from farmer for {0} meters, and your best is {1} meters." />
 		<Credits  text="2019, SMG for Ludum Dare 44"/>
+		<NoDamage text="Obstacles avoided"/>
+		<Escaped  text="Escaped!"/>
 	</FinalScreen>
 </root>

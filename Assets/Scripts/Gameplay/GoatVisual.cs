@@ -23,6 +23,7 @@ public sealed class GoatVisual : MonoBehaviour {
 		emis.enabled = false;
 
 		YellEffect = Instantiate(YellEffect);
+		YellEffect.SetActive(false);
 
 		EventManager.Subscribe<Event_BoostActivated>(this, OnBoostApply);
 		EventManager.Subscribe<Event_BoostEnded>    (this, OnBoostEnd);

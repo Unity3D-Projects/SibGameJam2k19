@@ -26,10 +26,10 @@
 		<Yell text="Кричи на ежей чтобы испугать"/>
 		<Piano text="Тяжелые объекты эффективно замедляют людей"/>
 	</HelpScreen>
-   <Common>
+    <Common>
 	  	<FarmerName text="Дед"/>
 		<GoatName   text="Коза"/>
-   </Common>
+    </Common>
    	<Gameplay>
 		<RunDistanceText   text="Расстояние: "/>
 		<RunDistanceMeters text=" {0}м."/>
@@ -52,5 +52,7 @@
 		<MainMenu text="В начало" />
 		<RunMeter text="Вы убегали от старого алкаша целых {0} метров, а ваш рекорд аж {1} метров." />
 		<Credits  text="2019, SMG для Ludum Dare 44"/>
+		<NoDamage text="Препятствия не задеты"/>
+		<Escaped  text="Убежал!"/>
 	</FinalScreen>
 </root>
