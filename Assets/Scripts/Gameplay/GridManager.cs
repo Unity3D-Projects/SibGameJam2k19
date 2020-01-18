@@ -41,6 +41,7 @@ public class GridManager : MonoBehaviour {
 	public float FarmerSpeedMax           = 3f;
 	public float FarmerSpeedDelta         = 0.1f;
 	public int   ObstacleProbability      = 10;
+	public int   AnimalsSpawnValue        = 40;
 	public int   ObstacleProbabilityMax   = 80;
 	public int   ObstacleProbabilityDelta = 1;
 	public int   ApplesProbability        = 5; 
@@ -100,9 +101,9 @@ public class GridManager : MonoBehaviour {
 
 
 
-	HogPool     hogPool     = new HogPool();
-	BeePool     beePool     = new BeePool();
-	IslandsPool islandsPool = new IslandsPool();
+	HogPool      hogPool      = new HogPool();
+	BeePool      beePool      = new BeePool();
+	IslandsPool  islandsPool  = new IslandsPool();
 	BGStonesPool bgStonesPool = new BGStonesPool();
 
 	GameObject _previousObstacle = null;
@@ -260,8 +261,10 @@ public class GridManager : MonoBehaviour {
 		}
 
 		// 0-empty, 1-hog, 2-bee, 3-obstacle
-		PlaceHogs(MaxHogsOnTenCells, CellsStates);
-		PlaceBees(MaxHogsOnTenCells, CellsStates);
+		if ( ObstacleProbability > AnimalsSpawnValue ) {
+			PlaceHogs(MaxHogsOnTenCells, CellsStates);
+			PlaceBees(MaxHogsOnTenCells, CellsStates); 
+		}
 		PlaceObstacles(ObstacleProbability, CellsStates);
 		PlaceApples(ApplesProbability, CellsStates);
 		PlaceIslands(CellsStates);
@@ -456,9 +459,10 @@ public class GridManager : MonoBehaviour {
 
 	void PlaceHogs(int _maxNum, Dictionary<int, int> cells) {
 		int hogNum = 0;
-		for ( int i = 0; i < cells.Count / 10; i++ ) {
-			hogNum += Random.Range(0, _maxNum + 1);
-		}
+		//for ( int i = 0; i < cells.Count / 10; i++ ) {
+		//	hogNum += Random.Range(0, _maxNum + 1);
+		//}
+		hogNum = Random.Range(0, cells.Count / 10 + 1);
 		var freeCells = new List<int>();
 		foreach ( KeyValuePair<int, int> c in cells ) {
 			if ( c.Value == 0 ) {
@@ -478,7 +482,7 @@ public class GridManager : MonoBehaviour {
 			} 
 
 			Vector2 pos = Grid.CellToWorld(new Vector3Int(rndX, GetTopGroundIndex(rndX), 0));
-			float rndScale = Random.Range(0.75f, 1f);
+			float rndScale = Random.Range(0.85f, 1f);
 			var hog = hogPool.Get().gameObject;
 			if ( hog.transform.parent == null ) {
 				hog.transform.SetParent(Hogs);
@@ -495,9 +499,10 @@ public class GridManager : MonoBehaviour {
 	}
 	void PlaceBees(int _maxNum, Dictionary<int, int> cells) {
 		int beeNum = 0;
-		for ( int i = 0; i < cells.Count / 10; i++ ) {
-			beeNum += Random.Range(0, _maxNum + 1);
-		}
+		//for ( int i = 0; i < cells.Count / 10; i++ ) {
+		//	beeNum += Random.Range(0, _maxNum + 1);
+		//}
+		beeNum = Random.Range(0, cells.Count / 10 + 1);
 		var freeCells = new List<int>();
 		foreach ( KeyValuePair<int, int> c in cells ) {
 			if ( c.Value == 0 ) {
@@ -526,7 +531,7 @@ public class GridManager : MonoBehaviour {
 				pos += new Vector2(-0.5f, 0.25f); 
 			}
 			bee.transform.position = pos;
-			float rndScale = 0.75f + rand.Next(25) / 100f;
+			float rndScale = Random.Range(0.85f, 1f);
 			bee.transform.localScale = new Vector3(rndScale, rndScale, 1);
 			if ( rand.Next(4) == 0 ) {
 				bee.transform.Rotate(new Vector3(0, 180, 0));

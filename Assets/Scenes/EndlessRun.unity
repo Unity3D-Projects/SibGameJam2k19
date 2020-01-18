@@ -198,19 +198,20 @@ MonoBehaviour:
   - Prefab: {fileID: 1990124663482155004, guid: 74536359dea561e48b93376d5398c69d,
       type: 3}
     PrefabPath: Prefabs/Decor/skull
-  GoatSpeedMax: 4
-  GoatSpeedDelta: 0.05
-  FarmerSpeedMax: 5
-  FarmerSpeedDelta: 0.05
-  ObstacleProbability: 15
+  GoatSpeedMax: 3.8
+  GoatSpeedDelta: 0.02
+  FarmerSpeedMax: 4.2
+  FarmerSpeedDelta: 0.03
+  ObstacleProbability: 10
+  AnimalsSpawnValue: 30
   ObstacleProbabilityMax: 85
-  ObstacleProbabilityDelta: 2
+  ObstacleProbabilityDelta: 1
   ApplesProbability: 12
   DeltaToBuildSector: 16
   DeltaToCutSector: 20
   DeltaBeforeFarmerToCut: 6
   ObstacleVerticalShift: 0.25
-  ObstacleDelta: 1.4
+  ObstacleDelta: 2
   MaxHogsOnTenCells: 1
   MaxPropsOnTenCells: 1
   MaxSmallPropsOnTenCells: 2
@@ -467,6 +468,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &183733135
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,6 +835,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &445334781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,6 +1277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &808395935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,6 +1373,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &877958366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,6 +1469,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &993208216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,6 +1645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1196388357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,6 +1741,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1232234429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,6 +1947,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1345786201
 GameObject:
   m_ObjectHideFlags: 0
@@ -2048,6 +2073,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1362229808
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,6 +2169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1419757010
 GameObject:
   m_ObjectHideFlags: 0
@@ -2234,6 +2265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1461391408
 GameObject:
   m_ObjectHideFlags: 0
@@ -3350,6 +3384,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1910482151
 GameObject:
   m_ObjectHideFlags: 0
@@ -3443,6 +3480,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1920415370
 GameObject:
   m_ObjectHideFlags: 0
@@ -3972,6 +4012,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!1 &1984924650
 GameObject:
   m_ObjectHideFlags: 0
@@ -4178,6 +4221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532819a072359c14bb1e0d255152a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 0, y: 0}
+  _speed: 0
+  SpeedBound: {x: -1, y: 0.3}
 --- !u!4 &161572391516993938
 Transform:
   m_ObjectHideFlags: 0
