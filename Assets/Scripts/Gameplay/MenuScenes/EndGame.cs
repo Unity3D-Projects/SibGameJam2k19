@@ -25,6 +25,7 @@ public sealed class EndGame : MonoBehaviour {
 		var isWin = pData.IsWin;
 		var isEndless = pData.EndlessLevel;
 		pData.ConsecutiveFailCount++;
+		pData.AdditionalScore = 0;
 
 		WinGameHolder.SetActive (isWin && !isEndless);
 		LoseGameHolder.SetActive(!isWin && !isEndless);
@@ -68,6 +69,7 @@ public sealed class EndGame : MonoBehaviour {
 		BeforeWatchAdContent.SetActive(false);
 		AfterWatchAdContent.SetActive(true);
 		var pData = ScenePersistence.Instance.Data as KOZAPersistence;
+		AnalyticsController.Instance.VideoAdWatchedOnLoseScreen(pData.LastLevelName);
 		pData.AdditionalScore = 3;
 		_adWatched = true;
 	}

@@ -220,6 +220,13 @@ public sealed class GameState : MonoSingleton<GameState> {
 			}
 		}
 
+		if ( win ) {
+			AnalyticsController.Instance.LevelWin(LevelManager.Instance.CurrentScene, Score, persistence.AdditionalScore > 0);
+		} else {
+			AnalyticsController.Instance.LevelLose(LevelManager.Instance.CurrentScene, Score, persistence.AdditionalScore > 0);
+		}
+		
+
 		Fader.FadeToBlack(1f);
 	}
 
