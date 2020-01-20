@@ -122,6 +122,7 @@ public sealed class RunState : State {
 		EventManager.Subscribe<Event_SlideButtonPushed>(this, OnSlideButtonPushed);
 		EventManager.Subscribe<Event_YellButtonPushed> (this, OnYellButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonReleased> (this, OnSlideButtonReleased);
+		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 	}
 
 	protected override void ProcessState() {
@@ -135,10 +136,11 @@ public sealed class RunState : State {
 		EventManager.Unsubscribe<Event_SlideButtonPushed>(OnSlideButtonPushed);
 		EventManager.Unsubscribe<Event_YellButtonPushed> (OnYellButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonReleased> (OnSlideButtonReleased);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
-		if ( Controller.CharController.Grounded ) {
+		if ( Controller.CharController.Grounded & Controller.JumpReleasedFlag ) {
 			TryChangeState(new JumpState(Controller));
 		}
 	}
@@ -155,6 +157,9 @@ public sealed class RunState : State {
 
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		Controller.SlideReleasedFlag = true;
+	}
+	void OnJumpFall(Event_JumpMaxHeightReached e) {
+		Controller.JumpReleasedFlag = true;
 	}
 }
 
@@ -179,6 +184,7 @@ public sealed class JumpState : State {
 		SoundManager.Instance.PlaySound("Jump");
 		Controller.CharController.GravityModifier = Controller.CharController.GravityModifierBaseValue;
 		Controller.Jump();
+		Controller.JumpReleasedFlag = false;
 	}
 
 	protected override void LeaveState() {
@@ -202,10 +208,12 @@ public sealed class JumpState : State {
 	}
 	void OnJumpFall(Event_JumpMaxHeightReached e) {
 		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
+		Controller.JumpReleasedFlag = true;
 	}
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		Controller.SlideReleasedFlag = true;
 	}
+
 }
 
 public sealed class SlideState : State {
@@ -228,6 +236,7 @@ public sealed class SlideState : State {
 		Controller.SlideReleasedFlag = false;
 		//Debug.Log("Slide on");
 		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
+		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 		SoundManager.Instance.PlaySound("Whoosh");
 	}
 
@@ -236,11 +245,15 @@ public sealed class SlideState : State {
 		//Debug.Log("Slide off");
 		Controller.CharController.SetLowProfile(false);
 		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
 	} 
 
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		Controller.SlideReleasedFlag = true;
 		TryChangeState(new RunState(Controller));
+	}
+	void OnJumpFall(Event_JumpMaxHeightReached e) {
+		Controller.JumpReleasedFlag = true;
 	}
 
 }
@@ -282,12 +295,13 @@ public sealed class SlowDownState : State {
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
-		if ( Controller.CharController.Grounded ) {
+		if ( Controller.CharController.Grounded & Controller.JumpReleasedFlag ) {
 			TryChangeState(new JumpState(Controller));
 		}
 	}
 	void OnJumpFall(Event_JumpMaxHeightReached e) {
 		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
+		Controller.JumpReleasedFlag = true;
 	}
 
 	void OnYellButtonPushed(Event_YellButtonPushed e) {
@@ -337,12 +351,13 @@ public sealed class ObstacleState : State {
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
-		if ( Controller.CharController.Grounded ) {
+		if ( Controller.CharController.Grounded & Controller.JumpReleasedFlag ) {
 			TryChangeState(new JumpState(Controller));
 		}
 	}
 	void OnJumpFall(Event_JumpMaxHeightReached e) {
 		Controller.CharController.GravityModifier = Controller.GravityFallModifier;
+		Controller.JumpReleasedFlag = true;
 	}
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		Controller.SlideReleasedFlag = true; 
@@ -368,12 +383,14 @@ public sealed class YellState : State {
 		EventManager.Fire(new Event_GoatYell());
 		EventManager.Subscribe<Event_JumpButtonPushed>(this, OnJumpButtonPushed);
 		EventManager.Subscribe<Event_SlideButtonReleased>(this, OnSlideButtonReleased);
+		EventManager.Subscribe<Event_JumpMaxHeightReached>(this, OnJumpFall);
 	}
 
 	protected override void LeaveState() {
 		base.LeaveState();
 		EventManager.Unsubscribe<Event_JumpButtonPushed>(OnJumpButtonPushed);
 		EventManager.Unsubscribe<Event_SlideButtonReleased>(OnSlideButtonReleased);
+		EventManager.Unsubscribe<Event_JumpMaxHeightReached>(OnJumpFall);
 	}
 
 	void OnJumpButtonPushed(Event_JumpButtonPushed e) {
@@ -384,6 +401,9 @@ public sealed class YellState : State {
 
 	void OnSlideButtonReleased(Event_SlideButtonReleased e) {
 		Controller.SlideReleasedFlag = true;
+	}
+	void OnJumpFall(Event_JumpMaxHeightReached e) {
+		Controller.JumpReleasedFlag = true;
 	}
 }
 
@@ -410,6 +430,7 @@ public sealed class GoatController : MonoBehaviour {
 	public PhysicsObject CharController    = null;
 	public GoatVisual    VisualController  = null;
 	public bool          SlideReleasedFlag = true;
+	public bool          JumpReleasedFlag  = true;
 
 	[NonSerialized] public State CurrentState = null;
 

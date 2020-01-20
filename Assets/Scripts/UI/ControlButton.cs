@@ -21,7 +21,6 @@ public sealed class ControlButton : MonoBehaviour {
 		if ( ButtonType == ControlButtonType.Slide ) {
 			EventManager.Fire(new Event_SlideButtonReleased { });
 		} else if (  ButtonType == ControlButtonType.Jump  ) {
-			Debug.Log("released");
 			EventManager.Fire(new Event_JumpMaxHeightReached { });
 		};
 	}
