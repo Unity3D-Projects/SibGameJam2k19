@@ -8385,7 +8385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CompleteAction: 0
-  NextSceneName: Level5
+  NextSceneName: Level6
   DialogName: 
   ShowTutorial: 1
   TutorialName: 4
