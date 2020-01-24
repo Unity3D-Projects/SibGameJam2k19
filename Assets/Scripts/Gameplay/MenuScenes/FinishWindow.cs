@@ -24,7 +24,7 @@ public class FinishWindow : MonoBehaviour {
 	}
 
 	public void UpdateApplesCounter() {
-		ApplesCounter.GetComponent<Text>().text = GameState.Instance.ApplesCounter.ToString() + " | " + LevelSettings.Instance.ApplesNumber;
+		ApplesCounter.GetComponent<Text>().text = string.Format("{0}|{1}",GameState.Instance.ApplesCounter.ToString("0"), LevelSettings.Instance.ApplesNumber.ToString("0"));
 	}
 	public void UpdateStar() {
 		if ( GameState.Instance.ObstacleHit ) {
