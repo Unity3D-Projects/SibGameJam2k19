@@ -20,6 +20,7 @@ public sealed class GameState : MonoSingleton<GameState> {
 	public GameObject       UICanvas       = null;
 	public GameObject       FinishWindow   = null;
 	public GameObject       HelpScreen     = null;
+	public GameObject       DialogBG       = null;
 	public List<BoostInfo>  BoostInfos     = new List<BoostInfo>();
 	public List<GameObject> BoostButtons   = new List<GameObject>();
 
@@ -122,11 +123,16 @@ public sealed class GameState : MonoSingleton<GameState> {
 		}
 		var persistence = ScenePersistence.Instance.Data as KOZAPersistence;
 		if ( persistence.FastRestart ) {
-			StartDialog.gameObject.SetActive(false);
+			DialogBG.gameObject.SetActive(false);
 			EventManager.Fire(new Event_HelpScreenClosed());
 		} else {
-			var hasDialog = !string.IsNullOrEmpty(ls.DialogName);
-			StartDialog.gameObject.SetActive(hasDialog);
+			var hasDialog = (ls.Dialog != null);
+			if ( hasDialog ) {
+				DialogBG.gameObject.SetActive(true);
+				var d = Instantiate(ls.Dialog, DialogBG.transform);
+				d.transform.SetAsFirstSibling();
+				StartDialog = d.GetComponent<Dialog>();
+			}
 			if ( !hasDialog && ls.ShowTutorial ) {
 				EventManager.Fire(new Event_StartDialogComplete());
 			}

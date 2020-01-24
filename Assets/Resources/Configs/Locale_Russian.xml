@@ -29,6 +29,7 @@
     <Common>
 	  	<FarmerName text="Дед"/>
 		<GoatName   text="Коза"/>
+		<BeeName   text="Пчела"/>
     </Common>
    	<Gameplay>
 		<RunDistanceText   text="Расстояние: "/>
@@ -45,6 +46,16 @@
 		<Dialog_FarmerPhrase_3 text="- Продам тебя на базаре, дорогуша, и куплю себе горилки." />
 		<Dialog_GoatPhrase_3   text="- Чиго блееееееееее? *Убегает*" />
 	</Level_1>
+    <Level_2>
+		<Dialog_FarmerPhrase_1 text="- Что за банка?!" />
+		<Dialog_GoatPhrase_1   text="- Такая вот" />
+		<Dialog_FarmerPhrase_2 text="- Ну погоди у меня!" />
+	</Level_2>
+	<Level_3>
+		<Dialog_GoatPhrase_1 text="- А ты еще кто?" />
+		<Dialog_BeePhrase_1   text="- Да я просто жужжу потихоньку. Не лезь ко мне." />
+		<Dialog_GoatPhrase_2 text="- Всё с тобой ясно." />
+	</Level_3>
 	<FinalScreen>
 		<WinText  text="Поздравляем!&#xD;Вам удалось сбежать, и теперь у фермера нет другого выхода кроме как протрезветь. " />
 		<LoseText text="Ваша жизнь была обменяна на три ящика дешевого алкоголя. Какая незавидная участь." />

@@ -29,6 +29,7 @@
 	<Common>
 		<FarmerName text="Farmer"/>
 		<GoatName   text="Goat"/>
+		<BeeName   text="Bee"/>
 	</Common>
 	<Gameplay>
 		<RunDistanceText   text="Distance:  "/>
@@ -45,6 +46,16 @@
 		<Dialog_FarmerPhrase_3 text="- I'm gonna sell ya sweety, on the market!" />
 		<Dialog_GoatPhrase_3   text="- Wha-a-a-t?! *Runs away*" />
 	</Level_1>
+	<Level_2>
+		<Dialog_FarmerPhrase_1 text="- Whats that jar?!" />
+		<Dialog_GoatPhrase_1   text="- Sort of jar" />
+		<Dialog_FarmerPhrase_2 text="- I'll show You what's what!" />
+	</Level_2>
+    <Level_3>
+		<Dialog_GoatPhrase_1 text="- And who would You be?" />
+		<Dialog_BeePhrase_1   text="- Be? I'm just buzzing around. Don't ruin my day." />
+		<Dialog_GoatPhrase_2 text="- I'll slide right under, You won't even notice." />
+	</Level_3>
 	<FinalScreen>
 		<WinText  text="Congratulations!&#xD;You've managed to save your life and left the farmer no other choice but to sober up." />
 		<LoseText text="Your life was exchanged for three crates of very cheap and extremely strong alcohol. What a miserable fate." />
