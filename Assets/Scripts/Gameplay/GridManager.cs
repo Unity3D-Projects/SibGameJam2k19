@@ -62,8 +62,6 @@ public class GridManager : MonoBehaviour {
 	int _maxCellY;
 
 	int[,] buffer = new int[32, 8];
-	System.Random rand;
-	public float seed = 6.5f;
 
 	int[,] pattern1 = {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -201,7 +199,6 @@ public class GridManager : MonoBehaviour {
 		islandsPool.Init();
 		bgStonesPool.Init();
 
-		rand = new System.Random(seed.GetHashCode());
 		Tilemap.ClearAllTiles();
 		ForegroundGrass.ClearAllTiles();
 		BackgroundGrass.ClearAllTiles();
@@ -232,7 +229,7 @@ public class GridManager : MonoBehaviour {
 			BuildSector();
 			UpdateScenario();
 		}
-		if (  Mathf.Abs((_farmerCell - DeltaBeforeFarmerToCut) - Tilemap.cellBounds.min.x) > DeltaToCutSector  ) {
+		if ( Mathf.Abs(_farmerCell - DeltaBeforeFarmerToCut - Tilemap.cellBounds.min.x) > DeltaToCutSector ) {
 			CutSector(_farmerCell - DeltaBeforeFarmerToCut);
 		}
 	}
@@ -244,7 +241,7 @@ public class GridManager : MonoBehaviour {
 		if ( Random.Range(0,3) == 2 ) {
 			buf = Patterns[Random.Range(0, Patterns.Count)];
 		} else {
-			buf = RandomWalkTopSmoothed(buffer, rand, 2, _y);
+			buf = RandomWalkTopSmoothed(buffer, 2, _y);
 			buf = SetTextureRules(buf);
 		}
 		int sh = RenderMap(buf, Tilemap, _x, _y);
@@ -399,8 +396,8 @@ public class GridManager : MonoBehaviour {
 		for ( int i = 0; i < freeCells.Count; i++ ) {
 
 			int x = freeCells[i];
-			if ( rand.Next(100) <= _probability ) {
-				ObstacleData _obstacle = ObstacleDatas[rand.Next(ObstacleDatas.Count)];
+			if ( Random.Range(0, 100) <= _probability ) {
+				ObstacleData _obstacle = ObstacleDatas[Random.Range(0, ObstacleDatas.Count)];
 				int y = GetTopGroundIndex(x);
 				Vector2 pos = Grid.CellToWorld(new Vector3Int(x, y, 0));
 				float constraintLeft = pos.x;
@@ -418,7 +415,8 @@ public class GridManager : MonoBehaviour {
 				if (  Tilemap.GetTile(new Vector3Int(x - 1, y + 1, 0)) != null | Tilemap.GetTile(new Vector3Int(x - 1, y, 0)) == null  ) {
 					leftConstraint = 1; 
 				}
-				pos.x += (float)rand.NextDouble() * Grid.cellSize.x + leftConstraint * (_newXsize * 0.5f);
+				pos.x += Random.Range(0, 1f) * Grid.cellSize.x + leftConstraint * (_newXsize * 0.5f); 
+
 				if ( _previousObstacle != null ) {
 					float minimalDistance = _previousObstacle.transform.position.x + (_previousObstacle.GetComponent<Renderer>().bounds.size.x * 0.5f) + (_newXsize * 0.5f) + ObstacleDelta;
 					if ( pos.x < minimalDistance ) {
@@ -432,7 +430,7 @@ public class GridManager : MonoBehaviour {
 					_previousObstacle.transform.SetParent(Obstacles);
 					_previousObstacle.transform.position = pos;
 					_previousObstacle.transform.localScale = new Vector3(rndScale, rndScale, rndScale);
-					if ( rand.Next(2) == 0 ) {
+					if ( Random.Range(0, 2) == 0 ) {
 						_previousObstacle.transform.Rotate(new Vector3(0, 180, 0));
 					}
 					cells[x] = 3;
@@ -444,7 +442,7 @@ public class GridManager : MonoBehaviour {
 	void PlaceApples(int _probability, Dictionary<int, int> cells) {
 		foreach ( KeyValuePair<int, int> c in cells ) {
 			if ( c.Value == 0 | c.Value == 3 ) {
-				if ( rand.Next(100) <= _probability ) {
+				if ( Random.Range(0, 100) <= _probability ) {
 					Vector2 pos = Grid.CellToWorld(new Vector3Int(c.Key, GetTopGroundIndex(c.Key), 0));
 					pos.y += Grid.cellSize.y + 0.8f;
 					pos.x += Grid.cellSize.x / 2f;
@@ -492,7 +490,7 @@ public class GridManager : MonoBehaviour {
 			pos.y += Grid.cellSize.y * 0.95f + _yShift;
 			pos.x += Grid.cellSize.x * 0.5f;
 			hog.transform.position = pos;
-			if ( rand.Next(4) == 0 ) {
+			if ( Random.Range(0, 4) == 0 ) {
 				hog.transform.Rotate(new Vector3(0, 180, 0));
 			}
 		}
@@ -533,7 +531,7 @@ public class GridManager : MonoBehaviour {
 			bee.transform.position = pos;
 			float rndScale = Random.Range(0.85f, 1f);
 			bee.transform.localScale = new Vector3(rndScale, rndScale, 1);
-			if ( rand.Next(4) == 0 ) {
+			if ( Random.Range(0, 4) == 0 ) {
 				bee.transform.Rotate(new Vector3(0, 180, 0));
 			}
 		}
@@ -714,8 +712,9 @@ public class GridManager : MonoBehaviour {
 			}
 			decor.transform.localScale = new Vector3(rndScale, rndScale); 
 			decor.transform.position = pos;
-			decor.transform.RotateAroundLocal(new Vector3(0, 0, 1), Random.Range(0, 95f));
-			
+			//decor.transform.RotateAroundLocal(new Vector3(0, 0, 1), Random.Range(0, 95f));
+			decor.transform.Rotate(new Vector3(0, 0, Random.Range(0, 180)));
+
 			if ( Random.Range(0, 2) == 1 ) {
 				decor.GetComponent<SpriteRenderer>().flipX = true;
 			} else {
@@ -766,7 +765,7 @@ public class GridManager : MonoBehaviour {
 		return map;
 	}
 
-	public int[,] RandomWalkTopSmoothed(int[,] map, System.Random rnd, int minSectionWidth, int nodeY) {
+	public int[,] RandomWalkTopSmoothed(int[,] map, int minSectionWidth, int nodeY) {
 
 		//Determine the start position
 		//int lastHeight = Random.Range(0, map.GetUpperBound(1));
@@ -780,9 +779,7 @@ public class GridManager : MonoBehaviour {
 			bottomBound = 0; 
 		} else {
 			bottomBound = _minCellY + shift;
-		}
-
-
+		} 
 
 		//Used to determine which direction to go
 		int nextMove = 0;
@@ -797,8 +794,7 @@ public class GridManager : MonoBehaviour {
 
 		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
 			//Determine the next move
-			//nextMove = rand.Next(2);
-			nextMove = rnd.Next(2);
+			nextMove = Random.Range(0, 2);
 
 			//Only change the height if we have used the current height more than the minimum required section width
 			//if ( nextMove == 0 && lastHeight > 0 && sectionWidth > minSectionWidth ) {
@@ -866,16 +862,6 @@ public class GridManager : MonoBehaviour {
 		}
 		return shift;
 	} 
-	public void RenderGrassMap(int[,] map, Tilemap tilemap, int shiftX, int shiftY) { 
-		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
-			for ( int y = 0; y <= map.GetUpperBound(1); y++ ) {
-				if ( map[x, y] != 0 & map[x, y] != 1 ) {
-					tilemap.SetTile(new Vector3Int(shiftX + x, y - shiftY + 1, 0), DecorGrass[rand.Next(DecorGrass.Count)]);
-					break;
-				}
-			}
-		} 
-	}
 
 	public void RenderGrassMap(int x0, int x1) {
 		for ( int x = x0; x <= x1; x++ ) {
@@ -886,12 +872,6 @@ public class GridManager : MonoBehaviour {
 		} 
 	}
 
-	public static bool IsOverlapping(GameObject o1, GameObject o2) {
-		float m1 = o1.GetComponent<SpriteRenderer>().size.magnitude;
-		float m2 = o2.GetComponent<SpriteRenderer>().size.magnitude;
-		Vector2 result = o1.transform.position - o2.transform.position;
-		return result.magnitude < (m1 + m2) / 2f; 
-	}
 	private void PrintArray(int[,] arr) {
 		string str = "\n";
 		for ( int j = arr.GetUpperBound(1); j >= 0; j-- ) {

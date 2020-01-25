@@ -36,10 +36,8 @@ public class FinishWindow : MonoBehaviour {
 	public void UpdateResetButton() {
 		if ( GameState.Instance.ApplesCounter == LevelSettings.Instance.ApplesNumber & !GameState.Instance.ObstacleHit ) {
 			ResetButton.SetActive(false);
-			Debug.Log("TURNING OFF");
 		} else {
 			ResetButton.SetActive(true);
-			Debug.Log("TURNING ON");
 		}
 	}
 }
