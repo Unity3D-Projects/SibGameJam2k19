@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-using System.Collections.Generic; 
+using System;
+using System.Collections.Generic;
+
+using Random = UnityEngine.Random;
 
 using SMGCore;
 
@@ -257,7 +260,7 @@ public class GridManager : MonoBehaviour {
 			CellsStates.Add(i, 0);
 		}
 
-		// 0-empty, 1-hog, 2-bee, 3-obstacle
+		   //0-empty, 1-hog, 2-bee, 3-obstacle
 		if ( ObstacleProbability > AnimalsSpawnValue ) {
 			PlaceHogs(MaxHogsOnTenCells, CellsStates);
 			PlaceBees(MaxHogsOnTenCells, CellsStates); 
@@ -785,12 +788,13 @@ public class GridManager : MonoBehaviour {
 		int nextMove = 0;
 		//Used to keep track of the current sections width
 		int sectionWidth = 0;
+		Array.Clear(map, 0, map.Length);
 
-		for ( int i = 0; i <= map.GetUpperBound(0); i++ ) {
-			for ( int j = 0; j <= map.GetUpperBound(1); j++ ) {
-				map[i, j] = 0;
-			}
-		}
+		//for ( int i = 0; i <= map.GetUpperBound(0); i++ ) {
+		//	for ( int j = 0; j <= map.GetUpperBound(1); j++ ) {
+		//		map[i, j] = 0;
+		//	}
+		//}
 
 		for ( int x = 0; x <= map.GetUpperBound(0); x++ ) {
 			//Determine the next move
